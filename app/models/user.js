@@ -12,9 +12,11 @@ var _ = require('lodash');
 
 class User{
   constructor(){
+    console.log('========= made it inside constructor!! =========');
+    console.log(this);
     this.local = {
-      email:    String,
-      password: String
+      email:    '',
+      password: ''
     };
     this.facebook = {
       id:       String,
@@ -36,10 +38,6 @@ class User{
     };
   }
 
-
-
-  // methods ======================
-  // generating a hash
   generateHash(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   }
@@ -50,7 +48,6 @@ class User{
     });
   }
 
-  // checking if password is valid
   validPassword(password) {
     return bcrypt.compareSync(password, this.local.password);
   }
@@ -67,11 +64,13 @@ class User{
         u = _.create(User.prototype, u);
         fn(null, u);
       }else{
-        fn(null);
+        fn(e,u);
       }
     });
 
   }
+
+
 
 
 }

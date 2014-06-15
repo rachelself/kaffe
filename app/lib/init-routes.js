@@ -35,6 +35,42 @@ function load(app, fn){
 		failureFlash : true // allow flash messages
 	}));
 
+
+  // =====================================
+	// FACEBOOK ROUTES =====================
+	// =====================================
+
+	app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+	// handle the callback after facebook has authenticated the user
+	app.get('/auth/facebook/callback',
+		passport.authenticate('facebook', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+		}));
+
+	// route for logging out
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+
+
+  // =====================================
+	// TWITTER ROUTES ======================
+	// =====================================
+
+	app.get('/auth/twitter', passport.authenticate('twitter'));
+
+	// handle the callback after twitter has authenticated the user
+	app.get('/auth/twitter/callback',
+		passport.authenticate('twitter', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+		}));
+
+
+
   console.log('Routes Loaded');
   fn();
 }
