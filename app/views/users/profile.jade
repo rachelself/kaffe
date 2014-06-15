@@ -3,3 +3,10 @@ extends ../shared/template
 block content
   h1= title
   h2 Profile
+
+  p id
+    p= user._id
+  p email
+    p= user.local.email
+  p password
+    p= user.local.password

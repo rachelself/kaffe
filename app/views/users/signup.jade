@@ -5,6 +5,9 @@ block content
 
   .container
 
+    if(message.length > 0)
+      .alert= message
+
     form(method='post' action='/signup')
       input(type='text', name='email', placeholder='Email', autofocus=true)
       input(type='password', name='password', placeholder='Password')

@@ -39,8 +39,6 @@ app.use(cookieSession({keys:['SEC123', '321CES']}));
 
 /********* PASSPORT CONFIGURATION STUFF **********/
 
-require('./config/passport')(passport); // pass passport for configuration
-
 app.use(cookieParser('optional secret string'));
 app.use(session({secret: 'ilovescotchscotchyscotchscotch'}));
 app.use(passport.initialize());

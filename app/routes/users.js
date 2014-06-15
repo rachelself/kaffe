@@ -9,15 +9,6 @@ exports.signup = (req, res)=>{
 };
 
 exports.profile = (req, res)=>{
-  isLoggedIn(req, res);
-  res.render('users/profile', {message: req.flash('registerMessage'), title: 'Profile'});
+  console.log(req.user);
+  res.render('users/profile', {user: req.user, message: req.flash('registerMessage'), title: 'Profile'});
 };
-
-function isLoggedIn(req, res, next) {
-
-	if (req.isAuthenticated()){
-    return next();
-  }else{
-    res.redirect('/');
-  }
-}
