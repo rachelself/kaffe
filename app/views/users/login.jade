@@ -1,0 +1,15 @@
+extends ../shared/template
+
+block content
+  h1= title
+  .container
+
+    form(method='post' action='/login')
+      input(type='text', name='email', placeholder='Email', autofocus=true)
+      input(type='password', name='password', placeholder='Password')
+      button Submit
+
+    p Don't have an account yet?
+    a(href='/signup') Signup
+    p Or go
+      a(href='/') home

@@ -31,7 +31,17 @@
     "cookie-session":  "*",
     "cookies":         "*",
     "async":           "*",
-    "request":         "*"
+    "request":         "*",
+    "mongoose" :       "*",
+    "passport" :       "*",
+    "passport-local" : "*",
+    "passport-facebook" : "*",
+    "passport-twitter" : "*",
+    "passport-google-oauth" : "*",
+    "connect-flash":   "*",
+    "bcrypt-nodejs":   "*",
+    "cookie-parser":    "*"
+
   },
   "devDependencies": {
     "grunt":                "*",
