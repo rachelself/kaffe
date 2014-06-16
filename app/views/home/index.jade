@@ -1,28 +1,50 @@
 extends ../shared/template
 
 block content
-  h1= title
+  .container__home
 
+    section.top-section
 
-  h3 Login or Register with:
+      header.header
+        h1 Kaffepaus
+        nav.nav
+          ul
+            li: a.white(href='#about') About
+            li: a.white(href='#register') Login | Register
 
+    section#about
+      #one-sentence.grid.grid--gutters
+        p.intro Kaffepaus is an app for learning about, brewing, and sharing great coffee and coffee recipes.
 
-  span
-    a(href='/login', class='button button-rounded button-flat') Local Login
-      i.fa.fa-user
-  br
-  span
-    a(href='/signup', class='button button-rounded button-flat') Local Signup
-      i.fa.fa-user
-  br
-  span
-    a(href='/auth/facebook', class='button button-rounded button-flat-primary') Facebook
-      i.fa.fa-facebook
-  br
-  span
-    a(href='/auth/twitter', class='button button-rounded button-flat-primary') Twitter
-      i.fa.fa-twitter
-  br
-  span
-    a(href='/auth/google', class='button button-rounded button-flat-caution') Google
-      i.fa.fa-google-plus
+      #features.grid.grid--gutters.u-textCenter
+        .grid-cell
+          h3 Learn
+          p Text about what you can learn about.
+        .grid-cell
+          h3 Brew
+          p A little bit about brewing with the recipes and timer.
+        .grid-cell
+          h3 Share
+          p How users can share, rate, and try recipes and share on social media.
+
+    section#register
+      h3 Login or Register with:
+      span
+        a(href='/login', class='button button-rounded button-flat') Local Login
+          i.fa.fa-user
+      br
+      span
+        a(href='/signup', class='button button-rounded button-flat') Local Signup
+          i.fa.fa-user
+      br
+      span
+        a(href='/auth/facebook', class='button button-rounded button-flat-primary') Facebook
+          i.fa.fa-facebook
+      br
+      span
+        a(href='/auth/twitter', class='button button-rounded button-flat-primary') Twitter
+          i.fa.fa-twitter
+      br
+      span
+        a(href='/auth/google', class='button button-rounded button-flat-caution') Google
+          i.fa.fa-google-plus

@@ -1,3 +1,173 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic);
+
+html{
+  overflow-x: hidden; // prevents sideways scrolling.
+}
+
+html,
+body{
+  height: 100%;
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  background-image: url(/img/ricepaper_@2X.png);
+  background-repeat: repeat;
+  background-size: 300px;
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol{
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+a.white{
+  color: white;
+  &:hover{
+    color: gray;
+  }
+}
+
+/* = grids for flexbox ====================== */
+
+.grid,
+.grid-gutters,
+.grid-cell,
+.u-textCenter{
+  width: 100%;
+  height: 100%;
+}
+
+.grid{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.grid-gutters{
+  margin-left: -1em;
+  .grid-cell{
+    padding-left: 1em;
+  }
+}
+
+.grid--full > .grid-cell{
+  -webkit-box-flex: 0;
+  &flex{
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100%;
+  }
+}
+
+.large-grid--fit{
+  .grid-cell{
+  &flex{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0px;
+  }
+  }
+}
+
+.grid-cell{
+
+}
+
+.u-textCenter{
+  text-align: center;
+}
+
+header{
+  width: 100%;
+  background: black;
+  height: 50px;
+  h1{
+    color: white;
+    position: relative;
+    top: -10px;
+    left: 10px;
+  }
+  nav{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    //float: right;
+    // text-align: center;
+    // width: 70%;
+    // justify-content: flex-end;
+    // float:right;
+  }
+  ul{
+    float: right;
+  }
+  ul > li{
+    display: inline-block;
+    text-align: center;
+    padding-left: 10px;
+    position: relative;
+    top: -70px;
+    a{
+      display: block;
+      height: 100%;
+      width: 100%;
+      color: white;
+
+
+    }
+  }
+
+}
+
+.container__home{
+  height: 100%;
+  min-height: 100%;
+  >.top-section{
+    background-image: url(/img/iced-coffee.jpg);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #about{
+    #features{
+      display: flex;
+      flex-flow: row-wrap;
+      justify-content: space-around;
+    }
+    #one-sentence{
+      background-color: rgba(93, 61, 48, 0.65);
+      justify-content: center;
+      align-self: center;
+      p.intro{
+        color: white;
+        flex-flow: row-wrap;
+
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+
+#features > .grid-cell{
+  background-color: rgba(217, 197, 177, 0.33);
+  margin-top: 25px;
+  width: 30%;
+  // padding: 10px;
+  // > h3{
+  //   width: 20%;
+  // }
+}
+
 span > a > i.fa{
   padding-left: 10px;
 }

@@ -17,22 +17,24 @@ function load(app, fn){
   var home = traceur.require(__dirname + '/../routes/home.js');
   var users = traceur.require(__dirname + '/../routes/users.js');
   var passport = require('passport');
-  require('../config/passport')(passport); // pass passport for configuration
+  require('../config/passport')(passport);
 
 
   app.get('/', dbg, home.index);
   app.get('/login', dbg, users.login);
   app.get('/signup', dbg, users.signup);
   app.get('/profile', dbg, isLoggedIn, users.profile);
+
   app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/signup', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
+		successRedirect : '/profile',
+		failureRedirect : '/signup',
+		failureFlash : true
 	}));
+
   app.post('/login', passport.authenticate('local-login', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/login', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
+		successRedirect : '/profile',
+		failureRedirect : '/login',
+		failureFlash : true
 	}));
 
 
@@ -42,14 +44,12 @@ function load(app, fn){
 
 	app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-	// handle the callback after facebook has authenticated the user
 	app.get('/auth/facebook/callback',
 		passport.authenticate('facebook', {
 			successRedirect : '/profile',
 			failureRedirect : '/'
 		}));
 
-	// route for logging out
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
@@ -62,7 +62,6 @@ function load(app, fn){
 
 	app.get('/auth/twitter', passport.authenticate('twitter'));
 
-	// handle the callback after twitter has authenticated the user
 	app.get('/auth/twitter/callback',
 		passport.authenticate('twitter', {
 			successRedirect : '/profile',
@@ -74,12 +73,8 @@ function load(app, fn){
 	// GOOGLE ROUTES =======================
 	// =====================================
 
-  // send to google to do the authentication
-	// profile gets us their basic information including their name
-	// email gets their emails
     app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
-    // the callback after google has authenticated the user
     app.get('/auth/google/callback',
             passport.authenticate('google', {
                     successRedirect : '/profile',
@@ -94,20 +89,16 @@ function load(app, fn){
 	// locally --------------------------------
 		app.get('/connect/local', dbg, users.connectLocal);
 
-    // app.get('/connect/local', function(req, res) {
-		// 	res.render('connect-local.jade', { message: req.flash('loginMessage') });
-		// });
 		app.post('/connect/local', passport.authenticate('local-signup', {
-			successRedirect : '/profile', // redirect to the secure profile section
-			failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-			failureFlash : true // allow flash messages
+			successRedirect : '/profile',
+			failureRedirect : '/connect/local',
+			failureFlash : true
 		}));
 
 	// facebook -------------------------------
 
 		app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
 
-		// handle the callback after facebook has authorized the user
 		app.get('/connect/facebook/callback',
 			passport.authorize('facebook', {
 				successRedirect : '/profile',
@@ -118,7 +109,6 @@ function load(app, fn){
 
 		app.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
 
-		// handle the callback after twitter has authorized the user
 		app.get('/connect/twitter/callback',
 			passport.authorize('twitter', {
 				successRedirect : '/profile',
@@ -130,7 +120,6 @@ function load(app, fn){
 
 		app.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
 
-		// the callback after google has authorized the user
 		app.get('/connect/google/callback',
 			passport.authorize('google', {
 				successRedirect : '/profile',
@@ -141,6 +130,7 @@ function load(app, fn){
   // =============================================================================
   // UNLINK ACCOUNTS =============================================================
   // =============================================================================
+
   // used to unlink accounts. for social accounts, just remove the token
   // for local account, remove email and password
   // user account will stay active in case they want to reconnect in the future
