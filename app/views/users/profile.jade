@@ -3,42 +3,74 @@ extends ../shared/template
 block content
   h1= title
   h2 Profile
+  a(href='/logout', class='button button-rounded button-flat') Logout
 
+  .local
 
-  //- if(user.local)
-  //-   p id
-  //-     p= user._id
-  //-   p email
-  //-     p= user.local.email
-  //-   p password
-  //-     p= user.local.password
+    h3 Local
+      span
+        i.fa.fa-user
+      if(user.local.email)
+        p id
+          p= user._id
+        p email
+          p= user.local.email
+        p password
+          p= user.local.password
+        a(href='/unlink/local', class='button button-rounded button-flat') Unlink
+      else
+        a(href='/connect/local', class='button button-rounded button-flat') Connect Local
 
-  //- if(user.facebook)
-  //-   p id
-  //-     p= user.facebook.id
-  //-   p token
-  //-     p= user.facebook.token
-  //-   p email
-  //-     p= user.facebook.email
-  //-   p name
-  //-     p= user.facebook.name
+  .facebook
 
-  //- if(user.twitter)
-  //-   p id
-  //-     p= user.twitter.id
-  //-   p token
-  //-     p= user.twitter.token
-  //-   p username
-  //-     p= user.twitter.username
-  //-   p displayName
-  //-     p= user.twitter.displayName
+    h3 Facebook
+      span
+        i.fa.fa-facebook
+      if(user.facebook.token)
+        p id
+          p= user.facebook.id
+        p token
+          p= user.facebook.token
+        p email
+          p= user.facebook.email
+        p name
+          p= user.facebook.name
+        a(href='/unlink/facebook', class='button button-rounded button-flat') Unlink
+      else
+        a(href='/connect/facebook', class='button button-rounded button-flat') Connect Facebook
 
-  if(user.google)
-    p id
-      p= user.google.id
-    p token
-      p= user.google.token
-    p email
-      p= user.google.email
-    p name
-      p= user.google.name
+  .twitter
+
+    h3 Twitter
+      span
+        i.fa.fa-twitter
+      if(user.twitter.token)
+        p id
+          p= user.twitter.id
+        p token
+          p= user.twitter.token
+        p username
+          p= user.twitter.username
+        p displayName
+          p= user.twitter.displayName
+        a(href='/unlink/twitter', class='button button-rounded button-flat') Unlink
+      else
+        a(href='/connect/twitter', class='button button-rounded button-flat') Connect Twitter
+
+  .google
+
+    h3 Google
+      span
+        i.fa.fa-google-plus
+      if(user.google.token)
+        p id
+          p= user.google.id
+        p token
+          p= user.google.token
+        p email
+          p= user.google.email
+        p name
+          p= user.google.name
+        a(href='/unlink/google', class='button button-rounded button-flat') Unlink
+      else
+        a(href='/connect/google', class='button button-rounded button-flat') Connect Google

@@ -10,7 +10,7 @@ module.exports = {
 	'twitterAuth' : {
 		'consumerKey' 		: '63R574jvCXGVDTRz5pAYFwxDv',
 		'consumerSecret' 	: 'UPKSWpUwbJrhoxCYhghoW5O1fTkDlwWSLO0EyP4SFX5UjnKI2X',
-		'callbackURL' 		: 'http://192.168.1.101.:3001/auth/twitter/callback'
+		'callbackURL' 		: 'http://localhost:3001/auth/twitter/callback'
 	},
 
 	'googleAuth' : {
@@ -20,3 +20,7 @@ module.exports = {
 	}
 
 };
+
+
+// twitter callback:
+// http://192.168.1.101.:3001/auth/twitter/callback

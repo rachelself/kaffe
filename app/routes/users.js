@@ -9,6 +9,9 @@ exports.signup = (req, res)=>{
 };
 
 exports.profile = (req, res)=>{
-  console.log(req.user);
   res.render('users/profile', {user: req.user, message: req.flash('registerMessage'), title: 'Profile'});
+};
+
+exports.connectLocal = (req, res)=>{
+  res.render('users/connectLocal', {message: req.flash('loginMessage'), title: 'Connect Local Account'});
 };

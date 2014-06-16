@@ -1,0 +1,21 @@
+extends ../shared/template
+
+block content
+  h1= title
+
+  .container
+    h3 Add Local Account
+      span
+        i.fa.fa-user
+    if(message.length > 0)
+      .alert.alert-danger= message
+
+    form(action='/connect/local' method='post')
+      label Email
+        input(type='email' name='email' placeholder='Email')
+      label Password
+        input(type='password' name='password' placeholder='Password')
+      button.button.button-rounded.button-flat Add Local
+
+
+    a(href='/profile') Go back to profile

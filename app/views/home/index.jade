@@ -3,13 +3,26 @@ extends ../shared/template
 block content
   h1= title
 
-  p Login or Register with:
-  a(href='/login') Local Login
+
+  h3 Login or Register with:
+
+
+  span
+    a(href='/login', class='button button-rounded button-flat') Local Login
+      i.fa.fa-user
   br
-  a(href='/signup') Local Signup
+  span
+    a(href='/signup', class='button button-rounded button-flat') Local Signup
+      i.fa.fa-user
   br
-  a(href='/auth/facebook') Facebook
+  span
+    a(href='/auth/facebook', class='button button-rounded button-flat-primary') Facebook
+      i.fa.fa-facebook
   br
-  a(href='/auth/twitter') Twitter
+  span
+    a(href='/auth/twitter', class='button button-rounded button-flat-primary') Twitter
+      i.fa.fa-twitter
   br
-  a(href='/auth/google') Google
+  span
+    a(href='/auth/google', class='button button-rounded button-flat-caution') Google
+      i.fa.fa-google-plus

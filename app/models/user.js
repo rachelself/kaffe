@@ -12,11 +12,9 @@ var _ = require('lodash');
 
 class User{
   constructor(){
-    console.log('========= made it inside constructor!! =========');
-    console.log(this);
     this.local = {
-      email:    '',
-      password: ''
+      email:    String,
+      password: String,
     };
     this.facebook = {
       id:       String,
@@ -68,6 +66,12 @@ class User{
       }
     });
 
+  }
+
+  static findByEmail(email, fn){
+    users.findOne({'local.email': email}, (err, user)=>{
+      fn(err, user);
+    });
   }
 
 
