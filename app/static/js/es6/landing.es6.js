@@ -9,7 +9,7 @@
     $('.showSignup').click(showSignUpOptions);
     $('.showLogin').click(showLoginOptions);
     $('#loginform > #email').focus();
-    $('#signupform > #email').focus();
+    $('#signupform > #name').focus();
 
   }
 

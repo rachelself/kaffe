@@ -41,6 +41,7 @@ module.exports = function(passport) {
 
     passport.use('local-signup', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
+
         usernameField : 'email',
         passwordField : 'password',
         passReqToCallback : true
@@ -50,21 +51,21 @@ module.exports = function(passport) {
 
       req.flash('registerMessage', '');
 
+      // check to see if anyone is logged in, if not...
       if (!req.user) {
-        //asynchronous
-        //User.findOne won't fire unless data is sent back
+
         process.nextTick(function(){
-          users.findByEmail(email, function(err, user){
+          User.findByEmail(email, function(err, user){
+            user = _.create(User.prototype, user);
 
             if(err){
               return done(err);
             }
 
-            if(user){
+            if(null){
               return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
-            } else {
+            } else{
               var newUser = new User();
-
               newUser.local.email = email;
               newUser.local.password = newUser.generateHash(password);
 
@@ -80,6 +81,7 @@ module.exports = function(passport) {
       } else {
         process.nextTick(function(){
           User.findByEmail(email, function(err, user){
+            //user = _.create(User.prototype, user);
 
             if(err){
               return done(err);
@@ -283,7 +285,7 @@ module.exports = function(passport) {
           } else {
 				// user already exists and is logged in, we have to link accounts
 	            var user           = req.user; // pull the user out of the session
-            
+
 				// update the current users twitter credentials
 	            user.twitter.id    = profile.id;
 	            user.twitter.token = token;

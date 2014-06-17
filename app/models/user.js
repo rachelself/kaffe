@@ -70,7 +70,17 @@ class User{
 
   static findByEmail(email, fn){
     users.findOne({'local.email': email}, (err, user)=>{
-      fn(err, user);
+      console.log('---- email ----');
+      console.log(email);
+      console.log('======= user ======');
+      console.log(user);
+      console.log('======= error ======');
+      console.log(err);
+      if(user){
+        fn(null);
+      }else{
+        fn();
+      }
     });
   }
 

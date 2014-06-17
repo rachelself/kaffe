@@ -1,0 +1,70 @@
+h1.logo: a.white(href='/profile') Kaffepaus
+nav.nav(role='navigation', id='nav')
+  ul
+    li: a.white(href='/learn') Learn
+    li: a.white(href='/brew') Brew
+    li: a.white(href='/recipes') Share
+    li: a.white(href='/profile') Profile
+      span
+        i.fa.fa-user
+    li: a(href='/logout', class='button button-rounded button-flat-highlight') Logout
+
+    //- if(user.local)
+    //-   li: a(href='#') #{user.local.email}
+    //-     span
+    //-       i.fa.fa-user.fa-lg
+    //- else if(!user.local)
+    //-   if(user.facebook)
+    //-     li: a(href='#') #{user.facebook.email}
+    //-       span
+    //-         i.fa.fa-user.fa-lg
+    //-   if(req.user.twitter)
+    //-     li: a(href='#') #{user.twitter.username}
+    //-       span
+    //-         i.fa.fa-user.fa-lg
+    //-   if(req.user.google)
+    //-     li: a(href='#') #{user.google.email}
+    //-       span
+    //-         i.fa.fa-user.fa-lg
+
+
+
+
+
+//- h1.logo Kaffepaus
+//- nav.nav.collapse.navbar-collapse
+//-   .nav.navbar-nav
+//-     ul
+//-       //- li.active
+//-       //-   a.white(href='#')
+//-       li.dropdown
+//-         a.dropdown-toggle(href='#', data-toggle='dropdown') Learn
+//-           b.caret
+//-         ul.dropdown-menu
+//-           li: a(href='#') Coffee History
+//-           li.divider
+//-           li: a(href='#') Brew Methods
+//-           li.divider
+//-           li: a(href='#') Coffee Geography
+//-       li: a.white(href='#') Brew
+//-       li: a.white(href='#') Share
+//-
+//-       if(user.local)
+//-         li: a(href='#') #{user.local.email}
+//-           span
+//-             i.fa.fa-user.fa-lg
+//-       else if(!user.local)
+//-         if(user.facebook)
+//-           li: a(href='#') #{user.facebook.email}
+//-             span
+//-               i.fa.fa-user.fa-lg
+//-         if(req.user.twitter)
+//-           li: a(href='#') #{user.twitter.username}
+//-             span
+//-               i.fa.fa-user.fa-lg
+//-         if(req.user.google)
+//-           li: a(href='#') #{user.google.email}
+//-             span
+//-               i.fa.fa-user.fa-lg
+//-
+//-       li: a(href='/logout', class='button button-rounded button-flat-highlight') Logout

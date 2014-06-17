@@ -194,6 +194,7 @@ header{
   z-index: 10;
 
   h1.logo{
+    font-weight: @droid-med;
     color: white;
     position: relative;
     top: -5px;
@@ -209,7 +210,7 @@ header{
     justify-content: flex-end;
     float: right;
     text-align: center;
-    width: 70%;
+    width: 100%;
     justify-content: flex-end;
     float:right;
 
@@ -318,6 +319,12 @@ a.white{
         display: block;
         align-self: center;
       }
+      form{
+        p.checkbox-inline{
+          float: left;
+          display: block;
+        }
+      }
 
       p{
         margin-bottom: 20px;
@@ -380,9 +387,23 @@ a.button-flat-primary.twitter{
   }
 }
 
+/* ======================================================================
+
+GENERAL=
+
+========================================================================= */
+
 
 li > a > i.fa{
   padding-left: 10px;
+}
+
+span > i.fa{
+  padding-left: 10px;
+}
+
+nav.nav.collapse.navbar-collapse{
+  width: 100%;
 }
 
 .site{
@@ -397,4 +418,51 @@ li > a > i.fa{
 
 .form-control{
   margin-bottom: 10px;
+}
+
+/* ======================================================================
+
+NAV=
+
+========================================================================= */
+
+#nav{
+  ul{
+    display: block;
+    position: relative;
+    top: -5px;
+
+    li:not( :last-child) > a{
+      border-right: 1px solid #363636;
+      padding-right: 10px;
+    }
+    li > a{
+      height: 100%;
+      text-align: center;
+      display: block;
+      font-family: @lato;
+      font-weight: @lato-lt;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+  }
+}
+
+/* ======================================================================
+
+PROFILE=
+
+========================================================================= */
+.container__profile{
+  .subnav{
+    position: relative;
+    top: 60px;
+    left: 20px;
+    h5, p{
+      display: inline-block;
+    }
+    p{
+      margin-left: 10px;
+    }
+  }
 }
