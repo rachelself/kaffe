@@ -1,50 +1,144 @@
 extends ../shared/template
 
 block content
+
   .container__home
 
     section.top-section
 
       header.header
-        h1 Kaffepaus
+        h1.logo Kaffepaus
         nav.nav
           ul
             li: a.white(href='#about') About
-            li: a.white(href='#register') Login | Register
+            li: a.white.showLogin(href='#login') Login
+            li: a.white.showSignup(href='#signup') Sign Up
+
+      div#headerMessage.site-content
+        h1.u-textCenter Make coffee worthy of sharing.
+          br
+          a(href='#login', class='button button-large button-rounded button-flat-highlight') Get Started
 
     section#about
-      #one-sentence.grid.grid--gutters
-        p.intro Kaffepaus is an app for learning about, brewing, and sharing great coffee and coffee recipes.
 
-      #features.grid.grid--gutters.u-textCenter
+      #features.grid--gutters.u-textCenter
         .grid-cell
-          h3 Learn
-          p Text about what you can learn about.
+          .cell-inner
+            h3 Learn
+            span
+              i.fa.fa-2x.fa-flask
+            p Text about what you can learn about.
         .grid-cell
-          h3 Brew
-          p A little bit about brewing with the recipes and timer.
+          .cell-inner
+            h3 Brew
+            span
+              i.fa.fa-2x.fa-coffee
+            p A little bit about brewing with the recipes and timer.
         .grid-cell
-          h3 Share
-          p How users can share, rate, and try recipes and share on social media.
+          .cell-inner
+            h3 Share
+            span
+              i.fa.fa-2x.fa-mail-forward
+            p How users can share, rate, and try recipes and share on social media.
 
-    section#register
-      h3 Login or Register with:
-      span
-        a(href='/login', class='button button-rounded button-flat') Local Login
-          i.fa.fa-user
-      br
-      span
-        a(href='/signup', class='button button-rounded button-flat') Local Signup
-          i.fa.fa-user
-      br
-      span
-        a(href='/auth/facebook', class='button button-rounded button-flat-primary') Facebook
-          i.fa.fa-facebook
-      br
-      span
-        a(href='/auth/twitter', class='button button-rounded button-flat-primary') Twitter
-          i.fa.fa-twitter
-      br
-      span
-        a(href='/auth/google', class='button button-rounded button-flat-caution') Google
-          i.fa.fa-google-plus
+    section#login
+
+      .loginOptions
+        .grid.grid--gutters.u-textCenter
+
+          .left
+            h3.u-textCenter Login
+            p.u-textCenter Don't have an account?
+              a.showSignup(href='#signup') Signup
+
+            form(method='post' action='/login')
+              input.form-control(type='text', name='email', placeholder='Email', autofocus=true)
+              input.form-control(type='password', name='password', placeholder='Password')
+              button.button.button-rounded.button-flat Login
+
+          .center
+
+          .right
+            ul
+              li: a(href='/auth/facebook', class='button button-rounded button-flat-primary facebook') Facebook Login
+                i.fa.fa-facebook
+              li: a(href='/auth/twitter', class='button button-rounded button-flat-primary twitter') Twitter Login
+                i.fa.fa-twitter
+              li: a(href='/auth/google', class='button button-rounded button-flat-primary google') Google Login
+                i.fa.fa-google-plus
+
+      .signupOptions
+        .grid.grid--gutters.u-textCenter
+          .left
+            h3.u-textCenter Sign Up
+            p.u-textCenter Already have an account?
+              a.showLogin(href='#login') Login
+
+            form(method='post' action='/signup')
+              input.form-control(type='text', name='email', placeholder='Email', autofocus=true)
+              input.form-control(type='password', name='password', placeholder='Password')
+              button.button.button-rounded.button-flat Submit
+
+          .center
+
+          .right
+            ul
+              li: a(href='/auth/facebook', class='button button-rounded button-flat-primary facebook') Facebook Signup
+                i.fa.fa-facebook
+              li: a(href='/auth/twitter', class='button button-rounded button-flat-primary twitter') Twitter Signup
+                i.fa.fa-twitter
+              li: a(href='/auth/google', class='button button-rounded button-flat-caution google') Google Signup
+                i.fa.fa-google-plus
+    footer
+      ul
+        li: a(href='https://github.com/rachelself') Made by Rachel Self
+          i.fa.fa-github
+
+
+
+
+block scripts
+  script(src='/js/es6/compiled/landing.js')
+
+//- span
+//-   a(href='/login', class='button button-rounded button-flat') Kaffepaus Login
+//-     i.fa.fa-user
+//- br
+//- span
+//-   a(href='/auth/facebook', class='button button-rounded button-flat-primary facebook') Facebook Login
+//-     i.fa.fa-facebook
+//- br
+//- span
+//-   a(href='/auth/twitter', class='button button-rounded button-flat-primary twitter') Twitter Login
+//-     i.fa.fa-twitter
+//- br
+//- span
+//-   a(href='/auth/google', class='button button-rounded button-flat-primary google') Google Login
+//-     i.fa.fa-google-plus
+
+      //- h1 h1
+      //- h2 h2
+      //- h3 h3
+      //- h4 h4
+      //- h5 h5
+      //- h6 h6
+      //- p This is a paragraph. How users can share, rate, and try recipes and share on social media.
+
+      //- header.header
+      //- .jumbo-container
+      //-   .jumbotron
+      //-     h1 Make great coffee. Share great coffee.
+      //-     a.btn.btn-primary.btn-lg(href='#register') Get Started
+
+      //- nav.nav.navbar-default(role='navigation')
+      //-   .container-fluid
+      //-     .navbar-header
+      //-       button.navbar-toggle(data-toggle='collapse', type='button')
+      //-         span.sr-only Togggle Navigation
+      //-         span.icon-bar
+      //-       a.navbar-brand(href='/') Kaffepaus
+      //-     .collapse.navbar-collapse
+      //-       ul.nav.navbar-nav
+      //-         li.active
+      //-           a(href='#about') About
+      //-           a(href='#register') Login | Register

@@ -1,4 +1,10 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic);
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic|Droid+Serif:400,700,400italic);
+
+/* ======================================================================
+
+RESETS=
+
+========================================================================= */
 
 html{
   overflow-x: hidden; // prevents sideways scrolling.
@@ -8,7 +14,6 @@ html,
 body{
   height: 100%;
   width: 100%;
-  font-family: 'Lato', sans-serif;
   background-image: url(/img/ricepaper_@2X.png);
   background-repeat: repeat;
   background-size: 300px;
@@ -23,16 +28,84 @@ ol{
 
 a{
   text-decoration: none;
-}
-
-a.white{
-  color: white;
+  color: #000;
   &:hover{
-    color: gray;
+    text-decoration: none;
+    color: #474747;
   }
+
 }
 
-/* = grids for flexbox ====================== */
+
+/* ======================================================================
+
+TYPOGRAPHY=
+
+========================================================================= */
+
+@lato: 'Lato', sans-serif;
+@lato-lt: 100;
+@lato-med: 300;
+@lato-heavy: 400;
+@lato-bold: 700;
+
+@droid: 'Droid Serif', serif;
+@droid-med: 400;
+@droid-bold: 700;
+
+
+h1, h3, h5, h6{
+  font-family: @droid;
+}
+
+h2, h4, p{
+  font-family: @lato;
+}
+
+h1{
+  font-size: 3.5em;
+  font-weight: @lato-bold;
+  line-height: 1.3em;
+}
+
+h2{
+  font-size: 2.8em;
+  font-weight: @droid-bold;
+}
+
+h3{
+  font-size: 2.4em;
+  font-weight: @lato-heavy;
+
+}
+
+h4{
+  font-size: 2em;
+  font-weight: @lato-heavy;
+}
+
+h5{
+  font-size: 1.5em;
+  font-weight: @droid-med;
+}
+
+h6{
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: @droid-med;
+}
+
+p{
+  font-size: 1.2em;
+  font-weight: @lato-med;
+}
+
+
+/* ======================================================================
+
+GRIDS FOR FLEXBOX=
+
+========================================================================= */
 
 .grid,
 .grid-gutters,
@@ -54,6 +127,10 @@ a.white{
   margin-left: -1em;
   .grid-cell{
     padding-left: 1em;
+    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0px;
   }
 }
 
@@ -84,90 +161,240 @@ a.white{
   text-align: center;
 }
 
+.left{
+  order: 1;
+  width: 40%;
+  margin-left: 20px;
+}
+.right{
+  order: 3;
+  width: 40%;
+}
+
+.center{
+  order: 2;
+  margin: 40px 0px;
+  margin-left: 40px;
+  width: 1%;
+  border-left: 2px solid rgba(217, 197, 177, 0.4);
+
+}
+
+/* ======================================================================
+
+HOME=
+
+========================================================================= */
+
 header{
   width: 100%;
   background: black;
   height: 50px;
-  h1{
+  position: fixed;
+  z-index: 10;
+
+  h1.logo{
     color: white;
     position: relative;
-    top: -10px;
-    left: 10px;
+    top: -5px;
+    left: 15px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
   }
-  nav{
+
+  .nav{
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
-    //float: right;
-    // text-align: center;
-    // width: 70%;
-    // justify-content: flex-end;
-    // float:right;
+    float: right;
+    text-align: center;
+    width: 70%;
+    justify-content: flex-end;
+    float:right;
+
   }
+
   ul{
     float: right;
   }
+
   ul > li{
     display: inline-block;
     text-align: center;
-    padding-left: 10px;
+    padding-left: 15px;
     position: relative;
-    top: -70px;
+    top: -35px;
+    right: 20px;
+
     a{
       display: block;
       height: 100%;
       width: 100%;
       color: white;
-
-
     }
   }
+}
 
+a.white{
+  color: white;
+  &:hover{
+    color: gray;
+  }
 }
 
 .container__home{
   height: 100%;
   min-height: 100%;
+
   >.top-section{
-    background-image: url(/img/iced-coffee.jpg);
+    background-image: url(/img/coffee1.jpg);
     background-size: cover;
+    background-position: middle;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    min-height: 100%;
+    height: 350px;
+    min-height: 50%;
     margin: 0;
     padding: 0;
+
+    #headerMessage{
+      // background-color: rgba(255,255,255,0.5);
+      // border-radius: 20px;
+      // padding: 20px 30px;
+      // width: 50%;
+      // max-height: 400px;
+      // // height: 400px;
+      // position: relative;
+      // top: 80px;
+      // left: 40px;
+      h1{
+        color: white;
+        position: relative;
+        top: 150px;
+      }
+    }
   }
-  #about{
+
+  >#about{
+
     #features{
       display: flex;
       flex-flow: row-wrap;
       justify-content: space-around;
     }
-    #one-sentence{
-      background-color: rgba(93, 61, 48, 0.65);
-      justify-content: center;
-      align-self: center;
-      p.intro{
-        color: white;
-        flex-flow: row-wrap;
 
-        font-size: 1.2em;
+    // #one-sentence{
+    //   background-color: rgba(93, 61, 48, 0.65);
+    //   height: 50px;
+    //   justify-content: center;
+    //   align-self: center;
+    //
+    //   .intro{
+    //     color: white;
+    //     flex-flow: row-wrap;
+    //   }
+    // }
+  }
+
+  >#login{
+    margin-top: 30px;
+    display: block;
+    display: flex;
+    //flex-flow: row-wrap;
+    //justify-content: center;
+
+    .loginOptions, .signupOptions{
+      background-color: rgba(93, 61, 48, 0.45);
+      height: 100%;
+        width: 100%;
+      justify-content: center;
+      flex-direction: row;
+      align-self: center;
+      padding: 20px;
+      // display: block;
+
+      h3, p, li > a{
+        display: block;
+        align-self: center;
+      }
+
+      p{
+        margin-bottom: 20px;
+      }
+      .showSignup, .showLogin{
+        padding: 5px;
+      }
+      li{
+        position: relative;
+        top: 50px;
+        a{
+          align-self: flex-start;
+          margin-bottom: 10px;
+          vertical-align: middle;
+        }
       }
     }
   }
 }
 
-#features > .grid-cell{
-  background-color: rgba(217, 197, 177, 0.33);
-  margin-top: 25px;
-  width: 30%;
-  // padding: 10px;
-  // > h3{
-  //   width: 20%;
-  // }
+#features{
+  .grid-cell{
+    background-color: rgba(217, 197, 177, 0.33);
+    margin-top: 25px;
+    width: 100%;
+    justify-content: center;
+
+    .left, .right{
+      align-self: flex-start;
+    }
+    .cell-inner{
+      padding: 20px;
+      height: 200px;
+    }
+  }
 }
 
-span > a > i.fa{
+
+a.button-flat-primary.facebook{
+  background-color: #3B5999;
+  &:hover{
+    background-color: rgba(59, 94, 154, 0.9);
+    color: white;
+  }
+}
+
+a.button-flat-primary.google{
+  background-color: #d34836;
+  &:hover{
+    background-color: rgba(213, 66, 56, 0.9);
+    color: white;
+  }
+}
+
+a.button-flat-primary.twitter{
+  background-color: #00aeef;
+  &:hover{
+    background-color: rgba(0, 185, 241, 0.9);
+    color: white;
+  }
+}
+
+
+li > a > i.fa{
   padding-left: 10px;
+}
+
+.site{
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.site-content{
+  flex: 1;
+}
+
+.form-control{
+  margin-bottom: 10px;
 }

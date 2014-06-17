@@ -21,8 +21,8 @@ function load(app, fn){
 
 
   app.get('/', dbg, home.index);
-  app.get('/login', dbg, users.login);
-  app.get('/signup', dbg, users.signup);
+  // app.get('/login', dbg, users.login);
+  // app.get('/signup', dbg, users.signup);
   app.get('/profile', dbg, isLoggedIn, users.profile);
 
   app.post('/signup', passport.authenticate('local-signup', {
