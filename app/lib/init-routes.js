@@ -40,6 +40,16 @@ function load(app, fn){
 		failureFlash : true
 	}));
 
+  // =====================================
+  // ROUTES POST-LOGIN =====================
+  // =====================================
+  // app.get('/profile/edit', dbg, users.profile);
+  app.get('/profile/recipeLibrary', dbg, users.recipeLibrary);
+  app.get('/profile/settings', dbg, users.settings);
+  app.get('/learn', dbg, learn.index);
+  app.get('/brew', dbg, brew.index);
+  app.get('/recipes', dbg, recipes.index);
+
 
   // =====================================
 	// FACEBOOK ROUTES =====================
@@ -93,7 +103,7 @@ function load(app, fn){
 		app.get('/connect/local', dbg, users.connectLocal);
 
 		app.post('/connect/local', passport.authenticate('local-signup', {
-			successRedirect : '/profile',
+			successRedirect : '/profile/settings',
 			failureRedirect : '/connect/local',
 			failureFlash : true
 		}));
@@ -104,7 +114,7 @@ function load(app, fn){
 
 		app.get('/connect/facebook/callback',
 			passport.authorize('facebook', {
-				successRedirect : '/profile',
+				successRedirect : '/profile/settings',
 				failureRedirect : '/'
 			}));
 
@@ -114,7 +124,7 @@ function load(app, fn){
 
 		app.get('/connect/twitter/callback',
 			passport.authorize('twitter', {
-				successRedirect : '/profile',
+				successRedirect : '/profile/settings',
 				failureRedirect : '/'
 			}));
 
@@ -125,7 +135,7 @@ function load(app, fn){
 
 		app.get('/connect/google/callback',
 			passport.authorize('google', {
-				successRedirect : '/profile',
+				successRedirect : '/profile/settings',
 				failureRedirect : '/'
 			}));
 
@@ -144,7 +154,7 @@ function load(app, fn){
         user.local.email    = undefined;
         user.local.password = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/profile/settings');
         });
     });
 
@@ -153,7 +163,7 @@ function load(app, fn){
         var user            = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/profile/settings');
         });
     });
 
@@ -162,7 +172,7 @@ function load(app, fn){
         var user           = req.user;
         user.twitter.token = undefined;
         user.save(function(err) {
-           res.redirect('/profile');
+           res.redirect('/profile/settings');
         });
     });
 
@@ -171,19 +181,11 @@ function load(app, fn){
         var user          = req.user;
         user.google.token = undefined;
         user.save(function(err) {
-           res.redirect('/profile');
+           res.redirect('/profile/settings');
         });
     });
 
-    // =====================================
-    // ROUTES POST-LOGIN =====================
-    // =====================================
-    // app.get('/profile/edit', dbg, users.profile);
-    app.get('/profile/recipeLibrary', dbg, users.recipeLibrary);
-    app.get('/profile/settings', dbg, users.settings);
-    app.get('/learn', dbg, learn.index);
-    app.get('/brew', dbg, brew.index);
-    app.get('/recipes', dbg, recipes.index);
+
 
   console.log('Routes Loaded');
   fn();
