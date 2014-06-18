@@ -1,5 +1,5 @@
 'use strict';
 
 exports.index = (req, res)=>{
-  res.render('home/index', {title: 'Node.js: Home'});
+  res.render('recipes/index', {user: req.user, title: 'Recipes'});
 };

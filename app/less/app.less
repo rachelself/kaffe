@@ -196,6 +196,14 @@ GRIDS FOR FLEXBOX=
 
 }
 
+.row{
+  display: flex;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  align-items: center;
+}
+
 /* ======================================================================
 
 HOME=
@@ -492,6 +500,9 @@ PROFILE=
     ul > li{
       display: inline-block;
       margin-right: 15px;
+      a{
+        width: 100%;
+      }
     }
   }
 
@@ -556,4 +567,150 @@ PROFILE=
       float: right;
     }
   }
+}
+
+/* ======================================================================
+
+LEARN=
+
+========================================================================= */
+.container__learn{
+  .subnav{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    position: relative;
+    top: 70px;
+    left: 20px;
+    ul > li{
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+}
+
+/* ======================================================================
+
+BREW=
+
+========================================================================= */
+.container__brew{
+  .interactionbar{
+    width: 100%;
+    background: #252525;
+    height: 100px;
+    color: white;
+    position: fixed;
+    // position: relative;
+    // top: 50px;
+    margin-top: 50px;
+    z-index: 10;
+    .timer > h2{
+      font-weight: @lato-lt;
+      font-size: 3.5em;
+      letter-spacing: 0.08em;
+      vertical-align: middle;
+      line-height: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .timer, .start, .stop, .pause{
+      height: 100%;
+      vertical-align: middle;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      -webkit-box-align: center;
+      -webkit-box-pack: center;
+      align-items: center;
+      a > h4{
+        max-width: 50%;
+        color: white;
+      }
+    }
+
+    .start{
+      background-color: #28c989;
+        &:hover{
+          background-color: #20a169;
+      }
+    }
+    .stop{
+      background-color: #c72727;
+        &:hover{
+          background-color: #981c1c;
+      }
+    }
+    .pause{
+      background-color: #959494;
+        &:hover{
+          background-color: #646464;
+        }
+    }
+  }
+
+  .select-brew-method{
+    position: relative;
+    top: 170px;
+    margin: 20px;
+    .row{
+
+    }
+    .method{
+      width: 150px;
+      height: 150px;
+      background-color: rgba(93, 61, 48, 0.65);
+      border-radius: 20px;
+      margin: 10px;
+    }
+
+  }
+
+  .select-recipe{
+    position: relative;
+    top: 200px;
+    margin: 30px;
+  }
+
+  .coffee-amount{
+    position: relative;
+    top: 220px;
+    margin: 30px;
+  }
+  //   display: flex;
+  //   flex-wrap: nowrap;
+  //   justify-content: flex-start;
+  //   align-items: baseline;
+  //   position: relative;
+  //   top: 70px;
+  //   left: 20px;
+  //   ul > li{
+  //     display: inline-block;
+  //     margin-right: 15px;
+  //   }
+  // }
+}
+
+/* ======================================================================
+
+SHARE / RECIPES=
+
+========================================================================= */
+.container__recipes{
+  .subnav{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    position: relative;
+    top: 70px;
+    left: 20px;
+    ul > li{
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+
 }

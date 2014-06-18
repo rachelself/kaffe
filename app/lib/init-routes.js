@@ -17,8 +17,8 @@ function load(app, fn){
   var home = traceur.require(__dirname + '/../routes/home.js');
   var users = traceur.require(__dirname + '/../routes/users.js');
   var learn = traceur.require(__dirname + '/../routes/learn.js');
-  // var brew = traceur.require(__dirname + '/../routes/brew.js');
-  // var recipes = traceur.require(__dirname + '/../routes/recipes.js');
+  var brew = traceur.require(__dirname + '/../routes/brew.js');
+  var recipes = traceur.require(__dirname + '/../routes/recipes.js');
   var passport = require('passport');
   require('../config/passport')(passport);
 
@@ -182,8 +182,8 @@ function load(app, fn){
     app.get('/profile/recipeLibrary', dbg, users.recipeLibrary);
     app.get('/profile/settings', dbg, users.settings);
     app.get('/learn', dbg, learn.index);
-    // app.get('/brew', dbg, brew.index);
-    // app.get('/recipes', dbg, recipes.index);
+    app.get('/brew', dbg, brew.index);
+    app.get('/recipes', dbg, recipes.index);
 
   console.log('Routes Loaded');
   fn();

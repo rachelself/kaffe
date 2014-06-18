@@ -1,0 +1,47 @@
+extends ../shared/template
+
+block content
+
+  .container__brew
+    header.header
+      include ../shared/nav
+    .interactionbar
+      include ../shared/brew-nav
+    .select-brew-method
+      h5 What kind of brew method will you be using?
+      //- each method in methods
+      //-   .method
+      //-     img(src='#{method.photo}')
+      //-     h6 method.name
+      .row
+        .method.grid-cell
+          h6.u-textCenter Chemex
+        .method.grid-cell
+          h6.u-textCenter French Press
+        .method.grid-cell
+          h6 Aeropress
+        .method.grid-cell
+          h6 V60
+      .row
+        .method.grid-cell
+          h6 Clever
+        .method.grid-cell
+          h6 Kalita
+        .method
+          h6 Iced Coffee
+        .method.grid-cell
+          h6 Cold Brew
+    .select-recipe
+      h5 Select a recipe from your library
+      if(user.recipeLibrary)
+        select
+          //- each recipe in recipes
+          //-   option recipe.title
+          option Japanese 2014 Champion
+          option Inverted Recipe 1
+      else
+        p You haven't added any recipes yet.
+        a(href='/recipes', class='button button-rounded button-flat-highlight') Browse Recipes
+
+    .coffee-amount
+      h5 How much coffee would you like to make?
