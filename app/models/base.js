@@ -30,6 +30,13 @@ class Base{
     });
   }
 
+  static findAll(collection, model, fn){
+    collection.find().toArray((err, records)=>{
+      records = records.map(r=>_.create(model.prototype, r));
+      fn(records);
+    });
+  }
+
 
 }
 
