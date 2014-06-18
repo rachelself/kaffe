@@ -1,0 +1,14 @@
+h5 Welcome,
+if(user.local)
+  p #{user.local.email}
+else if(!user.local)
+  if(user.facebook)
+    p #{user.facebook.name}
+  if(user.twitter)
+    p #{user.twitter.username}
+  if(user.google)
+    p #{user.google.name}
+ul
+  li: a(href='/profile') View Profile
+  li: a(href='/profile/recipelibrary') Recipe Library
+  li: a(href='/profile/settings') Account Settings

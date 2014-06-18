@@ -178,7 +178,9 @@ function load(app, fn){
     // =====================================
     // ROUTES POST-LOGIN =====================
     // =====================================
-
+    // app.get('/profile/edit', dbg, users.profile);
+    app.get('/profile/recipeLibrary', dbg, users.recipeLibrary);
+    app.get('/profile/settings', dbg, users.settings);
     app.get('/learn', dbg, learn.index);
     // app.get('/brew', dbg, brew.index);
     // app.get('/recipes', dbg, recipes.index);

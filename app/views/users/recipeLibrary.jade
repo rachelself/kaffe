@@ -1,0 +1,23 @@
+extends ../shared/template
+
+block content
+
+  .container__profile
+
+    header.header
+      include ../shared/nav
+
+    .subnav
+      include ../shared/profile-subnav
+
+    #recipeLibrary.well
+      a.add.button.button-rounded.button-flat-highlight(href='#') Add Recipes
+      h6 My Recipe Library
+      table
+        tbody
+          tr
+            if(user.recipeLibrary)
+              td
+            else
+              td
+                p You haven't added any recipes to your library

@@ -1,8 +1,6 @@
 extends ../shared/template
 
 block content
-  //- h1= title
-  //- h2 Profile
 
   .container__profile
 
@@ -10,96 +8,49 @@ block content
       include ../shared/nav
 
     .subnav
-      h5 Welcome,
-      if(user.local)
-        p #{user.local.email}
-      else if(!user.local)
-        if(user.facebook)
-          p #{user.facebook.name}
-        if(req.user.twitter)
-          p #{user.twitter.username}
-        if(req.user.google)
-          p #{user.google.name}
-      ul
-        li: a(href='#') Recipe Library
-        li: a(href='#') Manage Accounts
-        li: a(href='#') Edit Profile
+      include ../shared/profile-subnav
 
-    .profile.well
-      img.userProfile(src='user.photo')
-      h5 Username: #{user.local.name}
+    #profile.profile
+      .main.well
+        .row
+          .u-1of3
+            a.thumbnail(href='#')
+              img.userProfile(src='user.photo')
+            if(typeof(user.name) !== undefined)
+              if(user.name)
+                h5 #{user.name}
+              else if(!user.name)
+                if(user.facebook)
+                  h5 #{user.facebook.name}
+                else if(!user.facebook)
+                  if(user.twitter)
+                    h5 #{user.twitter.username}
+                  else if(!user.twitter)
+                    if(user.google)
+                      h5 #{user.google.name}
 
-    #accounts
-      .local
+            else
+              p Edit your profile to include your name
+          .u-2of3
+            a.edit.button.button-rounded.button-flat-highlight(href='#editprofile') Edit Profile
+            h6 About
+            if(user.bio)
+              p= name
+            else if(!user.bio)
+              p Edit your profile to include a bio
 
-        h5 Kaffepaus Account
-        span
-          i.fa.fa-user
-        if(user.local.email)
-          p id
-            p= user._id
-          p email
-            p= user.local.email
-          p password
-            p= user.local.password
-          a(href='/unlink/local', class='button button-rounded button-flat') Unlink
-        else
-          a(href='/connect/local', class='button button-rounded button-flat') Connect Local
+      #myrecipes.myrecipes.well
+        a.newrecipe.button.button-rounded.button-flat-highlight(href='#') New Recipe
+        h6 My Original Recipes
 
-      .facebook
+        table
+          tbody
+            tr
+              if(user.recipes)
+                td
+              else
+                td
+                  p You haven't created any recipes
 
-        h5 Facebook
-        span
-          i.fa.fa-facebook
-        if(user.facebook.token)
-          p id
-            p= user.facebook.id
-          p token
-            p= user.facebook.token
-          p email
-            p= user.facebook.email
-          p name
-            p= user.facebook.name
-          a(href='/unlink/facebook', class='button button-rounded button-flat') Unlink
-        else
-          a(href='/connect/facebook', class='button button-rounded button-flat') Connect Facebook
-
-      .twitter
-
-        h5 Twitter
-        span
-          i.fa.fa-twitter
-        if(user.twitter.token)
-          p id
-            p= user.twitter.id
-          p token
-            p= user.twitter.token
-          p username
-            p= user.twitter.username
-          p displayName
-            p= user.twitter.displayName
-          a(href='/unlink/twitter', class='button button-rounded button-flat') Unlink
-        else
-          a(href='/connect/twitter', class='button button-rounded button-flat') Connect Twitter
-
-      .google
-
-        h5 Google
-        span
-          i.fa.fa-google-plus
-        if(user.google.token)
-          p id
-            p= user.google.id
-          p token
-            p= user.google.token
-          p email
-            p= user.google.email
-          p name
-            p= user.google.name
-          a(href='/unlink/google', class='button button-rounded button-flat') Unlink
-        else
-          a(href='/connect/google', class='button button-rounded button-flat') Connect Google
-
-
-block scripts
-  script(src='/js/es6/compiled/profile.js')
+//- block scripts
+//-   script(src='/js/es6/compiled/profile.js')

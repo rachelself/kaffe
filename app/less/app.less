@@ -154,7 +154,23 @@ GRIDS FOR FLEXBOX=
 }
 
 .grid-cell{
+  -webkit-box-flex: 1;
+  flex: 1;
+}
 
+.u-1of3{
+  flex: none !important;
+  width: 33% !important;
+  display: inline-block;
+  padding-left: 20px;
+
+}
+
+.u-2of3{
+  flex: none !important;
+  width: 66% !important;
+  float: right;
+  padding-left: 20px;
 }
 
 .u-textCenter{
@@ -420,6 +436,11 @@ nav.nav.collapse.navbar-collapse{
   margin-bottom: 10px;
 }
 
+.well{
+  background-color: #fbfaf6;
+  border-color: 1px solid #d4d4d4;
+}
+
 /* ======================================================================
 
 NAV=
@@ -455,14 +476,84 @@ PROFILE=
 ========================================================================= */
 .container__profile{
   .subnav{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
     position: relative;
-    top: 60px;
+    top: 70px;
     left: 20px;
-    h5, p{
+    h5, p, ul{
       display: inline-block;
     }
     p{
       margin-left: 10px;
+    }
+    ul > li{
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+
+  /* --- profile --- */
+  .profile{
+    .main{
+      position: relative;
+      top: 60px;
+      margin: 20px;
+
+      .thumbnail{
+        height: 200px;
+        width: 200px;
+      }
+
+      .u-2of3{
+        position: relative;
+        left: -80px;
+
+        .edit{
+          float: right;
+          position: relative;
+          right: -55px;
+        }
+      }
+    }
+    .myrecipes{
+      margin: 20px;
+      position: relative;
+      top: 60px;
+
+      .newrecipe{
+        float: right;
+
+      }
+    }
+  }
+
+  /* --- account settings --- */
+
+  #accounts{
+    .local{
+      position: relative;
+      top: 60px;
+    }
+    .well{
+      margin: 20px;
+    }
+    .well:not(first-child){
+      position: relative;
+      top: 60px;
+    }
+  }
+
+  /* --- account settings --- */
+
+  #recipeLibrary{
+    position: relative;
+    top: 60px;
+    margin: 20px;
+    .add{
+      float: right;
     }
   }
 }

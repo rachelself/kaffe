@@ -15,3 +15,11 @@ exports.profile = (req, res)=>{
 exports.connectLocal = (req, res)=>{
   res.render('users/connectLocal', {message: req.flash('loginMessage'), title: 'Connect Local Account'});
 };
+
+exports.settings = (req, res)=>{
+  res.render('users/settings', {user: req.user, title: 'Profile Settings'});
+};
+
+exports.recipeLibrary = (req, res)=>{
+  res.render('users/recipeLibrary', {user: req.user, title: 'Recipe Library'});
+};
