@@ -205,19 +205,27 @@ class User{
     }
   }
 
-  // toggleFavorite(recipeId, fn){
-  //
-  //
-  //   // this.recipeLibrary.findAndModify({id:recipeId}, function(err, record){
-  //   //   console.log('found record');
-  //   //   console.log(record);
-  //   //   this.find({}).toArray(function(err, records){
-  //   //     console.log('all records');
-  //   //     console.log(records);
-  //   //     fn(record);
-  //   //   });
-  //   // });
-  // }
+  toggleFavorite(recipeId, fn){
+    recipeId = recipeId.toString();
+
+    var updated = this.recipeLibrary.map(toggle);
+
+    function toggle(r){
+      if(r.id === recipeId){
+        if(r.isStarred === false){
+          r.isStarred = true;
+          return r;
+        }else{
+          r.isStarred = false;
+          return r;
+        }
+      }else{
+        return r;
+      }
+    }
+    
+    fn(this.recipeLibrary);
+  }
 
   static findById(id, fn){
     // console.log('=== made it to find by id =====');

@@ -354,47 +354,46 @@ describe('User', function(){
     });
   });
 
-  // describe('.toggleFavorite', function(){
-  //   beforeEach(function(done){
-  //     var recipeId = '53a1b99efc3d30e20e7e5b71';
-  //     var brewMethodId = '53a1b99efc3d30e20e7e5b91';
-  //     var userId = '53a1b99efc3d30e20e7e5b69';
-  //
-  //     User.findById(userId, function(err, user){
-  //       user.addToLibrary(recipeId, brewMethodId, function(recipe){
-  //         user.save(function(){
-  //         done();
-  //         });
-  //       });
-  //     });
-  //   });
-  //
-  //   afterEach(function(done){
-  //     var userId = '53a1b99efc3d30e20e7e5b69';
-  //     User.findById(userId, function(err, user){
-  //       user.recipeLibrary = [];
-  //       user.save(function(){
-  //         done();
-  //       });
-  //     });
-  //   });
-  //
-  //   it('should change the property isStarred of a recipe obj in a users recipeLibrary', function(done){
-  //     var recipeId = '53a1b99efc3d30e20e7e5b71';
-  //     var userId = '53a1b99efc3d30e20e7e5b69';
-  //
-  //
-  //
-  //   //   User.findById(userId, function(err, user){
-  //   //     user.toggleFavorite(recipeId, function(recipe){
-  //   //       expect(recipe).to.be.ok;
-  //   //       expect(recipe).to.be.an('object');
-  //   //       expect(recipe).to.have.deep.property('isStarred', true);
-  //   //       done();
-  //   //     });
-  //   //   });
-  //   });
-  // });
+  describe('.toggleFavorite', function(){
+    beforeEach(function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, brewMethodId, function(recipe){
+          user.save(function(){
+          done();
+          });
+        });
+      });
+    });
+
+    afterEach(function(done){
+      var userId = '53a1b99efc3d30e20e7e5b69';
+      User.findById(userId, function(err, user){
+        user.recipeLibrary = [];
+        user.save(function(){
+          done();
+        });
+      });
+    });
+
+    it('should change the property isStarred of a recipe obj in a users recipeLibrary', function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.toggleFavorite(recipeId, function(recipeLibrary){
+          expect(recipeLibrary).to.be.ok;
+          expect(recipeLibrary).to.be.instanceof(Array);
+          expect(recipeLibrary).to.have.length(1);
+          expect(recipeLibrary[0]).to.have.deep.property('isStarred', true);
+          done();
+        });
+      });
+    });
+  });
 
 });
 
