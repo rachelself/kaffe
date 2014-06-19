@@ -79,55 +79,50 @@ class User{
 
   edit(fields, files, fn){
 
+    var dirContents = fs.readdirSync(`${__dirname}/../static/img/userImages/${this._id}`);
+    var path = files.photo[0].path;
+    var fileName = files.photo[0].originalFilename;
+
     //--- FIELDS (everything else)
 
-    console.log(this);
-    this.local.firstName = fields.firstName[0];
-    this.local.lastName = fields.lastName[0];
-    this.local.isCompany = fields.isCompany[0];
-    this.local.bio = fields.bio[0];
-    this.local.photo = `/img/userImages/${this._id}/${fileName}`;
+    this.firstName = fields.firstName[0];
+    this.lastName = fields.lastName[0];
+    this.isCompany = fields.isCompany[0];
+    this.bio = fields.bio[0];
+    this.photo = `/img/userImages/${this._id}/${fileName}`;
 
-    if(!files.photo[0].size){fn(null); return;}
 
     //--- FILES (photos)
+
+    if(!files.photo[0].size){fn(null); return;}
 
     // does this user have an image directory?
     if(!fs.existsSync(`__dirname/../../../app/static/img/userImages/${this._id}`)){
       mkdirp(`${__dirname}/../static/img/userImages/${this._id}`);
     }
 
-    var dirContents = fs.readdirSync(`${__dirname}/../static/img/userImages/${this._id}`);
-    var path = files.photo[0].path;
-    var fileName = files.photo[0].originalFilename;
-    console.log('==== dirContents ====');
-
     // does this user have any images IN the directory?
     if(dirContents.length !== 0){
-      console.log('==== dirContents has at least 1 item ====');
+      //==== dirContents has at least 1 item ====
 
       // contents = 1 or +1?
       if(dirContents.length !== 1){
-        console.log('==== dircContents had more than 1 item ====');
+        //==== dircContents had more than 1 item ====
         fn(null);
         return;
 
       // contents = 1
       }else{
-        console.log('==== removing old image ====');
+        //==== removing old image ====
         var oldImgPath = dirContents[0];
         fs.unlinkSync(`${__dirname}/../static/img/userImages/${this._id}/${oldImgPath}`);
 
+        //==== moved the image ====
         fs.renameSync(path, `${__dirname}/../static/img/userImages/${this._id}/${fileName}`);
-        console.log('==== moved the image ====');
-
-        // this.photo = `/img/userImages/${this._id}/${fileName}`;
-        console.log('==== overwrote the property photo on user obj ====');
       }
 
-      // dir was empty
     }else{
-      console.log('==== dirContents is empty ====');
+      //==== dirContents is empty
       fs.renameSync(path, `${__dirname}/../static/img/userImages/${this._id}/${fileName}`);
 
     }
@@ -136,7 +131,43 @@ class User{
 
   }
 
+  addToLibrary(id, fn){
+    if(typeof id === 'string'){
+      if(id.length !== 24){fn(null); return;}
+      id = Mongo.ObjectID(id);
+    }
+    if(!(id instanceof Mongo.ObjectID)){fn(null); return;}
+
+    var recipe = {};
+    recipe.id = id;
+    recipe.isStarred = false;
+
+    if(!this.recipeLibrary){
+      this.recipeLibrary = [];
+    }
+      this.recipeLibrary.push(recipe);
+      fn(recipe);
+  }
+
+  removeFromLibrary(id, fn){
+    if(typeof id === 'string'){
+      if(id.length !== 24){fn(null); return;}
+      id = Mongo.ObjectID(id);
+    }
+    if(!(id instanceof Mongo.ObjectID)){fn(null); return;}
+
+    console.log('===== this is the old library =====');
+    console.log(this.recipeLibrary);
+
+    var removed = _.remove(this.recipeLibrary, function(r){ return r.id === id; });
+    console.log('===== this is what you removed =====');
+    console.log(removed);
+    console.log('===== this is the new library =====');
+    console.log(this.recipeLibrary);
+  }
+
   static findById(id, fn){
+    console.log('=== made it to find by id =====');
     Base.findById(id, users, User, fn);
   }
 

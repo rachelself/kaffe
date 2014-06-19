@@ -10,6 +10,7 @@ var expect = require('chai').expect;
 var traceur = require('traceur');
 var db = traceur.require(__dirname + '/../../helpers/db.js');
 var fs = require('fs');
+var Mongo = require('mongodb');
 
 
 var User;
@@ -119,11 +120,11 @@ describe('User', function(){
           expect(user).to.be.ok;
           expect(user).to.exist;
           expect(user).to.be.instanceof(User);
-          expect(user.local).to.have.deep.property('firstName', 'Sue');
-          expect(user.local.isCompany).to.be.false;
-          expect(user.local).to.have.deep.property('photo', '/img/userImages/53a1b99efc3d30e20e7e5b69/sue2-DELETE.jpg');
-          expect(user.local).not.to.have.deep.property('photo', '/img/userImages/53a1b99efc3d30e20e7e5b69/sue-DELETE.jpg');
-          expect(user.local).to.have.deep.property('bio', 'This is just a little bit about me...');
+          expect(user.firstName).to.equal('Sue');
+
+          expect(user).to.have.deep.property('photo', '/img/userImages/53a1b99efc3d30e20e7e5b69/sue2-DELETE.jpg');
+          expect(user.bio).to.equal('This is just a little bit about me...');
+          expect(user.isCompany).to.be.false;
 
           var newImgExists = fs.existsSync(__dirname + '/../../../app/static/img/userImages/53a1b99efc3d30e20e7e5b69/sue2-DELETE.jpg');
           var oldImgExists = fs.existsSync(__dirname + '/../../../app/static/img/userImages/53a1b99efc3d30e20e7e5b69/sue-DELETE.jpg');
@@ -134,9 +135,85 @@ describe('User', function(){
         });
       });
     });
+
+    it('should NOT update a user record in the db - NO PHOTO', function(done){
+      var fields = {firstName:['Sue'], lastName:['Smith'], isCompany:[false], bio:['This is just a little bit about me...']};
+      var files = {photo:[{originalFilename:'sue-DELETE.jpg', path: __dirname + '/../../fixtures/copy/sue-DELETE.jpg', size:0}]};
+      var id = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(id, function(err, user){
+        user.edit(fields, files, function(err, user){
+          expect(err).to.be.null;
+          expect(user).to.be.an('undefined');
+
+          var newImgExists = fs.existsSync(__dirname + '/../../../app/static/img/userImages/53a1b99efc3d30e20e7e5b69/sue-DELETE.jpg');
+          var oldImgExists = fs.existsSync(__dirname + '/../../../app/static/img/userImages/53a1b99efc3d30e20e7e5b69/sue2-DELETE.jpg');
+
+          expect(newImgExists).to.be.false;
+          expect(oldImgExists).to.be.true;
+          done();
+        });
+      });
+    });
   });
 
+  describe('#addToLibrary', function(){
+    it('should create a new object in the users recipeLibrary', function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var userId = '53a1b99efc3d30e20e7e5b69';
 
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, function(recipe){
+          expect(recipe).to.be.an('object');
+          expect(recipe.id).to.be.instanceof(Mongo.ObjectID);
+          expect(recipe.isStarred).to.be.false;
+          done();
+        });
+      });
+    });
+
+    it('should NOT create a new object in the users recipeLibrary - BAD ID', function(done){
+      var recipeId = 'not an id';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, function(recipe){
+          expect(recipe).to.be.null;
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#removeFromLibrary', function(){
+    before(function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, function(recipe){
+          console.log(user);
+          console.log('==== before finished =====');
+          done();
+        });
+      });
+    });
+
+    it('should remove an object in the users recipeLibrary', function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.removeFromLibrary(recipeId, function(recipeLibrary){
+          expect(recipeLibrary).to.be.an.instanceof(Array);
+          expect(recipeLibrary).not.to.include.keys('53a1b99efc3d30e20e7e5b71');
+          done();
+        });
+      });
+    });
+  });
+
+});
 
   // beforeEach(function(done){
   //   global.nss.db.collection('users').drop(function(){
@@ -162,6 +239,3 @@ describe('User', function(){
   //     });
   //   });
   // });
-
-
-});
