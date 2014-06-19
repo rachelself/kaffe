@@ -1,4 +1,4 @@
-/* global before, beforeEach, afterEach, describe, it */
+/* global before, after, beforeEach, afterEach, describe, it */
 /* jshint expr: true */
 
 'use strict';
@@ -10,7 +10,7 @@ var expect = require('chai').expect;
 var traceur = require('traceur');
 var db = traceur.require(__dirname + '/../../helpers/db.js');
 var fs = require('fs');
-var Mongo = require('mongodb');
+//var Mongo = require('mongodb');
 
 
 var User;
@@ -159,14 +159,18 @@ describe('User', function(){
 
   describe('#addToLibrary', function(){
     it('should create a new object in the users recipeLibrary', function(done){
-      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var recipeId = '53a1b99efc3d30e20e7e5b81';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
       var userId = '53a1b99efc3d30e20e7e5b69';
 
       User.findById(userId, function(err, user){
-        user.addToLibrary(recipeId, function(recipe){
+        user.addToLibrary(recipeId, brewMethodId, function(recipe){
           expect(recipe).to.be.an('object');
-          expect(recipe.id).to.be.instanceof(Mongo.ObjectID);
+          expect(recipe.id).to.be.a('string');
           expect(recipe.isStarred).to.be.false;
+          expect(recipe.isRated).to.be.false;
+          expect(recipe).to.have.property('brewMethodId');
+          expect(recipe.brewMethodId).to.have.length(24);
           done();
         });
       });
@@ -174,26 +178,82 @@ describe('User', function(){
 
     it('should NOT create a new object in the users recipeLibrary - BAD ID', function(done){
       var recipeId = 'not an id';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
       var userId = '53a1b99efc3d30e20e7e5b69';
 
       User.findById(userId, function(err, user){
-        user.addToLibrary(recipeId, function(recipe){
+        user.addToLibrary(recipeId, brewMethodId, function(recipe){
           expect(recipe).to.be.null;
           done();
         });
       });
     });
-  });
 
-  describe('#removeFromLibrary', function(){
     before(function(done){
       var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
       var userId = '53a1b99efc3d30e20e7e5b69';
 
       User.findById(userId, function(err, user){
-        user.addToLibrary(recipeId, function(recipe){
-          console.log(user);
-          console.log('==== before finished =====');
+        user.addToLibrary(recipeId, brewMethodId, function(recipe){
+          user.save(function(){
+          done();
+          });
+        });
+      });
+    });
+
+    after(function(done){
+      var userId = '53a1b99efc3d30e20e7e5b69';
+      User.findById(userId, function(err, user){
+        user.recipeLibrary = [];
+        user.save(function(){
+          done();
+        });
+      });
+    });
+
+
+    it('should NOT create a new object in the users recipeLibrary - DUPLICATE', function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, brewMethodId, function(response){
+          expect(response).to.be.null;
+          done();
+        });
+      });
+    });
+
+  });
+
+  describe('#removeFromLibrary', function(){
+
+    beforeEach(function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
+      var recipeIdTwo = '53a1b99efc3d30e20e7e5b81';
+      var brewMethodIdTwo = '53a1b99efc3d30e20e7e5b91';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, brewMethodId, function(recipe){
+          user.addToLibrary(recipeIdTwo, brewMethodIdTwo, function(recipe){
+            user.save(function(){
+            done();
+            });
+          });
+        });
+      });
+    });
+
+    afterEach(function(done){
+      var userId = '53a1b99efc3d30e20e7e5b69';
+      User.findById(userId, function(err, user){
+        user.recipeLibrary = [];
+        user.save(function(){
           done();
         });
       });
@@ -206,12 +266,135 @@ describe('User', function(){
       User.findById(userId, function(err, user){
         user.removeFromLibrary(recipeId, function(recipeLibrary){
           expect(recipeLibrary).to.be.an.instanceof(Array);
+          expect(recipeLibrary).to.have.length(1);
           expect(recipeLibrary).not.to.include.keys('53a1b99efc3d30e20e7e5b71');
           done();
         });
       });
     });
+
+    it('should NOT remove an object in the users recipeLibrary - BAD ID', function(done){
+      var recipeId = 'not an id';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.removeFromLibrary(recipeId, function(response){
+          expect(response).to.be.null;
+          expect(user.recipeLibrary).to.be.an.instanceof(Array);
+          expect(user.recipeLibrary).to.have.length(2);
+          expect(user.recipeLibrary[0]).to.have.deep.property('id', '53a1b99efc3d30e20e7e5b71');
+          expect(user.recipeLibrary[1]).to.have.deep.property('id', '53a1b99efc3d30e20e7e5b81');
+          done();
+        });
+      });
+    });
   });
+
+  describe('.showLibraryByBrewMethod', function(){
+    beforeEach(function(done){
+      var recipeId = '53a1b99efc3d30e20e7e5b71';
+      var brewMethodId = '53a1b99efc3d30e20e7e5b91';
+
+      var recipeIdTwo = '53a1b99efc3d30e20e7e5b81';
+      var brewMethodIdTwo = '53a1b99efc3d30e20e7e5b91';
+
+      var recipeIdThree = '53a1b99efc3d30e20e7e5b82';
+      var brewMethodIdThree = '53a1b99efc3d30e20e7e5b92';
+
+      var userId = '53a1b99efc3d30e20e7e5b69';
+
+      User.findById(userId, function(err, user){
+        user.addToLibrary(recipeId, brewMethodId, function(recipe){
+          user.addToLibrary(recipeIdTwo, brewMethodIdTwo, function(recipe){
+            user.addToLibrary(recipeIdThree, brewMethodIdThree, function(recipe){
+              user.save(function(){
+              done();
+              });
+            });
+          });
+        });
+      });
+    });
+
+    afterEach(function(done){
+      var userId = '53a1b99efc3d30e20e7e5b69';
+      User.findById(userId, function(err, user){
+        user.recipeLibrary = [];
+        user.save(function(){
+          done();
+        });
+      });
+    });
+
+    it('should retrieve recipes from the users recipeLibrary that have the brew method ID selected', function(done){
+      var brewId = '53a1b99efc3d30e20e7e5b91';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+      User.findById(userId, function(err, user){
+        user.showLibraryByBrewMethod(brewId, function(recipes){
+          expect(recipes).to.be.ok;
+          expect(recipes).not.to.be.null;
+          expect(recipes).to.be.instanceof(Array);
+          expect(recipes.length).to.equal(2);
+          expect(recipes[0]).to.have.deep.property('brewMethodId', '53a1b99efc3d30e20e7e5b91');
+          expect(recipes[1]).to.have.deep.property('brewMethodId', '53a1b99efc3d30e20e7e5b91');
+          done();
+        });
+      });
+    });
+
+    it('should NOT retrieve recipes from the users recipeLibrary - NONE found ', function(done){
+      var brewId = '53a1b99efc3d30e20e7e5b93';
+      var userId = '53a1b99efc3d30e20e7e5b69';
+      User.findById(userId, function(err, user){
+        user.showLibraryByBrewMethod(brewId, function(recipes){
+          expect(recipes).to.be.null;
+          done();
+        });
+      });
+    });
+  });
+
+  // describe('.toggleFavorite', function(){
+  //   beforeEach(function(done){
+  //     var recipeId = '53a1b99efc3d30e20e7e5b71';
+  //     var brewMethodId = '53a1b99efc3d30e20e7e5b91';
+  //     var userId = '53a1b99efc3d30e20e7e5b69';
+  //
+  //     User.findById(userId, function(err, user){
+  //       user.addToLibrary(recipeId, brewMethodId, function(recipe){
+  //         user.save(function(){
+  //         done();
+  //         });
+  //       });
+  //     });
+  //   });
+  //
+  //   afterEach(function(done){
+  //     var userId = '53a1b99efc3d30e20e7e5b69';
+  //     User.findById(userId, function(err, user){
+  //       user.recipeLibrary = [];
+  //       user.save(function(){
+  //         done();
+  //       });
+  //     });
+  //   });
+  //
+  //   it('should change the property isStarred of a recipe obj in a users recipeLibrary', function(done){
+  //     var recipeId = '53a1b99efc3d30e20e7e5b71';
+  //     var userId = '53a1b99efc3d30e20e7e5b69';
+  //
+  //
+  //
+  //   //   User.findById(userId, function(err, user){
+  //   //     user.toggleFavorite(recipeId, function(recipe){
+  //   //       expect(recipe).to.be.ok;
+  //   //       expect(recipe).to.be.an('object');
+  //   //       expect(recipe).to.have.deep.property('isStarred', true);
+  //   //       done();
+  //   //     });
+  //   //   });
+  //   });
+  // });
 
 });
 

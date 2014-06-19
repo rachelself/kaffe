@@ -36,6 +36,12 @@ class User{
       email: null,
       name: null
     };
+    this.firstName = '';
+    this.lastName = '';
+    this.isCompany = '';
+    this.photo = '';
+    this.recipes = [];
+    this.recipeLibrary = [];
   }
 
   save(fn){
@@ -131,43 +137,90 @@ class User{
 
   }
 
-  addToLibrary(id, fn){
-    if(typeof id === 'string'){
-      if(id.length !== 24){fn(null); return;}
-      id = Mongo.ObjectID(id);
-    }
-    if(!(id instanceof Mongo.ObjectID)){fn(null); return;}
+  addToLibrary(recipeId, brewMethodId, fn){
+    var recipe = null;
 
-    var recipe = {};
-    recipe.id = id;
-    recipe.isStarred = false;
-
-    if(!this.recipeLibrary){
-      this.recipeLibrary = [];
+    if(typeof recipeId === 'string'){
+      if(recipeId.length !== 24){fn(null); return;}
+    }else if(recipeId instanceof Mongo.ObjectID){
+      if(recipeId.length !== 24){fn(null); return;}
+      recipeId = recipeId.toString();
     }
+
+    if(typeof brewMethodId === 'string'){
+      if(brewMethodId.length !== 24){fn(null); return;}
+    }else if(brewMethodId instanceof Mongo.ObjectID){
+      if(brewMethodId.length !== 24){fn(null); return;}
+      brewMethodId = brewMethodId.toString();
+    }
+
+    function isDuplicate(r){
+      return r.id === recipeId;
+    }
+
+    var duplicateRecipes = this.recipeLibrary.filter(isDuplicate);
+
+    if(duplicateRecipes.length > 0){
+      fn(null);
+      return;
+    }else if(duplicateRecipes.length === 0){
+      recipe = {};
+      recipe.id = recipeId;
+      recipe.isStarred = false;
+      recipe.brewMethodId = brewMethodId;
+      recipe.isRated = false;
+
       this.recipeLibrary.push(recipe);
       fn(recipe);
+    }
+
   }
 
   removeFromLibrary(id, fn){
+
     if(typeof id === 'string'){
       if(id.length !== 24){fn(null); return;}
-      id = Mongo.ObjectID(id);
+    }else if(id instanceof Mongo.ObjectID){
+      id = id.toString();
+      if(id.length !== 24){fn(null); return;}
     }
-    if(!(id instanceof Mongo.ObjectID)){fn(null); return;}
-
-    console.log('===== this is the old library =====');
-    console.log(this.recipeLibrary);
 
     var removed = _.remove(this.recipeLibrary, function(r){ return r.id === id; });
-    console.log('===== this is what you removed =====');
-    console.log(removed);
-    console.log('===== this is the new library =====');
-    console.log(this.recipeLibrary);
+    fn(this.recipeLibrary);
   }
 
+  showLibraryByBrewMethod(brewId, fn){
+    brewId = brewId.toString();
+
+    function isBrewMatch(r){
+      return r.brewMethodId === brewId;
+    }
+
+    var filteredRecipes = this.recipeLibrary.filter(isBrewMatch);
+
+    if(filteredRecipes.length > 0){
+      fn(filteredRecipes);
+    }else{
+      fn(null);
+    }
+  }
+
+  // toggleFavorite(recipeId, fn){
+  //
+  //
+  //   // this.recipeLibrary.findAndModify({id:recipeId}, function(err, record){
+  //   //   console.log('found record');
+  //   //   console.log(record);
+  //   //   this.find({}).toArray(function(err, records){
+  //   //     console.log('all records');
+  //   //     console.log(records);
+  //   //     fn(record);
+  //   //   });
+  //   // });
+  // }
+
   static findById(id, fn){
-    console.log('=== made it to find by id =====');
+    // console.log('=== made it to find by id =====');
     Base.findById(id, users, User, fn);
   }
 
