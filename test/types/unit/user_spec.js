@@ -10,8 +10,6 @@ var expect = require('chai').expect;
 var traceur = require('traceur');
 var db = traceur.require(__dirname + '/../../helpers/db.js');
 var fs = require('fs');
-//var Mongo = require('mongodb');
-
 
 var User;
 
@@ -108,6 +106,7 @@ describe('User', function(){
   //     });
   //   });
   // });
+
 
   describe('#edit', function(done){
     it('should update a user record in the db - NEW PHOTO', function(done){
@@ -290,7 +289,7 @@ describe('User', function(){
     });
   });
 
-  describe('.showLibraryByBrewMethod', function(){
+  describe('#showLibraryByBrewMethod', function(){
     beforeEach(function(done){
       var recipeId = '53a1b99efc3d30e20e7e5b71';
       var brewMethodId = '53a1b99efc3d30e20e7e5b91';
@@ -354,7 +353,7 @@ describe('User', function(){
     });
   });
 
-  describe('.toggleFavorite', function(){
+  describe('#toggleFavorite', function(){
     beforeEach(function(done){
       var recipeId = '53a1b99efc3d30e20e7e5b71';
       var brewMethodId = '53a1b99efc3d30e20e7e5b91';
@@ -396,28 +395,3 @@ describe('User', function(){
   });
 
 });
-
-  // beforeEach(function(done){
-  //   global.nss.db.collection('users').drop(function(){
-  //     factory('user', function(users){
-  //       console.log('===== USERS ======');
-  //       console.log(users);
-  //       done;
-  //     });
-  //   });
-  // });
-
-
-  // describe('#generateHash', function(){
-  //   it('should create a hashed password', function(done){
-  //     var obj = {'_id': '473910437284938102384737', 'local':{'email':'bill@aol.com', 'password':'5678'}, 'facebook':{}, 'twitter':{}, 'google':{}};
-  //     User.create(obj, function(u){
-  //       u.generateHash(u.password, function(p){
-  //         expect(p).to.be.a('string');
-  //         expect(p).to.be.ok;
-  //         expect(p).to.have.length(60);
-  //         done();
-  //       });
-  //     });
-  //   });
-  // });
