@@ -15,16 +15,152 @@ var fs = require('fs');
 
 class Recipe{
 
+  edit(userId, property, index, editedField, fn){
+
+    //--- CHECK TO MAKE SURE USER IS OWNER --
+
+    if(typeof userId === 'string'){
+      if(userId.length !== 24){fn(null); return;}
+    }else if(userId instanceof Mongo.ObjectID){
+      if(userId.length !== 24){fn(null); return;}
+      userId = userId.toString();
+    }
+
+    if(this.userId !== userId){fn(null); return;}
+
+    //-- SWITCH ON PROPERTY --
+
+    index = index * 1;
+    var editedIndex;
+
+    switch(property){
+      case 'title':
+        this.title = editedField.trim();
+        break;
+
+      case 'description':
+        this.description = editedField.trim();
+        break;
+
+      case 'notes':
+        this.notes = editedField.trim();
+        break;
+
+      case 'brewTime':
+        this.brewTime = editedField.trim();
+        break;
+
+      case 'grind':
+        this.grind = editedField.trim();
+        break;
+
+      case 'video':
+        this.video = editedField.trim();
+        break;
+
+      case 'waterRatio':
+        this.ratio.water = editedField * 1;
+        break;
+
+      case 'coffeeRatio':
+        this.ratio.coffee = editedField * 1;
+        break;
+
+      case 'ratioUnit':
+        this.ratio.unit = editedField.trim();
+        break;
+
+      case 'instructions.order':
+        editedIndex = editedField * 1;
+        this.instructions[index].order = editedIndex;
+        this.instructions[editedIndex].order = index;
+
+        var newInstructionOrder = this.instructions.sort(function(a,b){
+          return a.order - b.order;
+        });
+
+        this.instructions = newInstructionOrder;
+        break;
+
+      case 'instructions.text':
+        this.instructions[index].text = editedField.trim();
+        break;
+
+      case 'instructions.displayTime':
+        var time = editedField.split(':').map(n=>n*1);
+        var seconds;
+        var minutes;
+        var hours;
+        var totalTime;
+
+        if(time.length === 2){
+          minutes = time[0];
+          seconds = time[1];
+          totalTime = (minutes * 60) + seconds;
+
+        }else if(time.length === 3){
+          hours = time[0];
+          minutes = time[1];
+          seconds = time[2];
+          totalTime = (hours * 60 * 60) + (minutes * 60) + seconds;
+        }
+
+        this.instructions[index].timer = totalTime;
+        this.instructions[index].displayTime = editedField.trim();
+        break;
+
+      case 'prep.order':
+        editedIndex = editedField * 1;
+        this.prep[index].order = editedIndex;
+        this.prep[editedIndex].order = index;
+
+        var newPrepOrder = this.prep.sort(function(a,b){
+          return a.order - b.order;
+        });
+
+        this.prep = newPrepOrder;
+
+        break;
+
+      case 'prep.text':
+        this.prep[index].text = editedField.trim();
+    }
+
+    fn(this);
+  }
+
+  // edit(userId, fields, fn){
+  //
+  //   if(typeof userId === 'string'){
+  //     if(userId.length !== 24){fn(null); return;}
+  //   }else if(userId instanceof Mongo.ObjectID){
+  //     if(userId.length !== 24){fn(null); return;}
+  //     recipeId = recipeId.toString();
+  //   }
+  //
+  //   if(this.userId !== userId){fn(null); return;}
+  //
+  //   this.title =
+  //   this.description
+  //   this.brewTime
+  //   this.notes
+  //
+  //
+  //
+  // }
+
   addInstructions(fields, files, fn){
 
     //--- RATIO ---
     this.ratio = {};
-    this.ratio.water = [];
-    this.ratio.water.push(fields.waterRatio[0] * 1);
-    this.ratio.water.push(fields.waterRatio[1]);
-    this.ratio.coffee = [];
-    this.ratio.coffee.push(fields.coffeeRatio[0] * 1);
-    this.ratio.coffee.push(fields.coffeeRatio[1]);
+    //this.ratio.water = [];
+    this.ratio.water = fields.waterRatio[0] * 1;
+    this.ratio.coffee = fields.coffeeRatio[0] * 1;
+    this.ratio.unit = fields.ratioUnit[0].trim();
+    //this.ratio.water.push(fields.waterRatio[1]);
+    //this.ratio.coffee = [];
+
+    //this.ratio.coffee.push(fields.coffeeRatio[1]);
 
 
     //--- INSTRUCTIONS ---
@@ -54,6 +190,9 @@ class Recipe{
       }
 
       instructionStep.timer = totalTime;
+      instructionStep.displayTime = obj.timer;
+      // console.log('===== time to display on page ====');
+      // console.log(instructionStep);
       this.instructions.push(instructionStep);
     });
 
@@ -197,8 +336,8 @@ class Recipe{
         // recipe.photos = [];
         // console.log(recipe.photos);
         // recipe.videos = [];
-        console.log('==== the new recipe!! =====');
-        console.log(recipe);
+        //console.log('==== the new recipe!! =====');
+        //console.log(recipe);
         recipes.save(recipe, ()=>fn(recipe));
       }
     });

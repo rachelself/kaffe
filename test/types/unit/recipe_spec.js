@@ -28,9 +28,17 @@ describe('Recipe', function(){
     global.nss.db.collection('recipes').drop(function(){
     //  console.log('== dropped the collection ===');
       factory('recipe', function(recipes){
+        cp.execFile(__dirname + '/../../fixtures/before-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+          done();
+        });
         //console.log('== finished running the factory ===');
-        done();
       });
+    });
+  });
+
+  afterEach(function(done){
+    cp.execFile(__dirname + '/../../fixtures/after-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+      done();
     });
   });
 
@@ -143,22 +151,22 @@ describe('Recipe', function(){
   });
 
   describe('#addInstructions', function(){
-    beforeEach(function(done){
-      cp.execFile(__dirname + '/../../fixtures/before-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
-      done();
-      });
-    });
-
-    afterEach(function(done){
-      cp.execFile(__dirname + '/../../fixtures/after-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
-        done();
-      });
-    });
+    // beforeEach(function(done){
+    //   cp.execFile(__dirname + '/../../fixtures/before-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+    //   done();
+    //   });
+    // });
+    //
+    // afterEach(function(done){
+    //   cp.execFile(__dirname + '/../../fixtures/after-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+    //     done();
+    //   });
+    // });
 
     it('should add instructions, ratio, and other properties to the recipe', function(done){
       var recipeId = '53a37a7dabc0ef3158df9940';
-      var fields = {'waterRatio':['230', 'grams'], 'coffeeRatio':['15', 'grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
-      var files = {'photos':[{originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':'200', 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+      var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+      var files = {'photos':[{originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':200, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
 
       Recipe.findById(recipeId, function(recipe){
         // console.log('=== before we update recipe ====');
@@ -174,8 +182,8 @@ describe('Recipe', function(){
           expect(recipe.instructions).to.have.length(3);
           expect(recipe.instructions[1]).to.have.deep.property('timer', 40);
           expect(recipe.instructions[0]).to.be.an('object');
-          expect(recipe.ratio.water[0]).to.equal(230);
-          expect(recipe.ratio.water[1]).to.equal('grams');
+          expect(recipe.ratio.water).to.equal(230);
+          expect(recipe.ratio.unit).to.equal('grams');
           expect(recipe.photos[0]).to.have.deep.property('path', '/img/recipeImages/53a37a7dabc0ef3158df9940/aeropress1-RECIPE.jpg');
 
           var imgExists = fs.existsSync(__dirname + '/../../../app/static/img/recipeImages/53a37a7dabc0ef3158df9940/aeropress1-RECIPE.jpg');
@@ -184,9 +192,188 @@ describe('Recipe', function(){
         });
       });
     });
-    
-    // it('should NOT add properties to ')
+
+    it('should NOT add properties to the recipe - BAD PHOTO', function(done){
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+      var files = {'photos':[{originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':0, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addInstructions(fields, files, function(recipe){
+          expect(recipe).to.be.null;
+          done();
+        });
+      });
+    });
   });
+
+  describe('#edit', function(){
+    beforeEach(function(done){
+      var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'We are going to move this.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'This is the recipe field we are going to move', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+      var files = {'photos':[{originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':200, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+      var recipeId = '53a37a7dabc0ef3158df9940';
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addInstructions(fields, files, function(recipe){
+          // console.log('==== added these instructions ====');
+          // console.log(recipe);
+          recipe.save(function(){
+            done();
+          });
+        });
+      });
+    });
+
+
+    it('should modify the recipe title', function(done){
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var property = 'title';
+      var index = null;
+      var editedField = 'An Even Better Title';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.edit(userId, property, index, editedField, function(recipe){
+          expect(recipe).to.be.ok;
+          expect(recipe).to.be.an('object');
+          expect(recipe.title).to.equal('An Even Better Title');
+          done();
+        });
+      });
+    });
+
+    it('should modify the recipe instructions TEXT', function(done){
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var property = 'instructions.text';
+      var index = 0;
+      var editedField = 'I forgot to tell you what to do...';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        // console.log('==== recipe we are editing! ====');
+        // console.log(recipe);
+        recipe.edit(userId, property, index, editedField, function(recipe){
+          // console.log('==== the recipe that was EDITED, coming back ====');
+          // console.log(recipe);
+          expect(recipe).to.be.ok;
+          expect(recipe).to.be.an('object');
+          expect(recipe.instructions[0].text).to.equal('I forgot to tell you what to do...');
+          done();
+        });
+      });
+    });
+
+    it('should modify the recipe instructions ORDER', function(done){
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var property = 'instructions.order';
+      var index = 0;
+      var editedField = 2;
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        // console.log('==== recipe we are editing! ====');
+        // console.log(recipe);
+        recipe.edit(userId, property, index, editedField, function(recipe){
+          // console.log('==== the recipe that was EDITED, coming back ====');
+          // console.log(recipe);
+          expect(recipe).to.be.ok;
+          expect(recipe).to.be.an('object');
+          expect(recipe.instructions[2].text).to.equal('This is the recipe field we are going to move');
+          expect(recipe.instructions[0].order).to.equal(0);
+          done();
+        });
+      });
+    });
+
+    it('should modify the recipe prep ORDER', function(done){
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var property = 'prep.order';
+      var index = 1;
+      var editedField = 0;
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        // console.log('==== recipe we are editing! ====');
+        // console.log(recipe);
+        recipe.edit(userId, property, index, editedField, function(recipe){
+          // console.log('==== the recipe that was EDITED, coming back ====');
+          // console.log(recipe);
+          expect(recipe).to.be.ok;
+          expect(recipe).to.be.an('object');
+          expect(recipe.prep[0].text).to.equal('We are going to move this.');
+          expect(recipe.instructions[0].order).to.equal(0);
+          done();
+        });
+      });
+    });
+  });
+
+  // describe('.updatePhotos', function(){
+  //   beforeEach(function(done){
+  //     var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'We are going to move this.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'This is the recipe field we are going to move', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+  //     var files = {'photos':[{originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':200, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+  //     var recipeId = '53a37a7dabc0ef3158df9940';
+  //
+  //     Recipe.findById(recipeId, function(recipe){
+  //       recipe.addInstructions(fields, files, function(recipe){
+  //         recipe.save(function(){
+  //           done();
+  //         });
+  //       });
+  //     });
+  //   });
+  //
+  //   it('should edit the photo caption', function(done){
+  //     var recipeId = '53a37a7dabc0ef3158df9940';
+  //     var property = 'caption';
+  //     var index = 0;
+  //     var editedField = 'This is the caption I am changing!';
+  //     var userId = '53a1b7fb5f7b558f0e623b53';
+  //
+  //     Recipe.findById(recipeId, function(recipe){
+  //       recipe.updatePhotos(userId, property, index, editedField, function(recipe){
+  //         expect(recipe).to.be.ok;
+  //         expect(recipe.photos).to.be.an.instanceof(Array);
+  //         expect(recipe.photos).to.have.length(1);
+  //         expect(recipe.photos[0].caption).to.equal('This is the caption I am changing!');
+  //         done();
+  //       });
+  //     });
+  //   });
+  // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
