@@ -15,6 +15,49 @@ var fs = require('fs');
 
 class Recipe{
 
+  updatePhotos(userId, property, index, editedField, fn){
+
+    //--- CHECK TO MAKE SURE USER IS OWNER --
+
+    if(typeof userId === 'string'){
+      if(userId.length !== 24){fn(null); return;}
+    }else if(userId instanceof Mongo.ObjectID){
+      if(userId.length !== 24){fn(null); return;}
+      userId = userId.toString();
+    }
+
+    if(this.userId !== userId){fn(null); return;}
+
+    //-- SWITCH ON PROPERTY --
+
+    index = index * 1;
+    var editedIndex;
+
+    switch(property){
+      case 'isPrimary':
+        this.photos.map(p=>p.isPrimary = false);
+        this.photos[index].isPrimary = true;
+        break;
+
+      case 'caption':
+        this.photos[index].caption = editedField;
+        break;
+
+      case 'order':
+        editedIndex = editedField * 1;
+        this.photos[index].order = editedIndex;
+        this.photos[editedIndex].order = index;
+
+        var newPhotoOrder = this.photos.sort(function(a,b){
+          return a.order - b.order;
+        });
+
+        this.photos = newPhotoOrder;
+    }
+
+    fn(this);
+  }
+
   edit(userId, property, index, editedField, fn){
 
     //--- CHECK TO MAKE SURE USER IS OWNER --
@@ -129,38 +172,13 @@ class Recipe{
     fn(this);
   }
 
-  // edit(userId, fields, fn){
-  //
-  //   if(typeof userId === 'string'){
-  //     if(userId.length !== 24){fn(null); return;}
-  //   }else if(userId instanceof Mongo.ObjectID){
-  //     if(userId.length !== 24){fn(null); return;}
-  //     recipeId = recipeId.toString();
-  //   }
-  //
-  //   if(this.userId !== userId){fn(null); return;}
-  //
-  //   this.title =
-  //   this.description
-  //   this.brewTime
-  //   this.notes
-  //
-  //
-  //
-  // }
-
   addInstructions(fields, files, fn){
 
     //--- RATIO ---
     this.ratio = {};
-    //this.ratio.water = [];
     this.ratio.water = fields.waterRatio[0] * 1;
     this.ratio.coffee = fields.coffeeRatio[0] * 1;
     this.ratio.unit = fields.ratioUnit[0].trim();
-    //this.ratio.water.push(fields.waterRatio[1]);
-    //this.ratio.coffee = [];
-
-    //this.ratio.coffee.push(fields.coffeeRatio[1]);
 
 
     //--- INSTRUCTIONS ---
@@ -191,10 +209,9 @@ class Recipe{
 
       instructionStep.timer = totalTime;
       instructionStep.displayTime = obj.timer;
-      // console.log('===== time to display on page ====');
-      // console.log(instructionStep);
       this.instructions.push(instructionStep);
     });
+
 
     //--- PREP ---
     this.prep = [];
@@ -212,33 +229,49 @@ class Recipe{
     this.brewTime = fields.brewTime[0];
     this.grind = fields.grind[0];
 
+
     //--- VIDEOS ---
     this.video = files.video[0];
 
+
     //--- PHOTOS ---
     this.photos = [];
-    var path = files.photos[0].path;
-    var fileName = files.photos[0].originalFilename;
-
+    var badPhotos = [];
 
     files.photos.forEach((p, i)=>{
-      if(p.size === 0){fn(null); return;}
+      //console.log('=== made it inside photos for each ===');
+      if(p.size === 0){ badPhotos.push(p); return; }
 
       var photo = {};
+      var path = p.path;
+      // console.log('=== PATH ===');
+      // console.log(path);
+      var fileName = p.originalFilename;
       photo.fileName = fileName;
       photo.path = `/img/recipeImages/${this._id}/${fileName}`;
       if(i){
         photo.isPrimary = false;
+        photo.order = 1;
       }else{
         photo.isPrimary = true;
+        photo.order = i;
       }
       photo.caption = p.caption;
       this.photos.push(photo);
 
       mkdirp(`${__dirname}/../static/img/recipeImages/${this._id}`);
       fs.renameSync(path, `${__dirname}/../static/img/recipeImages/${this._id}/${fileName}`);
-      fn(this);
     });
+
+    if(badPhotos.length){
+      //console.log('=== returning null ===');
+      fn(null);
+      return;
+    }
+
+    // console.log('=== exited the loop, returning this ===');
+    // console.log(this);
+    fn(this);
   }
 
   save(fn){

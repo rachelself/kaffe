@@ -26,9 +26,11 @@ class Base{
         // console.log('==== changed obj prototype ====');
         // console.log(obj);
         fn(obj);
+        return;
       }else{
         // console.log('==== did not find an obj ====');
         fn(null);
+        return;
       }
     });
   }
