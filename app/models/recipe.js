@@ -15,18 +15,73 @@ var fs = require('fs');
 
 class Recipe{
 
-  updatePhotos(userId, property, index, editedField, fn){
+  addPhoto(userId, files, fn){
 
     //--- CHECK TO MAKE SURE USER IS OWNER --
 
-    if(typeof userId === 'string'){
-      if(userId.length !== 24){fn(null); return;}
-    }else if(userId instanceof Mongo.ObjectID){
-      if(userId.length !== 24){fn(null); return;}
-      userId = userId.toString();
+    if(!(isOwner(userId, this.userId))){
+      fn(null);
+      return;
     }
 
-    if(this.userId !== userId){fn(null); return;}
+    console.log('==== files coming in ------');
+    console.log(files.photos);
+
+    // does this recipe have an image directory?
+    if(!fs.existsSync(`__dirname/../../../app/static/img/recipeImages/${this._id}`)){
+      mkdirp(`${__dirname}/../static/img/recipeImages/${this._id}`);
+    }
+
+    // how many images are there already?
+    var count = this.photos.length;
+    console.log(count);
+
+    var badPhotos = [];
+
+    files.photos.forEach((p, i)=>{
+      if(p.size === 0){ badPhotos.push(p); return; }
+
+      var photo = {};
+      var path = p.path;
+      var fileName = p.originalFilename;
+      photo.fileName = fileName;
+      photo.path = `/img/recipeImages/${this._id}/${fileName}`;
+
+      photo.isPrimary = false;
+      photo.order = count + i;
+
+      photo.caption = p.caption;
+      this.photos.push(photo);
+
+      fs.renameSync(path, `${__dirname}/../static/img/recipeImages/${this._id}/${fileName}`);
+    });
+
+    if(badPhotos.length){
+      fn(null);
+      return;
+    }
+
+    fn(this);
+  }
+
+  updatePhotos(userId, property, index, editedField, fn){
+
+    // if(typeof userId === 'string'){
+    //   if(userId.length !== 24){fn(null); return;}
+    // }else if(userId instanceof Mongo.ObjectID){
+    //   if(userId.length !== 24){fn(null); return;}
+    //   userId = userId.toString();
+    // }
+    //
+    // if(this.userId !== userId){fn(null); return;}
+
+
+    //--- CHECK TO MAKE SURE USER IS OWNER --
+
+    if(!(isOwner(userId, this.userId))){
+      fn(null);
+      return;
+    }
 
     //-- SWITCH ON PROPERTY --
 
@@ -62,14 +117,21 @@ class Recipe{
 
     //--- CHECK TO MAKE SURE USER IS OWNER --
 
-    if(typeof userId === 'string'){
-      if(userId.length !== 24){fn(null); return;}
-    }else if(userId instanceof Mongo.ObjectID){
-      if(userId.length !== 24){fn(null); return;}
-      userId = userId.toString();
+    if(!(isOwner(userId, this.userId))){
+      fn(null);
+      return;
     }
 
-    if(this.userId !== userId){fn(null); return;}
+    // //--- CHECK TO MAKE SURE USER IS OWNER --
+    //
+    // if(typeof userId === 'string'){
+    //   if(userId.length !== 24){fn(null); return;}
+    // }else if(userId instanceof Mongo.ObjectID){
+    //   if(userId.length !== 24){fn(null); return;}
+    //   userId = userId.toString();
+    // }
+    //
+    // if(this.userId !== userId){fn(null); return;}
 
     //-- SWITCH ON PROPERTY --
 
@@ -377,5 +439,23 @@ class Recipe{
   }
 
 }
+
+//--- CHECK TO MAKE SURE USER IS RECIPE OWNER --
+
+function isOwner(userId, ownerId){
+  if(typeof userId === 'string'){
+    if(userId.length !== 24){return null;}
+  }else if(userId instanceof Mongo.ObjectID){
+    if(userId.length !== 24){return null;}
+    userId = userId.toString();
+  }
+
+  if(ownerId !== userId){
+    return false;
+  }else{
+    return true;
+  }
+}
+
 
 module.exports = Recipe;

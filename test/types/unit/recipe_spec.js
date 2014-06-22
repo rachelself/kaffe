@@ -386,12 +386,44 @@ describe('Recipe', function(){
         });
       });
     });
-
-
-
   });
 
+  describe('.addPhoto', function(){
+    beforeEach(function(done){
+      var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'We are going to move this.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'This is the recipe field we are going to move', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+      var files = {'photos':[{originalFilename:'aeropress2-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress2-RECIPE.jpg', 'size':200, 'caption':'Enjoying the finished cup!'}, {originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':200, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+      var recipeId = '53a37a7dabc0ef3158df9940';
 
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addInstructions(fields, files, function(recipe){
+          console.log('===== Recipe BEFORE editing ======');
+          console.log(recipe);
+          recipe.save(function(){
+            done();
+          });
+        });
+      });
+    });
+
+    it('should add 1 new photo to the recipe photos array', function(done){
+      var files = {'photos':[{originalFilename:'aeropress3-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress3-RECIPE.jpg', 'size':200, 'caption':'caption 3'}]};
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addPhoto(userId, files, function(recipe){
+          console.log('===== Recipe with new photo ======');
+          console.log(recipe);
+          expect(recipe).to.be.ok;
+          expect(recipe.photos).to.be.instanceof(Array);
+          expect(recipe.photos).to.have.length(3);
+          expect(recipe.photos[2]).to.have.deep.property('caption', 'caption 3');
+          expect(recipe.photos[2]).to.have.deep.property('order', 2);
+          done();
+        });
+      });
+    });
+  });
 
 
 
