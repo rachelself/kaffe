@@ -15,6 +15,77 @@ var fs = require('fs');
 
 class Recipe{
 
+  calculateCoffeeAmount(coffeeToUse, unit, drinkSize, fn){
+    console.log('=== recipe ====');
+    console.log(this.ratio);
+    var gramsInOz = 28.3495;
+    var calculation = {};
+    var waterToUse;
+    var estimatedDrinkSize;
+    coffeeToUse = coffeeToUse.toFixed(2);
+
+    if(unit !== this.ratio.unit){
+
+      //-- CALCULATE BY COFFEE AMNT SPECIFIED IN UNIT SPECIFIED --//
+      console.log('units are not equal!');
+      if(unit === 'grams'){
+        var convertedW = this.ratio.water * gramsInOz;
+        var convertedC = this.ratio.coffee * gramsInOz;
+
+        waterToUse = ((coffeeToUse * convertedW) / convertedC).toFixed(2);
+        estimatedDrinkSize = (waterToUse / gramsInOz).toFixed(2);
+
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = estimatedDrinkSize;
+
+        fn(calculation);
+        return;
+      }
+
+    }else{
+      if(!drinkSize){
+
+        console.log('we are calculating by coffee amnt specified');
+        //-- CALCULATE BY COFFEE AMNT SPECIFIED --//
+        if(unit === 'grams'){
+
+          console.log('units are in grams');
+          waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
+          estimatedDrinkSize = (waterToUse / gramsInOz).toFixed(2);
+
+          calculation.coffee = coffeeToUse;
+          calculation.unit = unit;
+          calculation.water = waterToUse;
+          calculation.drinkSize = estimatedDrinkSize;
+
+          fn(calculation);
+          return;
+
+        }else if(unit === 'oz'){
+
+          console.log('units are in oz');
+          waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
+          estimatedDrinkSize = waterToUse;
+
+          calculation.coffee = coffeeToUse;
+          calculation.unit = unit;
+          calculation.water = waterToUse;
+          calculation.drinkSize = estimatedDrinkSize;
+
+          fn(calculation);
+          return;
+
+        }
+      //-- CALCULATE BY DESIRED DRINK SIZE --//
+      }else{
+        console.log('we are calculating by drink size desired');
+
+      }
+    }
+  }
+
   deletePhoto(userId, index, fn){
 
     //--- CHECK TO MAKE SURE USER IS OWNER --
@@ -38,12 +109,12 @@ class Recipe{
     // console.log('==== removed! =====');
     // console.log(removed);
 
-    var newOrder = this.photos.map(reOrder);
-
     function reOrder(photo, i){
         photo.order = i;
         return photo;
     }
+
+    var newOrder = this.photos.map(reOrder);
 
     // console.log('==== newOrder! =====');
     // console.log(newOrder);
@@ -473,7 +544,7 @@ class Recipe{
 
 }
 
-//--- CHECK TO MAKE SURE USER IS RECIPE OWNER --
+//--- CHECK TO MAKE SURE USER IS RECIPE OWNER -- //
 
 function isOwner(userId, ownerId){
   if(typeof userId === 'string'){
