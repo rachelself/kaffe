@@ -15,7 +15,7 @@ var fs = require('fs');
 
 class Recipe{
 
-  addPhoto(userId, files, fn){
+  deletePhoto(userId, index, fn){
 
     //--- CHECK TO MAKE SURE USER IS OWNER --
 
@@ -24,8 +24,41 @@ class Recipe{
       return;
     }
 
-    console.log('==== files coming in ------');
-    console.log(files.photos);
+    index = index * 1;
+
+    //var dirContents = fs.readdirSync(`${__dirname}/../static/img/recipeImages/${this._id}`);
+
+    var file = this.photos[index].fileName;
+
+    // console.log('==== img path to remove =====');
+    // console.log(file);
+    fs.unlinkSync(`${__dirname}/../static/img/recipeImages/${this._id}/${file}`);
+
+    var removed = _.remove(this.photos, function(p){ return p.order === index; });
+    // console.log('==== removed! =====');
+    // console.log(removed);
+
+    var newOrder = this.photos.map(reOrder);
+
+    function reOrder(photo, i){
+        photo.order = i;
+        return photo;
+    }
+
+    // console.log('==== newOrder! =====');
+    // console.log(newOrder);
+
+    fn(this);
+  }
+
+  addPhoto(userId, files, fn){
+
+    //--- CHECK TO MAKE SURE USER IS OWNER --
+
+    if(!(isOwner(userId, this.userId))){
+      fn(null);
+      return;
+    }
 
     // does this recipe have an image directory?
     if(!fs.existsSync(`__dirname/../../../app/static/img/recipeImages/${this._id}`)){

@@ -330,8 +330,8 @@ describe('Recipe', function(){
         // console.log('== made it inside find recipe by id ====');
         // console.log(recipe);
         recipe.updatePhotos(userId, property, index, editedField, function(recipe){
-          console.log('===== Recipe we edited the CAPTION on ======');
-          console.log(recipe);
+          // console.log('===== Recipe we edited the CAPTION on ======');
+          // console.log(recipe);
           expect(recipe).to.be.ok;
           expect(recipe.photos).to.be.an.instanceof(Array);
           expect(recipe.photos).to.have.length(2);
@@ -396,8 +396,8 @@ describe('Recipe', function(){
 
       Recipe.findById(recipeId, function(recipe){
         recipe.addInstructions(fields, files, function(recipe){
-          console.log('===== Recipe BEFORE editing ======');
-          console.log(recipe);
+          // console.log('===== Recipe BEFORE editing ======');
+          // console.log(recipe);
           recipe.save(function(){
             done();
           });
@@ -412,8 +412,6 @@ describe('Recipe', function(){
 
       Recipe.findById(recipeId, function(recipe){
         recipe.addPhoto(userId, files, function(recipe){
-          console.log('===== Recipe with new photo ======');
-          console.log(recipe);
           expect(recipe).to.be.ok;
           expect(recipe.photos).to.be.instanceof(Array);
           expect(recipe.photos).to.have.length(3);
@@ -423,10 +421,114 @@ describe('Recipe', function(){
         });
       });
     });
+
+    it('should add 3 new photos to the recipe photos array', function(done){
+      var files = {'photos':[{originalFilename:'aeropress3-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress3-RECIPE.jpg', 'size':200, 'caption':'caption 3'}, {originalFilename:'aeropress4-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress4-RECIPE.jpg', 'size':200, 'caption':'caption 4'}, {originalFilename:'aeropress5-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress5-RECIPE.jpg', 'size':200, 'caption':'caption 5'}]};
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addPhoto(userId, files, function(recipe){
+          expect(recipe).to.be.ok;
+          expect(recipe.photos).to.be.instanceof(Array);
+          expect(recipe.photos).to.have.length(5);
+          expect(recipe.photos[4]).to.have.deep.property('caption', 'caption 5');
+          expect(recipe.photos[3]).to.have.deep.property('order', 3);
+          done();
+        });
+      });
+    });
+
+    it('should NOT add photos to the recipe photos array - BAD PHOTO', function(done){
+      var files = {'photos':[{originalFilename:'aeropress3-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress3-RECIPE.jpg', 'size':0, 'caption':'caption 3'}]};
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addPhoto(userId, files, function(recipe){
+          expect(recipe).to.be.null;
+          done();
+        });
+      });
+    });
+
   });
 
+  describe('.deletePhoto', function(){
+    beforeEach(function(done){
+      var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'We are going to move this.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'This is the recipe field we are going to move', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+      var files = {'photos':[{originalFilename:'aeropress2-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress2-RECIPE.jpg', 'size':200, 'caption':'Enjoying the finished cup!'}, {originalFilename:'aeropress1-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress1-RECIPE.jpg', 'size':200, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+      var recipeId = '53a37a7dabc0ef3158df9940';
 
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addInstructions(fields, files, function(recipe){
+          // console.log('===== Recipe BEFORE editing ======');
+          // console.log(recipe);
+          recipe.save(function(){
+            done();
+          });
+        });
+      });
+    });
 
+    it('should delete a photo from the recipe photos array', function(done){
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+      var index = 1;
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.deletePhoto(userId, index, function(recipe){
+          // console.log('==== photos after deletion ====');
+          // console.log(recipe.photos);
+          expect(recipe).to.be.ok;
+          expect(recipe.photos).to.be.instanceof(Array);
+          expect(recipe.photos).to.have.length(1);
+          expect(recipe.photos[0]).to.have.deep.property('fileName', 'aeropress2-RECIPE.jpg');
+          done();
+        });
+      });
+    });
+
+    // before(function(done){
+    //   var recipeId = '53a37a7dabc0ef3158df9940';
+    //   var userId = '53a1b7fb5f7b558f0e623b53';
+    //
+    //   Recipe.findById(recipeId, function(recipe){
+    //     recipe.addPhoto(userId, files, function(recipe){
+    //       recipe.save(function(){
+    //         // console.log('==== photos array of 5 ====');
+    //         // console.log(recipe.photos);
+    //         done();
+    //       });
+    //     });
+    //   });
+    // });
+
+    it('should delete a photo from the recipe photos array of 5 and renumber the order accordingly', function(done){
+      var files = {'photos':[{originalFilename:'aeropress3-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress3-RECIPE.jpg', 'size':200, 'caption':'DELETE ME'}, {originalFilename:'aeropress4-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress4-RECIPE.jpg', 'size':200, 'caption':'caption 4'}, {originalFilename:'aeropress5-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress5-RECIPE.jpg', 'size':200, 'caption':'caption 5'}]};
+      var recipeId = '53a37a7dabc0ef3158df9940';
+      var userId = '53a1b7fb5f7b558f0e623b53';
+      var index = 2;
+
+      Recipe.findById(recipeId, function(recipe){
+        recipe.addPhoto(userId, files, function(recipe){
+          // console.log('==== photos array of 5 ====');
+          // console.log(recipe.photos);
+          recipe.deletePhoto(userId, index, function(recipe){
+            // console.log('==== photos after deletion ====');
+            // console.log(recipe.photos);
+            expect(recipe).to.be.ok;
+            expect(recipe.photos).to.be.instanceof(Array);
+            expect(recipe.photos).to.have.length(4);
+            expect(recipe.photos[0]).to.have.deep.property('fileName', 'aeropress2-RECIPE.jpg');
+            expect(recipe.photos[3]).to.have.deep.property('order', 3);
+            done();
+          });
+        });
+      });
+    });
+
+  });
 
 
 
