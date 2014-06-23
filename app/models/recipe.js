@@ -15,7 +15,6 @@ var _ = require('lodash');
 
 class Recipe{
 
-
   calculateByDrinkSize(drinkSize, unit, fn){
 
     var gramsInOz = 28.3495;

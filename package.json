@@ -35,12 +35,14 @@
     "mongoose" :       "*",
     "passport" :       "*",
     "passport-local" : "*",
-    "passport-facebook" : "*",
-    "passport-twitter" : "*",
-    "passport-google-oauth" : "*",
+    "passport-facebook":     "*",
+    "passport-twitter":      "*",
+    "passport-google-oauth": "*",
     "connect-flash":   "*",
     "bcrypt-nodejs":   "*",
-    "cookie-parser":    "*"
+    "cookie-parser":   "*",
+    "multiparty":      "*",
+    "mkdirp":          "*"
 
   },
   "devDependencies": {
