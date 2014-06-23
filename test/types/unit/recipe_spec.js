@@ -530,7 +530,7 @@ describe('Recipe', function(){
 
   });
 
-  describe('.calculateCoffeeAmount', function(){
+  describe('.calculateByCoffeeAmount', function(){
     beforeEach(function(done){
       var recipeId = '53a37a7dabc0ef3158df9940';
       var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
@@ -545,16 +545,15 @@ describe('Recipe', function(){
       });
     });
 
-    it('should calculate the ratio of water to coffee needed - COFFEE AMOUNT specified - GRAMS', function(done){
+    it('should calculate the amount of water needed - UNITS SAME - GRAMS', function(done){
       var recipeId = '53a37a7dabc0ef3158df9940';
       var coffeeToUse = 12;
       var unit = 'grams';
-      var drinkSize = null;
 
       Recipe.findById(recipeId, function(recipe){
         // console.log('==== recipe we found ===');
         // console.log(recipe);
-        recipe.calculateCoffeeAmount(coffeeToUse, unit, drinkSize, function(calculation){
+        recipe.calculateByCoffeeAmount(coffeeToUse, unit, function(calculation){
           // console.log('=== calculation coming back! ===');
           // console.log(calculation);
           expect(calculation).to.be.ok;
@@ -568,7 +567,7 @@ describe('Recipe', function(){
       });
     });
 
-    it('should calculate the ratio of water to coffee needed - COFFEE AMOUNT specified - OZ', function(done){
+    it('should calculate the amount of water needed - UNITS SAME - OZ', function(done){
       var recipe = {_id:'53a37a7dabc0ef3158df9942', userId:'53a1b99efc3d30e20e7e5b69', brewMethodId:['53a37a7dabc0ef3158df9935'], title:['Recipe To Test Oz Drinks'], description:['about this recipe...']};
       var recipeId = '53a37a7dabc0ef3158df9942';
       var fields = {'waterRatio':[8.11], 'coffeeRatio':[0.53], 'ratioUnit':['oz'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
@@ -576,7 +575,6 @@ describe('Recipe', function(){
 
       var coffeeToUse = 0.6;
       var unit = 'oz';
-      var drinkSize = null;
 
       Recipe.create(recipe, function(recipe){
         Recipe.findById(recipeId, function(recipe){
@@ -584,7 +582,7 @@ describe('Recipe', function(){
             // console.log('==== recipe added stuff to ===');
             // console.log(recipe);
             recipe.save(function(){
-              recipe.calculateCoffeeAmount(coffeeToUse, unit, drinkSize, function(calculation){
+              recipe.calculateByCoffeeAmount(coffeeToUse, unit, function(calculation){
                 // console.log('=== calculation coming back! ===');
                 // console.log(calculation);
                 expect(calculation).to.be.ok;
@@ -601,7 +599,7 @@ describe('Recipe', function(){
       });
     });
 
-    it('should calculate the ratio needed - COFFEE AMOUNT specified - units NOT equal - GRAMS given', function(done){
+    it('should calculate the amount of water needed - UNITS DIFFERENT - GRAMS given', function(done){
       var recipe = {_id:'53a37a7dabc0ef3158df9942', userId:'53a1b99efc3d30e20e7e5b69', brewMethodId:['53a37a7dabc0ef3158df9935'], title:['Recipe To Test Oz Drinks'], description:['about this recipe...']};
       var recipeId = '53a37a7dabc0ef3158df9942';
       var fields = {'waterRatio':[8.11], 'coffeeRatio':[0.53], 'ratioUnit':['oz'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
@@ -609,7 +607,6 @@ describe('Recipe', function(){
 
       var coffeeToUse = 12;
       var unit = 'grams';
-      var drinkSize = null;
 
       Recipe.create(recipe, function(recipe){
         Recipe.findById(recipeId, function(recipe){
@@ -617,7 +614,7 @@ describe('Recipe', function(){
             console.log('==== recipe added stuff to ===');
             console.log(recipe);
             recipe.save(function(){
-              recipe.calculateCoffeeAmount(coffeeToUse, unit, drinkSize, function(calculation){
+              recipe.calculateByCoffeeAmount(coffeeToUse, unit, function(calculation){
                 console.log('=== calculation coming back! ===');
                 console.log(calculation);
                 expect(calculation).to.be.ok;
@@ -626,6 +623,38 @@ describe('Recipe', function(){
                 expect(calculation.coffee).to.be.within(12,13);
                 expect(calculation.unit).to.equal('grams');
                 expect(calculation.drinkSize).to.be.within(6,7);
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+
+    it('should calculate the amount of water needed - UNITS DIFFERENT - OZ given', function(done){
+      var recipe = {_id:'53a37a7dabc0ef3158df9942', userId:'53a1b99efc3d30e20e7e5b69', brewMethodId:['53a37a7dabc0ef3158df9935'], title:['Recipe To Test Oz Drinks'], description:['about this recipe...']};
+      var recipeId = '53a37a7dabc0ef3158df9942';
+      var fields = {'waterRatio':['230'], 'coffeeRatio':['15'], 'ratioUnit':['grams'], 'notes':['blah'], 'brewTime':['1:30'], 'prep':[{'step':'You need a mug'}, {'step':'Boil some water.'}], 'grind':['Like sawdust'], 'instructions':[{'step':'Heres what to do', 'timer':'0:00'}, {'step':'Heres what to do', 'timer':'0:40'}, {'step':'Heres what to do', 'timer':'1:30'}]};
+      var files = {'photos':[{originalFilename:'aeropress5-RECIPE.jpg', path: __dirname + '/../../fixtures/copy-recipe/aeropress5-RECIPE.jpg', 'size':200, 'caption':'Pressing the coffee'}], 'video':['http://vimeo.com/4722171']};
+
+      var coffeeToUse = 0.5;
+      var unit = 'oz';
+
+      Recipe.create(recipe, function(recipe){
+        Recipe.findById(recipeId, function(recipe){
+          recipe.addInstructions(fields, files, function(recipe){
+            console.log('==== recipe added stuff to ===');
+            console.log(recipe);
+            recipe.save(function(){
+              recipe.calculateByCoffeeAmount(coffeeToUse, unit, function(calculation){
+                console.log('=== calculation coming back! ===');
+                console.log(calculation);
+                expect(calculation).to.be.ok;
+                expect(calculation).to.be.an('object');
+                expect(calculation.water).to.be.within(7,8);
+                expect(calculation.coffee).to.be.within(0,1);
+                expect(calculation.unit).to.equal('oz');
+                expect(calculation.drinkSize).to.be.within(7,8);
                 done();
               });
             });
