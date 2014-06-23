@@ -15,6 +15,42 @@ var _ = require('lodash');
 
 class Rating{
 
+  addUserRating(obj, fn){
+
+    //-- CHECK TO SEE IF USER HAS ALREADY GIVEN RATING --//
+
+    var isRated = [];
+    this.ratings.forEach(checkUserRatings);
+
+    function checkUserRatings(r){
+      if(r.userId === obj.userId){
+        isRated.push(r);
+        return;
+      }else{
+        return;
+      }
+    }
+
+    if(isRated.length){
+      fn(null);
+    }
+
+    //-- IF NOT, PUSH IN RATING --//
+
+    var userRating = {};
+    userRating.userId = obj.userId;
+    userRating.stars = obj.stars * 1;
+    this.ratings.push(userRating);
+    var count = this.ratings.length;
+    var newRating = obj.stars * 1;
+    // console.log('=== COUNT ====');
+    // console.log(count);
+    this.avgRating = (this.avgRating + newRating) / count;
+    // console.log('=== new rating added! ====');
+    // console.log(this);
+    ratings.save(this, ()=>fn(this));
+  }
+
   save(fn){
     recipes.save(this, ()=>{
       fn();
@@ -26,6 +62,7 @@ class Rating{
       if(!rating){
         fn(null);
       }else{
+        rating = _.create(Rating.prototype, rating);
         fn(rating);
       }
     });
@@ -56,7 +93,7 @@ class Rating{
         //var ratingObj = {};
         // ratingObj.userId = obj.userId;
         // ratingObj.stars = obj.stars;
-        // rating.ratings = [];
+        rating.ratings = [];
         //rating.ratings.push(ratingObj);
         rating.avgRating = null;
         ratings.save(rating, ()=>fn(rating));
