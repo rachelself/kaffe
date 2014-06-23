@@ -20,15 +20,15 @@ class Base{
     collection.findOne({_id:id}, (e,obj)=>{
       // console.log('==== looking for on obj... ====');
       if(obj){
-        // console.log('==== found an obj... ====');
-        // console.log(obj);
+        //console.log('==== found an obj... ====');
+        //console.log(obj);
         obj = _.create(model.prototype, obj);
         // console.log('==== changed obj prototype ====');
         // console.log(obj);
         fn(obj);
         return;
       }else{
-        // console.log('==== did not find an obj ====');
+        //console.log('==== did not find an obj ====');
         fn(null);
         return;
       }

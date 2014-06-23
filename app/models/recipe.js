@@ -3,17 +3,24 @@
 'use strict';
 
 var recipes = global.nss.db.collection('recipes');
+var ratings = global.nss.db.collection('ratings');
 var Mongo = require('mongodb');
 var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var _ = require('lodash');
 var mkdirp = require('mkdirp');
 var fs = require('fs');
-// var bcrypt = require('bcrypt-nodejs');
-// var _ = require('lodash');
+var _ = require('lodash');
 
 
 class Recipe{
+
+  // getRating(id, fn){
+  //   ratings.findOne({recipeId:id}, (err, rating)=>{
+  //     // rating = _.create(Rating.prototype, rating);
+  //     fn(rating);
+  //   });
+  // }
 
   calculateByDrinkSize(drinkSize, unit, fn){
 
@@ -29,7 +36,7 @@ class Recipe{
     //-- UNITS ARE DIFFERENT --//
     if(unit !== this.ratio.unit){
 
-      console.log('the units are different');
+      // console.log('the units are different');
 
       convertedW = this.ratio.water / gramsInOz;
       convertedC = this.ratio.coffee / gramsInOz;
@@ -42,15 +49,15 @@ class Recipe{
       calculation.water = waterToUse.toFixed(2);
       calculation.drinkSize = drinkSize;
 
-      console.log('=== calculation being sent back! ===');
-      console.log(calculation);
+      // console.log('=== calculation being sent back! ===');
+      // console.log(calculation);
 
       fn(calculation);
       return;
 
     //-- UNITS ARE THE SAME --//
     }else{
-      console.log('the units are the same');
+      // console.log('the units are the same');
 
       waterToUse = drinkSize;
       coffeeToUse = (waterToUse * this.ratio.coffee) / this.ratio.water;
@@ -552,65 +559,20 @@ class Recipe{
       if(r){
         fn(null);
       }else{
-        // console.log('==== made it inside recipe create method =====');
 
         var recipe = new Recipe();
-        // console.log('==== made a new Recipe object =====');
-        // var id = obj._id[0];
-        // console.log(id);
         recipe._id = Mongo.ObjectID(obj._id);
-        // console.log('==== gave it a Mongo ID =====');
-        // console.log(recipe._id);
         recipe.userId = obj.userId;
-      //  console.log('==== gave it a user ID =====');
-        //console.log(recipe.userId);
         recipe.brewMethodId = obj.brewMethodId[0];
-      //  console.log('==== gave it a brew method ID =====');
-        //console.log(recipe.brewMethodId);
         recipe.title = obj.title[0];
-        //console.log('==== gave it a title =====');
-        //console.log(recipe.title);
         recipe.description = obj.description[0];
-        //console.log('==== gave it a desc =====');
-        //console.log(recipe.description);
-        // recipe.ratio = {};
-        // console.log(recipe.ratio);
-
-        // recipe.ratio.water = [];
-        // recipe.ratio.coffee = [];
-        //recipe.ratio.water.push(obj.waterAmnt, obj.waterUnit);
-        //recipe.ratio.coffee.push(obj.coffeeAmnt, obj.coffeeUnit);
-        //recipe.notes = obj.notes[0];
-        //console.log(recipe.notes);
-
-        // recipe.grind = obj.grind[0];
-        // console.log(recipe.grind);
-        // recipe.brewTime = obj.brewTime[0];
-        // console.log(recipe.brewTime);
-        // recipe.instructions = [];
-        // console.log(recipe.instructions);
-
-        // recipe.prep = [obj.prep];
-
-        // recipe.instructions.push({obj.instructions});
-        // recipe.prep.push({obj.prep});
-        // var instructions = obj.instructions.map(i=>{i.step:i.text, i.timer:i.time});
-        // recipe.instructions = instructions;
-        // var prep = obj.prep.map(p=>{p.step:p.text});
-        // recipe.prep = prep;
-        // var path = obj.photo[0]
-
-        // recipe.photos = [];
-        // console.log(recipe.photos);
-        // recipe.videos = [];
-        //console.log('==== the new recipe!! =====');
-        //console.log(recipe);
         recipes.save(recipe, ()=>fn(recipe));
       }
     });
   }
 
 }
+
 
 //--- CHECK TO MAKE SURE USER IS RECIPE OWNER -- //
 

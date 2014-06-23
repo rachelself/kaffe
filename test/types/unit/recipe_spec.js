@@ -14,12 +14,13 @@ var factory = traceur.require(__dirname + '/../../helpers/factory.js');
 var fs = require('fs');
 
 var Recipe;
+var Rating;
 
 describe('Recipe', function(){
   before(function(done){
     db(function(){
       Recipe = traceur.require(__dirname + '/../../../app/models/recipe.js');
-    //  console.log('== before ran ===');
+      Rating = traceur.require(__dirname + '/../../../app/models/rating.js');
       done();
     });
   });
@@ -732,9 +733,15 @@ describe('Recipe', function(){
     });
   });
 
-  describe('.addRating', function(){
-
-  });
+  // describe('.getRating', function(){
+  //   it('should check in the ratings collection for the recipeId', function(done){
+  //     var recipeId = '53a37a7dabc0ef3158df9940';
+  //     Recipe.getRating(recipeId, function(recipe){
+  //       expect(recipe).to.be.null;
+  //       done();
+  //     });
+  //   });
+  // });
 
 
 
