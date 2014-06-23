@@ -24,17 +24,17 @@ describe('Rating', function(){
   });
 
   beforeEach(function(done){
-    global.nss.db.collection('recipes').drop(function(){
+    //global.nss.db.collection('recipes').drop(function(){
       global.nss.db.collection('ratings').drop(function(){
-        factory('recipe', function(recipes){
+        //factory('recipe', function(recipes){
           factory('rating', function(ratings){
             // cp.execFile(__dirname + '/../../fixtures/before-recipe.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
               done();
             // });
           });
-        });
+        //});
       });
-    });
+    //});
   });
 
   describe('.create', function(){
@@ -99,6 +99,46 @@ describe('Rating', function(){
       });
     });
   });
+
+  describe('.findByUserId', function(){
+    beforeEach(function(done){
+      var body = {'recipeId':'53a37a7dabc0ef3158df9939', 'userId':'53a1b7fb5f7b558f0e623b53'};
+      // var recipe = '53a37a7dabc0ef3158df9939';
+      var obj = {'userId':'53a1b7fb5f7b558f0e623b53', 'stars':1};
+      Rating.create(body, function(rating){
+        rating.addUserRating(obj, function(rating){
+          console.log('===== NEW RATING ====');
+          console.log(rating);
+          rating.save(function(){
+            done();
+          });
+        });
+      });
+    });
+
+    it('should find all ratings a user has given', function(done){
+      var userId = '53a1b7fb5f7b558f0e623b53';
+      Rating.findAll(function(r){
+        Rating.findByUserId(r, userId, function(ratings){
+          expect(ratings).to.be.ok;
+          expect(ratings).to.be.instanceof(Array);
+          expect(ratings).to.have.length(1);
+          expect(ratings[0]).to.have.deep.property('userId', '53a1b7fb5f7b558f0e623b53');
+          done();
+        });
+      });
+    });
+
+  it('should NOT find ratings a user has given - NONE FOUND', function(done){
+    var userId = '53a1b99efc3d30e20e7e5b69';
+    Rating.findAll(function(r){
+      Rating.findByUserId(r, userId, function(ratings){
+        expect(ratings).to.be.null;
+        done();
+      });
+    });
+  });
+});
 
   describe('#addUserRating', function(){
     beforeEach(function(done){

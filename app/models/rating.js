@@ -32,7 +32,9 @@ class Rating{
     }
 
     if(isRated.length){
+      // console.log('this user has already rated this recipe');
       fn(null);
+      return;
     }
 
     //-- IF NOT, PUSH IN RATING --//
@@ -52,9 +54,40 @@ class Rating{
   }
 
   save(fn){
-    recipes.save(this, ()=>{
+    ratings.save(this, ()=>{
       fn();
     });
+  }
+
+  static findByUserId(objs, id, fn){
+    // console.log('=== ALL RATINGS ====');
+    // console.log(objs);
+
+    var usersRatings = [];
+    objs.forEach(examineRatings);
+
+    function examineRatings(o){
+      // console.log('inside examineRatings');
+      // console.log(o);
+      o.ratings.forEach(isMatch);
+    }
+
+    function isMatch(r){
+      // console.log('inside isMatch');
+      if(r.userId === id){
+        usersRatings.push(r);
+        // console.log('pushing in a match!!');
+        // console.log(r);
+      }
+    }
+
+    if(usersRatings.length){
+      console.log('===== USERS RATINGS =====');
+      console.log(usersRatings);
+      fn(usersRatings);
+    }else{
+      fn(null);
+    }
   }
 
   static findByRecipeId(id, fn){
@@ -106,6 +139,9 @@ class Rating{
 
 
 }
+
+
+
 
 
 module.exports = Rating;

@@ -734,8 +734,18 @@ describe('Recipe', function(){
   });
 
   // describe('.getRating', function(){
-  //   it('should check in the ratings collection for the recipeId', function(done){
+  //   it('should find the rating record in the db for the recipe id given', function(done){
   //     var recipeId = '53a37a7dabc0ef3158df9940';
+  //     Recipe.getRating(recipeId, function(rating){
+  //       expect(rating).to.be.ok;
+  //       expect(rating.recipeId).to.equal('53a37a7dabc0ef3158df9940');
+  //       expect(rating.avgRating).to.equal(5);
+  //       done();
+  //     });
+  //   });
+  //
+  //   it('should NOT find the rating record in the db for the recipe id given - NO RECORD', function(done){
+  //     var recipeId = '53a37a7dabc0ef3158df9939';
   //     Recipe.getRating(recipeId, function(recipe){
   //       expect(recipe).to.be.null;
   //       done();

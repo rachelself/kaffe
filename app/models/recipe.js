@@ -573,7 +573,6 @@ class Recipe{
 
 }
 
-
 //--- CHECK TO MAKE SURE USER IS RECIPE OWNER -- //
 
 function isOwner(userId, ownerId){
