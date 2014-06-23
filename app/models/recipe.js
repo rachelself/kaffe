@@ -15,9 +15,49 @@ var fs = require('fs');
 
 class Recipe{
 
+  calculateByDrinkSize(drinkSize, unit, fn){
+
+    var gramsInOz = 28.3495;
+    var calculation = {};
+    var waterToUse;
+    var estimatedDrinkSize;
+    var convertedW;
+    var convertedC;
+    var coffeeToUse;
+
+
+    //-- UNITS ARE DIFFERENT --//
+    if(unit !== this.ratio.unit){
+      console.log('the units are different');
+
+      convertedW = this.ratio.water / gramsInOz;
+      convertedC = this.ratio.coffee / gramsInOz;
+
+      waterToUse = drinkSize;
+      coffeeToUse = (waterToUse * convertedC) / convertedW;
+
+      calculation.coffee = coffeeToUse.toFixed(2);
+      calculation.unit = unit;
+      calculation.water = waterToUse.toFixed(2);
+      calculation.drinkSize = drinkSize;
+
+      fn(calculation);
+      return;
+
+
+    //-- UNITS ARE THE SAME --//
+    }else{
+      console.log('the units are the same');
+
+
+
+    }
+
+  }
+
   calculateByCoffeeAmount(coffeeToUse, unit, fn){
-    console.log('=== recipe ====');
-    console.log(this.ratio);
+    // console.log('=== recipe ====');
+    // console.log(this.ratio);
     var gramsInOz = 28.3495;
     var calculation = {};
     var waterToUse;
@@ -28,12 +68,12 @@ class Recipe{
 
     //-- UNITS ARE DIFFERENT --//
     if(unit !== this.ratio.unit){
-      console.log('units are not equal!');
+      // console.log('units are not equal!');
 
       //-- GIVEN IN GRAMS --//
 
       if(unit === 'grams'){
-        console.log('units given in grams');
+        // console.log('units given in grams');
         convertedW = this.ratio.water * gramsInOz;
         convertedC = this.ratio.coffee * gramsInOz;
 
@@ -51,7 +91,7 @@ class Recipe{
       }else{
         //-- GIVEN IN OZ --//
 
-        console.log('units given in oz');
+        // console.log('units given in oz');
 
         convertedW = this.ratio.water / gramsInOz;
         convertedC = this.ratio.coffee / gramsInOz;
@@ -66,44 +106,41 @@ class Recipe{
 
         fn(calculation);
         return;
-
       }
 
-    //-- UNITS ARE THE SAME --//
-  }else{
-
-    if(unit === 'grams'){
-      //-- BOTH GRAMS --//
-      console.log('units are in grams');
-
-      waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
-      estimatedDrinkSize = (waterToUse / gramsInOz).toFixed(2);
-
-      calculation.coffee = coffeeToUse;
-      calculation.unit = unit;
-      calculation.water = waterToUse;
-      calculation.drinkSize = estimatedDrinkSize;
-
-      fn(calculation);
-      return;
-
+      //-- UNITS ARE THE SAME --//
     }else{
-      //-- BOTH OZ --//
-      console.log('units are in oz');
 
-      waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
-      estimatedDrinkSize = waterToUse;
+      if(unit === 'grams'){
+        //-- BOTH GRAMS --//
+        // console.log('units are in grams');
 
-      calculation.coffee = coffeeToUse;
-      calculation.unit = unit;
-      calculation.water = waterToUse;
-      calculation.drinkSize = estimatedDrinkSize;
+        waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
+        estimatedDrinkSize = (waterToUse / gramsInOz).toFixed(2);
 
-      fn(calculation);
-      return;
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = estimatedDrinkSize;
 
-    }
+        fn(calculation);
+        return;
 
+      }else{
+        //-- BOTH OZ --//
+        // console.log('units are in oz');
+
+        waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
+        estimatedDrinkSize = waterToUse;
+
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = estimatedDrinkSize;
+
+        fn(calculation);
+        return;
+      }
     }
   }
 
