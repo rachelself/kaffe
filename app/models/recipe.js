@@ -28,6 +28,7 @@ class Recipe{
 
     //-- UNITS ARE DIFFERENT --//
     if(unit !== this.ratio.unit){
+
       console.log('the units are different');
 
       convertedW = this.ratio.water / gramsInOz;
@@ -41,18 +42,27 @@ class Recipe{
       calculation.water = waterToUse.toFixed(2);
       calculation.drinkSize = drinkSize;
 
+      console.log('=== calculation being sent back! ===');
+      console.log(calculation);
+
       fn(calculation);
       return;
-
 
     //-- UNITS ARE THE SAME --//
     }else{
       console.log('the units are the same');
 
+      waterToUse = drinkSize;
+      coffeeToUse = (waterToUse * this.ratio.coffee) / this.ratio.water;
 
+      calculation.coffee = coffeeToUse.toFixed(2);
+      calculation.unit = unit;
+      calculation.water = waterToUse.toFixed(2);
+      calculation.drinkSize = drinkSize;
 
+      fn(calculation);
+      return;
     }
-
   }
 
   calculateByCoffeeAmount(coffeeToUse, unit, fn){
