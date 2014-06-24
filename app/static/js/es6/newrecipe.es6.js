@@ -36,7 +36,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){  
   // }
   //
   function addInstruction(){
-    var instructionStep = `<div class="step"><input type="text" name="step" required="true" placeholder="Pour 50g water..." autofocus><h6>Timer Event:</h6><input type="text" placeholder="1:30"><button class="remove-step button button-rounded button-flat">X</button><button class="move-step button button-rounded button-flat">Move</button></div>`;
+    var instructionStep = `<div class="step"><input type="text" name="step" required="true" placeholder="Pour 50g water..." autofocus><h6>Timer Event:</h6><input type="text" name="timer" placeholder="1:30"><button class="remove-step button button-rounded button-flat">X</button><button class="move-step button button-rounded button-flat">Move</button></div>`;
     $('.steps').append(instructionStep);
   }
 

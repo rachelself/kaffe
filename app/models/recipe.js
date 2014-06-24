@@ -412,18 +412,21 @@ class Recipe{
     this.ratio = {};
     this.ratio.water = fields.waterRatio[0] * 1;
     this.ratio.coffee = fields.coffeeRatio[0] * 1;
-    this.ratio.unit = fields.ratioUnit[0].trim();
+    this.ratio.unit = fields.unit[0].trim();
 
 
     //--- INSTRUCTIONS ---
     this.instructions = [];
 
-    fields.instructions.forEach((obj, index)=>{
+    fields.step.forEach((step, index)=>{
       var instructionStep = {};
       instructionStep.order = index;
-      instructionStep.text = obj.step;
+      instructionStep.text = step[index].trim();
+      this.instructions.push(instructionStep);
+    });
 
-      var time = obj.timer.split(':').map(n=>n*1);
+    fields.timer.forEach((t, index)={
+      var time = t.timer.split(':').map(n=>n*1);
       var seconds;
       var minutes;
       var hours;
@@ -441,11 +444,9 @@ class Recipe{
         totalTime = (hours * 60 * 60) + (minutes * 60) + seconds;
       }
 
-      instructionStep.timer = totalTime;
-      instructionStep.displayTime = obj.timer;
-      this.instructions.push(instructionStep);
+      instructions[index].timer = totalTime;
+      instructions[index].displayTime = t.timer;
     });
-
 
     //--- PREP ---
     this.prep = [];
