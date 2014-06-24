@@ -15,7 +15,10 @@ block content
         .row
           .u-1of3
             a.thumbnail(href='#')
-              img.userProfile(src='user.photo')
+              if(user.photo)
+                img.userProfile(src=user.photo)
+              else
+                img.userProfile(src='/img/profile-default.jpg')
             if(typeof(user.name) !== undefined)
               if(user.name)
                 h5 #{user.name}
@@ -32,10 +35,10 @@ block content
             else
               p Edit your profile to include your name
           .u-2of3
-            a.edit.button.button-rounded.button-flat-highlight(href='#editprofile') Edit Profile
+            a.edit.button.button-rounded.button-flat-highlight(href='/profile/edit') Edit Profile
             h6 About
             if(user.bio)
-              p= name
+              p= user.bio
             else if(!user.bio)
               p Edit your profile to include a bio
 

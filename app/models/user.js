@@ -39,6 +39,7 @@ class User{
     this.firstName = '';
     this.lastName = '';
     this.isCompany = '';
+    this.bio = '';
     this.photo = '';
     this.recipes = [];
     this.recipeLibrary = [];
@@ -85,7 +86,6 @@ class User{
 
   edit(fields, files, fn){
 
-    var dirContents = fs.readdirSync(`${__dirname}/../static/img/userImages/${this._id}`);
     var path = files.photo[0].path;
     var fileName = files.photo[0].originalFilename;
 
@@ -93,7 +93,7 @@ class User{
 
     this.firstName = fields.firstName[0];
     this.lastName = fields.lastName[0];
-    this.isCompany = fields.isCompany[0];
+    //this.isCompany = fields.isCompany[0];
     this.bio = fields.bio[0];
     this.photo = `/img/userImages/${this._id}/${fileName}`;
 
@@ -105,7 +105,11 @@ class User{
     // does this user have an image directory?
     if(!fs.existsSync(`__dirname/../../../app/static/img/userImages/${this._id}`)){
       mkdirp(`${__dirname}/../static/img/userImages/${this._id}`);
+      console.log('=== made an image directory for this user! ===');
     }
+
+    var dirContents = fs.readdirSync(`${__dirname}/../static/img/userImages/${this._id}`);
+
 
     // does this user have any images IN the directory?
     if(dirContents.length !== 0){
@@ -223,7 +227,7 @@ class User{
         return r;
       }
     }
-    
+
     fn(this.recipeLibrary);
   }
 

@@ -11,11 +11,11 @@ class Base{
     // console.log('=== made it to find by id - BASE =====');
     // console.log(id);
     if(typeof id === 'string'){
-      if(id.length !== 24){fn(null); return;}
+      if(id.length !== 24){fn(null, null); return;}
       id = Mongo.ObjectID(id);
       // console.log(id);
     }
-    if(!(id instanceof Mongo.ObjectID)){fn(null); return;}
+    if(!(id instanceof Mongo.ObjectID)){fn(null, null); return;}
 
     collection.findOne({_id:id}, (e,obj)=>{
       // console.log('==== looking for on obj... ====');
@@ -25,11 +25,11 @@ class Base{
         obj = _.create(model.prototype, obj);
         // console.log('==== changed obj prototype ====');
         // console.log(obj);
-        fn(obj);
+        fn(null, obj);
         return;
       }else{
         //console.log('==== did not find an obj ====');
-        fn(null);
+        fn(null, null);
         return;
       }
     });

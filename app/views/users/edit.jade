@@ -1,0 +1,56 @@
+extends ../shared/template
+
+block content
+
+  .container__profile
+
+    header.header
+      include ../shared/nav
+
+    .subnav
+      include ../shared/profile-subnav
+
+    #profile.profile
+      .main.well
+        .row
+          .u-1of3
+            a.thumbnail(href='#')
+              if(user.photo)
+                img.userProfile(src='#{user.photo')
+              else
+                img.userProfile(src='/img/profile-default.jpg')
+
+          .u-2of3
+            form.profile-edits(method='post' action='/profile', enctype='multipart/form-data')
+              h6 First Name
+              if(!user.firstName)
+                input(type='text', name='firstName', autofocus=true)
+              else
+                input(type='text', name='firstName', value='#{user.firstName}')
+
+              h6 Last Name
+              if(!user.lastName)
+                input(type='text', name='lastName')
+              else
+                input(type='text', name='lastName', value='#{user.lastName}')
+
+              h6 About
+              if(!user.bio)
+                textarea(name='bio', style='width: 100%;', placeholder='A little bit about you...')
+              else
+                textarea(name='bio', placeholder='A little bit about you...', value='#user.bio')
+
+              h6 Profile Picture
+              input(type='file', name='photo')
+
+              button.save.button.button-rounded.button-flat-highlight Save Profile
+              a.cancel(href='/profile') Cancel
+
+
+
+
+
+
+
+//- block scripts
+//-   script(src='/js/es6/compiled/profile.js')
