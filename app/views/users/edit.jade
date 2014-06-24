@@ -16,7 +16,7 @@ block content
           .u-1of3
             a.thumbnail(href='#')
               if(user.photo)
-                img.userProfile(src='#{user.photo')
+                img.userProfile(src=user.photo)
               else
                 img.userProfile(src='/img/profile-default.jpg')
 
@@ -33,12 +33,11 @@ block content
                 input(type='text', name='lastName')
               else
                 input(type='text', name='lastName', value='#{user.lastName}')
-
               h6 About
               if(!user.bio)
                 textarea(name='bio', style='width: 100%;', placeholder='A little bit about you...')
               else
-                textarea(name='bio', placeholder='A little bit about you...', value='#user.bio')
+                textarea(name='bio', placeholder='A little bit about you...') #{user.bio}
 
               h6 Profile Picture
               input(type='file', name='photo')

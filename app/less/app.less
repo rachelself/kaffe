@@ -172,6 +172,15 @@ GRIDS FOR FLEXBOX=
   padding-left: 20px;
 }
 
+.u-3of3{
+  display: flex;
+  width: 100% !important;
+  float: none;
+  display: block;
+  padding: 20px;
+  margin-top: 20px;
+}
+
 .u-textCenter{
   text-align: center;
 }
@@ -742,6 +751,47 @@ SHARE / RECIPES=
       display: inline-block;
       margin-right: 15px;
     }
+    h4{
+      color: black;
+      position: relative;
+      top: 220px;
+      left: 20px;
+      z-index: 1;
+    }
+
   }
 
+}
+
+/* ======================================================================
+
+NEW RECIPE=
+
+========================================================================= */
+
+.container__new-recipe{
+  .subnav{
+    // display: flex;
+    // flex-wrap: nowrap;
+    // justify-content: flex-start;
+    // align-items: baseline;
+    // position: relative;
+    // top: 70px;
+    // left: 20px;
+
+  }
+
+  #new-recipe-info, #new-recipe-content{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    position: relative;
+    top: 70px;
+    left: 20px;
+  }
+  #new-recipe-content{
+    position: relative;
+    top: 20px;
+  }
 }

@@ -1,5 +1,10 @@
 'use strict';
 
+var multiparty = require('multiparty');
+var traceur = require('traceur');
+var Recipe = traceur.require(__dirname + '/../models/recipe.js');
+//var User = traceur.require(__dirname + '/../models/user.js');
+
 // exports.login = (req, res)=>{
 //   res.render('users/login', {message: req.flash('loginMessage'), title: 'Login'});
 // };
@@ -8,13 +13,15 @@
 //   res.render('users/signup', {message: req.flash('registerMessage'), title: 'Register'});
 // };
 
-var multiparty = require('multiparty');
-//var traceur = require('traceur');
-//var User = traceur.require(__dirname + '/../../app/models/user.js');
-// var _ = require('lodash');
-
 exports.profile = (req, res)=>{
-  res.render('users/profile', {user: req.user, title: 'Profile'});
+  var id = req.user._id;
+  // console.log('==== USER ID FROM REQ.USER ====');
+  // console.log(id);
+  Recipe.findByCreator(id, recipes=>{
+    // console.log('==== RECIPES THE USER HAS ====');
+    // console.log(recipes);
+    res.render('users/profile', {user: req.user, recipes: recipes, title: 'Profile'});
+  });
 };
 
 exports.edit = (req, res)=>{
@@ -26,13 +33,15 @@ exports.update = (req, res)=>{
 
   form.parse(req, (err, fields, files)=>{
     var user = req.user;
-    // console.log('=== form we are parsing ===');
-    // console.log(form);
+    // console.log('=== FIELDS ===');
+    // console.log(fields);
+    // console.log('=== FILES ===');
+    // console.log(files);
     user.edit(fields, files, user=>{
-      console.log('=== user we are getting back');
-      console.log(user);
+      // console.log('=== user we are getting back');
+      // console.log(user);
       user.save(()=>{
-        res.redirect('/profile', {user: req.user, title: 'Profile'});
+        res.redirect('/profile');
       });
     });
   });

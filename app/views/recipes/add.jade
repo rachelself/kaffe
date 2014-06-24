@@ -1,0 +1,62 @@
+extends ../shared/template
+
+block content
+
+  .container__new-recipe
+    header.header
+      include ../shared/nav
+    //- .subnav
+      //- include ../shared/learn-subnav
+
+    #new-recipe-content.well
+
+      form.u-3of3(method='post', action='/recipes/#{recipeId}', enctype='multipart/form-data')
+        .ratio
+          h5 Ratio
+          h6 Water:
+          input(type='number', min='0', novalidate=true, name='waterRatio', autofocus=true)
+          h6 Coffee:
+          input(type='number', min='0', novalidate=true, name='coffeeRatio', autofocus=true)
+          h6 Unit:
+          select.unit(name='unit')
+            option(value='grams') grams
+            option(value='oz') oz
+        .prep
+          h5 Preparations
+          .controls
+            a.add-prep.button.button-rounded.button-flat(href='#') Add Prep
+          .prep-steps
+        .brewTime
+          h5 Brew Time
+          input(type='text', name='brewTime', placeholder='1:30', autofocus=true)
+
+        .grind
+          h5 Grind Size
+          input(type='text', name='grind', placeholder='Between sand and sawdust, fine, etc', autofocus=true)
+
+        .instructions
+          h5 Instructions
+          .controls
+            select.type-of-instruction(name='type-of-instruction')
+              option(value='fill') pour
+              option(value='bloom') bloom
+              option(value='wait') wait
+              option(value='add-water') add remaining water
+              option(value='stir') agitation or stirring
+              option(value='press') press
+              option(value='custom') custom
+            a.add-instruction.button.button-rounded.button-flat(href='#') Add Step
+          .steps
+
+        .notes
+          h5 Notes
+          textarea(name='notes', style='width: 100%;', placeholder='Here are my notes about the recipe...')
+
+        .photos
+          h5 Upload Photos
+          input(type='file', name='photo', multiple=true)
+        button.save.button.button-rounded.button-flat-highlight Save Recipe
+
+
+block scripts
+  script(src='/js/es6/compiled/newrecipe.js')

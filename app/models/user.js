@@ -88,14 +88,15 @@ class User{
 
     var path = files.photo[0].path;
     var fileName = files.photo[0].originalFilename;
+    var id = this._id.toString();
 
     //--- FIELDS (everything else)
 
-    this.firstName = fields.firstName[0];
-    this.lastName = fields.lastName[0];
+    this.firstName = fields.firstName[0].trim();
+    this.lastName = fields.lastName[0].trim();
     //this.isCompany = fields.isCompany[0];
-    this.bio = fields.bio[0];
-    this.photo = `/img/userImages/${this._id}/${fileName}`;
+    this.bio = fields.bio[0].trim();
+    this.photo = `/img/userImages/${id}/${fileName}`;
 
 
     //--- FILES (photos)
@@ -103,12 +104,12 @@ class User{
     if(!files.photo[0].size){fn(null); return;}
 
     // does this user have an image directory?
-    if(!fs.existsSync(`__dirname/../../../app/static/img/userImages/${this._id}`)){
-      mkdirp(`${__dirname}/../static/img/userImages/${this._id}`);
+    if(!(fs.existsSync(`__dirname/../../../app/static/img/userImages/${id}`))){
+      mkdirp(`${__dirname}/../static/img/userImages/${id}`);
       console.log('=== made an image directory for this user! ===');
     }
 
-    var dirContents = fs.readdirSync(`${__dirname}/../static/img/userImages/${this._id}`);
+    var dirContents = fs.readdirSync(`${__dirname}/../static/img/userImages/${id}`);
 
 
     // does this user have any images IN the directory?
@@ -125,20 +126,19 @@ class User{
       }else{
         //==== removing old image ====
         var oldImgPath = dirContents[0];
-        fs.unlinkSync(`${__dirname}/../static/img/userImages/${this._id}/${oldImgPath}`);
+        fs.unlinkSync(`${__dirname}/../static/img/userImages/${id}/${oldImgPath}`);
 
         //==== moved the image ====
-        fs.renameSync(path, `${__dirname}/../static/img/userImages/${this._id}/${fileName}`);
+        fs.renameSync(path, `${__dirname}/../static/img/userImages/${id}/${fileName}`);
       }
 
     }else{
       //==== dirContents is empty
-      fs.renameSync(path, `${__dirname}/../static/img/userImages/${this._id}/${fileName}`);
+      fs.renameSync(path, `${__dirname}/../static/img/userImages/${id}/${fileName}`);
 
     }
 
     fn(this);
-
   }
 
   addToLibrary(recipeId, brewMethodId, fn){

@@ -2,18 +2,18 @@
 
 'use strict';
 
-var brewmethods = global.nss.db.collection('brewmethods');
+var brewMethods = global.nss.db.collection('brewMethods');
 var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 
 class BrewMethod{
 
   static findById(id, fn){
-    Base.findById(id, brewmethods, BrewMethod, fn);
+    Base.findById(id, brewMethods, BrewMethod, fn);
   }
 
   static findAll(fn){
-    Base.findAll(brewmethods, BrewMethod, fn);
+    Base.findAll(brewMethods, BrewMethod, fn);
   }
 }
 

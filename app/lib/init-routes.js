@@ -47,9 +47,21 @@ function load(app, fn){
   app.post('/profile', dbg, users.update);
   app.get('/profile/recipeLibrary', dbg, users.recipeLibrary);
   app.get('/profile/settings', dbg, users.settings);
+
   app.get('/learn', dbg, learn.index);
   app.get('/brew', dbg, brew.index);
   app.get('/recipes', dbg, recipes.index);
+
+  app.get('/recipes/new', dbg, recipes.new);
+  app.post('/recipes', dbg, recipes.create);
+  app.get('/recipes/:id/add', dbg, recipes.add);
+  app.put('/recipes/:id', dbg, recipes.update);
+  //app.post('/recipes', dbg, recipes.create);
+  //app.post('/recipes/:id', dbg, recipes.addContent);
+  //app.get('/recipes/:id/addInstructions', dbg, recipes.addInstructions);
+
+
+
 
 
   // =====================================

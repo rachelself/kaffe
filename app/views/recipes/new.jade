@@ -1,0 +1,49 @@
+extends ../shared/template
+
+block content
+
+  .container__new-recipe
+    header.header
+      include ../shared/nav
+    //- .subnav
+      //- include ../shared/learn-subnav
+
+    #new-recipe-info.well
+      .u-1of3
+        h4 New Recipe
+        p Create the recipe here and add instructions & photos on the next page.
+      form#recipe-form.u-3of3(method='post', action='/recipes')
+
+        h5 Recipe Title
+        input.title(type='text', name='title', placeholder='Inverted Method', autofocus=true)
+
+        h5 Brew Method
+        select(id='brewMethod' name='brewMethodId')
+          each brewMethod in brewMethods
+            option(value=brewMethod._id.toString())= brewMethod.name
+
+        h5 Description
+        textarea.description(name='description', style='width: 100%;', placeholder='A little bit about the recipe...')
+
+        button.create-recipe.button.button-rounded.button-flat-highlight Save & Continue
+        a.cancel(href='/profile') Cancel
+
+
+
+
+block scripts
+  script(src='/js/es6/compiled/newrecipe.js')
+
+
+  //- form.u-3of3(method='post', action='/recipes', enctype='multipart/form-data')
+  //-   h5 Recipe Title
+  //-   input(type='text', name='title', placeholder='Inverted Method', autofocus=true)
+  //-   h5 Brew Method
+  //-   select
+  //-     each brewMethod in brewMethods
+  //-       option(value=brewMethod._id)= brewMethod.name
+  //-   h5 Description
+  //-   textarea(name='description', style='width: 100%;', placeholder='A little bit about the recipe...')
+  //-   h5 Description
+  //-   p You can upload multiple photos and set one as the primary
+  //-   input(type='file', name='photo', multiple=true)

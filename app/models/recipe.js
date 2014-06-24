@@ -547,18 +547,18 @@ class Recipe{
     Base.findAll(recipes, Recipe, fn);
   }
 
-  static create(obj, fn){
-    recipes.findOne({title:obj.title[0]}, (err,r)=>{
+  static create(id, obj, fn){
+    recipes.findOne({title:obj.title}, (err,r)=>{
       if(r){
         fn(null);
       }else{
 
         var recipe = new Recipe();
         recipe._id = Mongo.ObjectID(obj._id);
-        recipe.userId = obj.userId;
-        recipe.brewMethodId = obj.brewMethodId[0];
-        recipe.title = obj.title[0];
-        recipe.description = obj.description[0];
+        recipe.userId = id;
+        recipe.brewMethodId = obj.brewMethodId;
+        recipe.title = obj.title;
+        recipe.description = obj.description;
         recipes.save(recipe, ()=>fn(recipe));
       }
     });
