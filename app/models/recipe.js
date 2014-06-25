@@ -416,37 +416,105 @@ class Recipe{
 
 
     //--- INSTRUCTIONS ---
-    this.instructions = [];
+    this.instructions = null;
 
-    fields.step.forEach((step, index)=>{
+    var steps = fields.step;
+    steps = steps.map(makeObjs);
+
+    function makeObjs(s, index){
       var instructionStep = {};
+      instructionStep.text = s;
       instructionStep.order = index;
-      instructionStep.text = step[index].trim();
-      this.instructions.push(instructionStep);
-    });
+      return instructionStep;
 
-    fields.timer.forEach((t, index)={
-      var time = t.timer.split(':').map(n=>n*1);
-      var seconds;
-      var minutes;
-      var hours;
-      var totalTime;
+    }
+    // console.log('==== instructions with steps ====');
+    //console.log(steps);
+
+    var timers = fields.timer;
+    var completeInstructions = steps.map(addToInstructions);
+
+
+    function addToInstructions(s, index){
+      s.timer = getTimer(index);
+      s.displayTime = timers[index];
+      // console.log('==== timer ====');
+      // console.log(timers);
+      // console.log('==== timer at index ====');
+      // console.log(timers[index]);
+      // console.log('==== each step ====');
+      // console.log(s);
+      return s;
+    }
+
+    function getTimer(index){
+      //console.log('==== calculating the time ====');
+      //console.log(timers[index]);
+      var time = null;
+      time = timers[index].split(':').map(n=>n*1);
+      //console.log('==== time ====');
+      //console.log(time);
+      var seconds = null;
+      var minutes = null;
+      var hours = null;
+      var totalTime = null;
 
       if(time.length === 2){
         minutes = time[0];
         seconds = time[1];
         totalTime = (minutes * 60) + seconds;
-
       }else if(time.length === 3){
         hours = time[0];
         minutes = time[1];
         seconds = time[2];
         totalTime = (hours * 60 * 60) + (minutes * 60) + seconds;
       }
+      //console.log('==== totalTime returned ====');
+      //console.log(totalTime);
+      return totalTime;
 
-      instructions[index].timer = totalTime;
-      instructions[index].displayTime = t.timer;
-    });
+    }
+
+    //console.log('==== Complete Instructions = instructions WITH timers ====');
+    //console.log(completeInstructions);
+    this.instructions = completeInstructions;
+    console.log('==== instructions WITH timers ====');
+    console.log(this.instructions);
+
+    // fields.step.forEach((step, index)=>{
+    //   var instructionStep = {};
+    //   instructionStep.order = index;
+    //   instructionStep.text = step[index].trim();
+    //   this.instructions.push(instructionStep);
+    // });
+    //
+    // console.log('==== INSTRUCTIONS PRIOR TO ADDING TIMER');
+    // console.log(this.instructions);
+    //
+    // fields.timer.forEach((entry, index)={
+    //   var time = entry.timer.split(':').map(n=>n*1);
+    //   var seconds;
+    //   var minutes;
+    //   var hours;
+    //   var totalTime;
+    //
+    //   if(time.length === 2){
+    //     minutes = time[0];
+    //     seconds = time[1];
+    //     totalTime = (minutes * 60) + seconds;
+    //
+    //   }else if(time.length === 3){
+    //     hours = time[0];
+    //     minutes = time[1];
+    //     seconds = time[2];
+    //     totalTime = (hours * 60 * 60) + (minutes * 60) + seconds;
+    //   }
+    //
+    //   instructions[index].timer = totalTime;
+    //   instructions[index].displayTime = entry.timer;
+    // });
+    // console.log('==== INSTRUCTIONS AFTER ADDING TIMER');
+    // console.log(this.instructions);
 
     //--- PREP ---
     this.prep = [];
