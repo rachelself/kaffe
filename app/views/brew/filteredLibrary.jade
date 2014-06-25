@@ -1,0 +1,8 @@
+if(recipes)
+  select(id='recipeLibrary')
+    each recipe in recipes
+      option(value=recipe.id) #{recipe.title}
+
+else
+  p You haven't added any recipes for that brew method yet.
+  a(href='/recipes', class='button button-rounded button-flat-highlight') Browse Recipes

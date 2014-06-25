@@ -1,3 +1,5 @@
+/* jshint unused:false */
+
 'use strict';
 
 var multiparty = require('multiparty');
@@ -73,15 +75,15 @@ exports.addToLibrary = (req, res)=>{
     // console.log('==== user we found ====');
     // console.log(user);
     Recipe.findById(recipeId, (err, recipe)=>{
-      console.log('==== recipe we found ====');
-      console.log(recipe);
+      // console.log('==== recipe we found ====');
+      // console.log(recipe);
       var brewMethodId = recipe.brewMethodId;
       BrewMethod.findById(brewMethodId, (err, brewMethod)=>{
         var brewMethodName = brewMethod.name;
         var recipeTitle = recipe.title;
         user.addToLibrary(recipeId, recipeTitle, brewMethodId, brewMethodName, recipe=>{
-          console.log('==== recipe we are sending to jade ====');
-          console.log(recipe);
+          // console.log('==== recipe we are sending to jade ====');
+          // console.log(recipe);
           user.save(()=>{
             res.render('recipes/added');
           });

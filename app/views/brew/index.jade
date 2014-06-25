@@ -5,43 +5,52 @@ block content
   .container__brew
     header.header
       include ../shared/nav
-    .interactionbar
-      include ../shared/brew-nav
-    .select-brew-method
-      h5 What kind of brew method will you be using?
-      //- each method in methods
-      //-   .method
-      //-     img(src='#{method.photo}')
-      //-     h6 method.name
-      .row
-        .method.grid-cell
-          h6.u-textCenter Chemex
-        .method.grid-cell
-          h6.u-textCenter French Press
-        .method.grid-cell
-          h6 Aeropress
-        .method.grid-cell
-          h6 V60
-      .row
-        .method.grid-cell
-          h6 Clever
-        .method.grid-cell
-          h6 Kalita
-        .method
-          h6 Iced Coffee
-        .method.grid-cell
-          h6 Cold Brew
-    .select-recipe
-      h5 Select a recipe from your library
-      if(user.recipeLibrary)
-        select
-          //- each recipe in recipes
-          //-   option recipe.title
-          option Japanese 2014 Champion
-          option Inverted Recipe 1
-      else
-        p You haven't added any recipes yet.
-        a(href='/recipes', class='button button-rounded button-flat-highlight') Browse Recipes
+    //- .interactionbar
+    //-   include ../shared/brew-nav
+    .select-brew-method.well
 
-    .coffee-amount
+      h5 What kind of brew method will you be using?
+      each brewMethod in brewMethods
+        .method(data-id=brewMethod._id.toString())
+          h6 #{brewMethod.name}
+          a(href='#')
+            img.thumbnail(src=brewMethod.photo)
+
+      //- h5 What kind of brew method will you be using?
+      //- each brewMethod in brewMethods
+      //-   .method.grid--full(data-id=brewMethod._id.toString())
+      //-     h6 #{brewMethod.name}
+      //-     img.thumbnail.u-1of4(src=brewMethod.photo)
+
+    .select-recipe.well
+      h5 Select a recipe from your library
+      .selection
+        if(user.recipeLibrary)
+          select(id='recipeLibrary')
+            option Select a brew method first
+        else
+          p You haven't added any recipes yet.
+          a(href='/recipes', class='button button-rounded button-flat-highlight') Browse Recipes
+      .preparations
+
+
+    .coffee-amount.well.grid.grid--gutters.u-textCenter
       h5 How much coffee would you like to make?
+
+      #by-coffee-amount.u-1of3
+        p I have this much coffee to use:
+        input(type='number', placeholder='15')
+        select(id=unit)
+          option(value='grams') grams
+          option(value='oz') oz
+
+      .center
+        h5 OR
+
+      #by-drink-size.u-1of3
+        p I would like this finished drink size (in oz):
+        input(type='number' step='1', min='0', placeholder='8')
+
+
+block scripts
+  script(src='/js/es6/compiled/brew.js')

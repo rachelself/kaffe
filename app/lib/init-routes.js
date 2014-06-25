@@ -24,9 +24,14 @@ function load(app, fn){
 
 
   app.get('/', dbg, home.index);
-  // app.get('/login', dbg, users.login);
-  // app.get('/signup', dbg, users.signup);
+  //app.get('/login', dbg, users.login);
+  //app.get('/signup', dbg, users.signup);
   app.get('/profile', dbg, isLoggedIn, users.profile);
+
+  app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+  });
 
   app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/profile',
@@ -52,6 +57,8 @@ function load(app, fn){
 
   app.get('/learn', dbg, learn.index);
   app.get('/brew', dbg, brew.index);
+  app.get('/brew/filterLibrary', dbg, brew.filterLibrary);
+  app.get('/brew/prep', dbg, brew.prep);
   app.get('/recipes', dbg, recipes.index);
 
   app.get('/recipes/new', dbg, recipes.new);
@@ -80,11 +87,6 @@ function load(app, fn){
 			successRedirect : '/profile',
 			failureRedirect : '/'
 		}));
-
-	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect('/');
-	});
 
 
   // =====================================

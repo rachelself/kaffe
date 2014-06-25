@@ -165,6 +165,15 @@ GRIDS FOR FLEXBOX=
 
 }
 
+.u-1of4{
+  flex: none !important;
+  width: 20% !important;
+  height: auto;
+  display: inline-block;
+  margin-left: 20px;
+
+}
+
 .u-2of3{
   flex: none !important;
   width: 66% !important;
@@ -457,6 +466,14 @@ nav.nav.collapse.navbar-collapse{
   border-color: 1px solid #d4d4d4;
 }
 
+// .thumbnail{
+//   //background-size: cover;
+//   background-position: center;
+//   //width: 100%;
+//   height: 100%;
+//   max-height: 200px;
+// }
+
 /* ======================================================================
 
 NAV=
@@ -696,31 +713,46 @@ BREW=
 
   .select-brew-method{
     position: relative;
-    top: 170px;
+    top: 70px;
     margin: 20px;
-    .row{
+    display: flex;
+    h5{
+      display: block;
+    }
 
+    .method {
+      float: left;
+      align-self: left;
+      .thumbnail{
+        width: 95%;
+        // display: inline-block;
+
+      }
     }
-    .method{
-      width: 150px;
-      height: 150px;
-      background-color: rgba(93, 61, 48, 0.65);
-      border-radius: 20px;
-      margin: 10px;
+    .selected{
+      border: 2px solid orange;
     }
+    // .method{
+    //   width: 150px;
+    //   height: 150px;
+    //   background-color: rgba(93, 61, 48, 0.65);
+    //   border-radius: 20px;
+    //   margin: 10px;
+    // }
 
   }
 
   .select-recipe{
     position: relative;
-    top: 200px;
-    margin: 30px;
+    top: 80px;
+    margin: 20px;
   }
 
   .coffee-amount{
     position: relative;
-    top: 220px;
-    margin: 30px;
+    top: 100px;
+    margin: 20px;
+    padding: 20px;
   }
   //   display: flex;
   //   flex-wrap: nowrap;

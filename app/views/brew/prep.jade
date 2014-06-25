@@ -1,0 +1,7 @@
+if(preps)
+  h6 Prep needed for #{recipe.title}
+  each prep in preps
+    p #{prep.order + 1}.  #{prep.text}
+
+else
+  p This recipe has no prep steps.

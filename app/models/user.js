@@ -206,15 +206,31 @@ class User{
   }
 
   showLibraryByBrewMethod(brewId, fn){
-    brewId = brewId.toString();
+    //brewId = brewId.toString();
+    // console.log('==== inside showLibrary method ====');
+    // console.log('==== brewMethodId ====');
+    // console.log(brewId);
+
+    var filteredRecipes;
+    filteredRecipes = this.recipeLibrary.filter(isBrewMatch);
 
     function isBrewMatch(r){
+      // console.log('==== the brewMethod ID in the array ====');
+      // console.log(r.brewMethodId);
+      // console.log('==== the brewMethod ID we are LOOKING FOR ====');
+      // console.log(brewId);
+
+      // if(r.brewMethodId === brewId){
+      //   console.log('==== found a match ====');
+      // }
       return r.brewMethodId === brewId;
     }
 
-    var filteredRecipes = this.recipeLibrary.filter(isBrewMatch);
+    // console.log('==== recipes that match criteria ====');
+    // console.log(filteredRecipes);
 
-    if(filteredRecipes.length > 0){
+    if(filteredRecipes.length){
+      // console.log('==== recipes we are sending back ====');
       fn(filteredRecipes);
     }else{
       fn(null);
