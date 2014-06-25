@@ -46,6 +46,8 @@ function load(app, fn){
   app.get('/profile/edit', dbg, users.edit);
   app.post('/profile', dbg, users.update);
   app.get('/profile/recipeLibrary', dbg, users.recipeLibrary);
+  app.post('/profile/recipeLibrary', dbg, users.addToLibrary);
+  app.post('/profile/recipeLibrary/favorites', dbg, users.toggleFavorite);
   app.get('/profile/settings', dbg, users.settings);
 
   app.get('/learn', dbg, learn.index);
@@ -60,7 +62,7 @@ function load(app, fn){
   app.get('/recipes/:id', dbg, recipes.show);
   app.get('/recipes/edit/:id', dbg, recipes.edit);
 
-  app.post('/users/library', dbg, users.addToLibrary);
+
 
 
 

@@ -1,0 +1,17 @@
+each recipe in recipes
+  tr
+    td(data-id=recipe.id)
+      a.toggle-favorite(href='#')
+        if(recipe.isStarred)
+          span
+            i.fa.fa-star
+        else
+          span
+            i.fa.fa-star-o
+    td
+      h5 #{recipe.title}
+    td
+      h6 #{recipe.brewMethodName}
+    td
+      if(!recipe.isRated)
+        a.rate-recipe.button.button-rounded.button-flat-highlight(href='#') Rate This Recipe

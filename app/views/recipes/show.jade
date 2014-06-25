@@ -9,9 +9,11 @@ block content
       //include ../shared/learn-subnav
 
     .main.well
-      .info
+      .info(data-id=recipe._id.toString())
         h5 #{recipe.title}
         h6 #{brewMethod.name}
+        a.add-to-library.button.button-rounded.button-flat-highlight(href='#') Add To Recipe Library
+
         //- if(user._id.toString() === #{recipe.userId}.toString())
         //- a.edit.button.button-rounded.button-flat-highlight Edit Recipe
 
@@ -58,6 +60,7 @@ block content
             //a.remove-photo.button.button-rounded.button-flat Remove Photo
           if(photo.caption)
             p photo.caption
+
           //- else
           //-   p You haven't added a caption to this photo yet.
 
@@ -66,4 +69,4 @@ block content
 
 
 block scripts
-  script(src='/js/es6/compiled/recipe.js')
+  script(src='/js/es6/compiled/showRecipe.js')

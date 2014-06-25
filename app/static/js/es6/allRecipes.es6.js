@@ -12,7 +12,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){  
 
   function init(){
     $('select[id="brewMethod"]').change(filterRecipes);
-    $('#all-recipes').on('click', '.add-to-library', add);
+    //$('#all-recipes').on('click', '.add-to-library', add);
   }
 
   function filterRecipes(){
@@ -33,25 +33,26 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){  
     });
   }
 
-  function add(){
-    var recipeId = $(this).closest('.recipe').attr('data-id');
-    var recipeDiv = $(this).closest('.recipe');
-    var index = $('#all-recipes').children().index(recipeDiv);
-    console.log('=== index among childrens ===');
-    console.log(index);
-
-    // console.log('===== recipeID of what you clicked on');
-    // console.log(recipeId);
-
-    ajax(`/users/library`, 'POST', {recipeId:recipeId}, h=>{
-      console.log('==== html coming back ====');
-      console.log(h);
-      $(recipeDiv).replaceWith(h);
-      $('select :selected').val('All');
-    });
-
-
-  }
+  // function add(){
+  //   var recipeId = $(this).closest('.recipe').attr('data-id');
+  //   var recipeDiv = $(this).closest('.recipe');
+  //   var index = $('#all-recipes').children().index(recipeDiv);
+  //   console.log('=== index among childrens ===');
+  //   console.log(index);
+  //
+  //   console.log('===== recipeID of what you clicked on');
+  //   console.log(recipeId);
+  //
+  //   ajax(`/profile/recipeLibrary`, 'POST', {recipeId:recipeId}, h=>{
+  //     console.log('==== html coming back ====');
+  //     console.log(h);
+  //     $('#all-recipes').children()[index].replaceWith(h);
+  //     //$(recipeDiv).replaceWith(h);
+  //     $('select :selected').val('All');
+  //   });
+  //
+  //
+  // }
 
   // function showAll(){
   //   ajax(`/recipes`, 'GET', null, h=>{

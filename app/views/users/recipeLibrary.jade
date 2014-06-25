@@ -2,7 +2,7 @@ extends ../shared/template
 
 block content
 
-  .container__profile
+  .container__profile-recipeLibrary
 
     header.header
       include ../shared/nav
@@ -10,14 +10,34 @@ block content
     .subnav
       include ../shared/profile-subnav
 
-    #recipeLibrary.well
-      a.add.button.button-rounded.button-flat-highlight(href='#') Add Recipes
-      h6 My Recipe Library
-      table
+    .main.well
+
+      h3 My Recipe Library
+      table#recipeLibrary
         tbody
-          tr
             if(user.recipeLibrary)
-              td
+            each recipe in recipes
+              tr
+                td(data-id=recipe.id)
+                  a.toggle-favorite(href='#')
+                    if(recipe.isStarred)
+                      span
+                        i.fa.fa-star
+                    else
+                      span
+                        i.fa.fa-star-o
+                td
+                  h5 #{recipe.title}
+                td
+                  h6 #{recipe.brewMethodName}
+                td
+                  if(!recipe.isRated)
+                    a.rate-recipe.button.button-rounded.button-flat-highlight(href='#') Rate This Recipe
             else
-              td
-                p You haven't added any recipes to your library
+              tr
+                td
+                  p You haven't added any recipes to your library
+                  a.add.button.button-rounded.button-flat-highlight(href='#') Add Recipes
+
+block scripts
+  script(src='/js/es6/compiled/recipeLibrary.js')

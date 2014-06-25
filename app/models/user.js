@@ -141,12 +141,14 @@ class User{
     fn(this);
   }
 
-  addToLibrary(recipeId, brewMethodId, fn){
+  addToLibrary(recipeId, recipeTitle, brewMethodId, brewMethodName, fn){
 
-    if(!this.recipeLibrary.length){
+    if(!this.recipeLibrary){
       this.recipeLibrary = [];
+      console.log('==== we made the recipe library - did not exist ====');
+      console.log(this.recipeLibrary);
     }
-    
+
     var recipe = null;
 
     if(typeof recipeId === 'string'){
@@ -170,16 +172,21 @@ class User{
     var duplicateRecipes = this.recipeLibrary.filter(isDuplicate);
 
     if(duplicateRecipes.length > 0){
+      console.log('==== duplicate recipe! sending back null ====');
       fn(null);
       return;
     }else if(duplicateRecipes.length === 0){
       recipe = {};
       recipe.id = recipeId;
+      recipe.title = recipeTitle;
       recipe.isStarred = false;
       recipe.brewMethodId = brewMethodId;
+      recipe.brewMethodName = brewMethodName;
       recipe.isRated = false;
 
       this.recipeLibrary.push(recipe);
+      console.log('==== we pushed in a recipe! ====');
+      console.log(this.recipeLibrary);
       fn(recipe);
     }
 

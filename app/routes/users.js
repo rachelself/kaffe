@@ -3,6 +3,7 @@
 var multiparty = require('multiparty');
 var traceur = require('traceur');
 var Recipe = traceur.require(__dirname + '/../models/recipe.js');
+var BrewMethod = traceur.require(__dirname + '/../models/brewMethod.js');
 var User = traceur.require(__dirname + '/../models/user.js');
 
 // exports.login = (req, res)=>{
@@ -56,22 +57,46 @@ exports.settings = (req, res)=>{
 };
 
 exports.recipeLibrary = (req, res)=>{
-  res.render('users/recipeLibrary', {user: req.user, title: 'Recipe Library'});
+  var userId = req.user._id;
+  User.findById(userId, (err, user)=>{
+    var recipes = user.recipeLibrary;
+    res.render('users/recipeLibrary', {recipes:recipes, user: req.user, title: 'Recipe Library'});
+  });
 };
 
 exports.addToLibrary = (req, res)=>{
   console.log('==== made it inside route to add to lib ====');
   var userId = req.user._id;
-  var recipeId = req.body.id;
+  var recipeId = req.body.recipeId;
 
-  User.findById(userId, user=>{
-    Recipe.findById(recipeId, recipe=>{
+  User.findById(userId, (err, user)=>{
+    // console.log('==== user we found ====');
+    // console.log(user);
+    Recipe.findById(recipeId, (err, recipe)=>{
+      console.log('==== recipe we found ====');
+      console.log(recipe);
       var brewMethodId = recipe.brewMethodId;
-      user.addToLibrary(recipeId, brewMethodId, recipe=>{
-        user.save(()=>{
-          res.render('recipes/added', {recipe:recipe});
+      BrewMethod.findById(brewMethodId, (err, brewMethod)=>{
+        var brewMethodName = brewMethod.name;
+        var recipeTitle = recipe.title;
+        user.addToLibrary(recipeId, recipeTitle, brewMethodId, brewMethodName, recipe=>{
+          console.log('==== recipe we are sending to jade ====');
+          console.log(recipe);
+          user.save(()=>{
+            res.render('recipes/added');
+          });
         });
       });
+    });
+  });
+};
+
+exports.toggleFavorite = (req, res)=>{
+  var recipeId = req.body.recipeId;
+  var userId = req.user._id;
+  User.findById(userId, (err, user)=>{
+    user.toggleFavorite(recipeId, recipes=>{
+      res.render('users/favorites', {recipes:recipes, user: req.user});
     });
   });
 };
