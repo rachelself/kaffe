@@ -1,0 +1,5 @@
+h6 Filter by Brew Method:
+select(id='brewMethod')
+  option All
+  each brewMethod in brewMethods
+    option(value=brewMethod._id.toString()) #{brewMethod.name}

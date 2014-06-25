@@ -54,10 +54,14 @@ function load(app, fn){
 
   app.get('/recipes/new', dbg, recipes.new);
   app.post('/recipes', dbg, recipes.create);
+  app.get('/recipes/filter/:id', dbg, recipes.filter);
   app.get('/recipes/add/:id', dbg, recipes.add);
   app.post('/recipes/:id', dbg, recipes.update);
   app.get('/recipes/:id', dbg, recipes.show);
   app.get('/recipes/edit/:id', dbg, recipes.edit);
+
+  app.post('/users/library', dbg, users.addToLibrary);
+
 
 
 

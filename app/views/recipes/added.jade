@@ -1,0 +1,10 @@
+.recipe
+  if(recipe.photos)
+    each photo in recipe.photos
+      if(photo.isPrimary)
+        a(href='/recipes/#{recipe._id}')
+          img.thumbnail(src=photo.path)
+  a(href='/recipes/#{recipe._id}')
+    h5 #{recipe.title}
+  p #{recipe.description}
+  a.button.button-rounded.button-flat Added To Recipe Library

@@ -3,7 +3,7 @@
 var multiparty = require('multiparty');
 var traceur = require('traceur');
 var Recipe = traceur.require(__dirname + '/../models/recipe.js');
-//var User = traceur.require(__dirname + '/../models/user.js');
+var User = traceur.require(__dirname + '/../models/user.js');
 
 // exports.login = (req, res)=>{
 //   res.render('users/login', {message: req.flash('loginMessage'), title: 'Login'});
@@ -57,4 +57,21 @@ exports.settings = (req, res)=>{
 
 exports.recipeLibrary = (req, res)=>{
   res.render('users/recipeLibrary', {user: req.user, title: 'Recipe Library'});
+};
+
+exports.addToLibrary = (req, res)=>{
+  console.log('==== made it inside route to add to lib ====');
+  var userId = req.user._id;
+  var recipeId = req.body.id;
+
+  User.findById(userId, user=>{
+    Recipe.findById(recipeId, recipe=>{
+      var brewMethodId = recipe.brewMethodId;
+      user.addToLibrary(recipeId, brewMethodId, recipe=>{
+        user.save(()=>{
+          res.render('recipes/added', {recipe:recipe});
+        });
+      });
+    });
+  });
 };

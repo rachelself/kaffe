@@ -2,9 +2,29 @@ extends ../shared/template
 
 block content
 
-  .container__recipes
+  .container__recipes-index
     header.header
       include ../shared/nav
     .subnav
-      //- include ../shared/learn-subnav
-    h4 Share Recipes page
+      include ../shared/recipes-subnav
+
+    .main.well
+      h3.title Browse Recipes
+      p See one you like? Add it to your library to brew it.
+      #all-recipes
+        each recipe in recipes
+          .recipe(data-id=recipe._id.toString())
+            if(recipe.photos)
+              each photo in recipe.photos
+                if(photo.isPrimary)
+                  a(href='/recipes/#{recipe._id}')
+                    img.thumbnail(src=photo.path)
+            a(href='/recipes/#{recipe._id}')
+              h5 #{recipe.title}
+            p #{recipe.description}
+            a.add-to-library.button.button-rounded.button-flat-highlight(href='#') Add To Recipe Library
+
+
+
+block scripts
+  script(src='/js/es6/compiled/allRecipes.js')

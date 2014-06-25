@@ -812,8 +812,48 @@ SHOW RECIPE=
     margin: 20px;
     .photos{
       .photo > img{
-        
+
       }
     }
+  }
+}
+
+.container__recipes-index{
+  .main{
+    position: relative;
+    top: 60px;
+    margin: 20px;
+    height: 100%;
+  }
+  .subnav{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    position: relative;
+    top: 70px;
+    left: 20px;
+    z-index: 1;
+    h6, select{
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+  .recipe{
+    display: block;
+    float: left;
+    .thumbnail{
+      // width: 30%;
+      max-width: 200px;
+      max-height: 150px;
+      float: left;
+      margin: 20px 20px 0px 0px;
+    }
+    // a, p{
+    //   display: block;
+    // }
+    // a > h5{
+    //   display: block;
+    // }
   }
 }

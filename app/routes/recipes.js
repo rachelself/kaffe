@@ -8,7 +8,15 @@ var BrewMethod = traceur.require(__dirname + '/../models/brewmethod.js');
 var Recipe = traceur.require(__dirname + '/../models/recipe.js');
 
 exports.index = (req, res)=>{
-  res.render('recipes/index', {user: req.user, title: 'Recipes'});
+  Recipe.findAll(recipes=>{
+    //console.log('===== RECIPES ====');
+    //console.log(recipes);
+    BrewMethod.findAll(brewMethods=>{
+      //console.log('===== BREW METHODS ====');
+      //console.log(brewMethods);
+      res.render('recipes/index', {user: req.user, recipes: recipes, brewMethods: brewMethods, title: 'Recipes'});
+    });
+  });
 };
 
 exports.new = (req, res)=>{
@@ -37,7 +45,7 @@ exports.add = (req, res)=>{
 };
 
 exports.update = (req, res)=>{
-  console.log('===== made to update function ====');
+  //console.log('===== made to update function ====');
   var recipeId = req.params.id;
   var form = new multiparty.Form();
 
@@ -68,4 +76,25 @@ exports.show = (req, res)=>{
       res.render('recipes/show', {recipe: recipe, brewMethod: brewMethod, user: req.user});
     });
   });
+};
+
+exports.filter = (req, res)=>{
+  console.log('===== made it to filter route ====');
+  var brewMethodId = req.params.id;
+
+  if(brewMethodId === 'none'){
+    // console.log('===== redirecting... ====');
+    // res.redirect('/recipes');
+    Recipe.findAll(recipes=>{
+      // console.log('===== finding ALL RECIPES ====');
+    //  console.log(recipes);
+      res.render('recipes/filter', {recipes:recipes});
+    });
+  }else{
+    Recipe.findByBrewMethod(brewMethodId, recipes=>{
+      // console.log('===== RECIPES ====');
+      // console.log(recipes);
+      res.render('recipes/filter', {recipes:recipes});
+    });
+  }
 };

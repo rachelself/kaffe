@@ -142,6 +142,11 @@ class User{
   }
 
   addToLibrary(recipeId, brewMethodId, fn){
+
+    if(!this.recipeLibrary.length){
+      this.recipeLibrary = [];
+    }
+    
     var recipe = null;
 
     if(typeof recipeId === 'string'){
