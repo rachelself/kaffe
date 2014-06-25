@@ -1,0 +1,69 @@
+extends ../shared/template
+
+block content
+
+  .container__show-recipe
+    header.header
+      include ../shared/nav
+    .subnav
+      //include ../shared/learn-subnav
+
+    .main.well
+      .info
+        h5 #{recipe.title}
+        h6 #{brewMethod.name}
+        //- if(user._id.toString() === #{recipe.userId}.toString())
+        //- a.edit.button.button-rounded.button-flat-highlight Edit Recipe
+
+      .ratio.u-1of3
+        h5 Ratio
+        h6 Water:
+        p #{recipe.ratio.water} #{recipe.ratio.unit}
+        h6 Coffee:
+        p #{recipe.ratio.coffee} #{recipe.ratio.unit}
+
+      .brewTime
+        h5 Brew Time
+        p #{recipe.brewTime}
+
+      .grind
+        h5 Grind Size
+        p #{recipe.grind}
+
+      .preparations
+        h5 Prep Needed
+        each prep in recipe.prep
+          .prep
+            p #{prep.order + 1}
+            p #{prep.text}
+
+      .instructions
+        h5 Instructions
+        each instruction in recipe.instructions
+          .step
+            p #{instruction.order + 1}
+            p #{instruction.text}
+            p #{instruction.displayTime}
+
+      .notes
+        h5 Notes
+        p #{recipe.notes}
+
+      .photos
+        h5 Photos
+        each photo in recipe.photos
+          .photo.u-1of3
+            a.thumbnail(href='#')
+              img(src=photo.path)
+            //a.remove-photo.button.button-rounded.button-flat Remove Photo
+          if(photo.caption)
+            p photo.caption
+          //- else
+          //-   p You haven't added a caption to this photo yet.
+
+        //- if(user._id.toString() === recipe.userId.toString())
+        //-   a.add-photo.button.button-rounded.button-flat Add Photo
+
+
+block scripts
+  script(src='/js/es6/compiled/recipe.js')

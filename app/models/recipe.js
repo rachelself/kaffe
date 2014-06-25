@@ -519,29 +519,29 @@ class Recipe{
     //--- PREP ---
     this.prep = [];
 
-    fields.prep.forEach((obj, index)=>{
+    fields.prepStep.forEach((p, index)=>{
       var prepStep = {};
       prepStep.order = index;
-      prepStep.text = obj.step;
+      prepStep.text = p;
       this.prep.push(prepStep);
     });
 
 
     //--- NOTES, BREWTIME, GRIND ---
-    this.notes = fields.notes[0];
-    this.brewTime = fields.brewTime[0];
-    this.grind = fields.grind[0];
+    this.notes = fields.notes[0].trim();
+    this.brewTime = fields.brewTime[0].trim();
+    this.grind = fields.grind[0].trim();
 
 
     //--- VIDEOS ---
-    this.video = files.video[0];
+    //this.video = files.video[0];
 
 
     //--- PHOTOS ---
     this.photos = [];
     var badPhotos = [];
 
-    files.photos.forEach((p, i)=>{
+    files.photo.forEach((p, i)=>{
       //console.log('=== made it inside photos for each ===');
       if(p.size === 0){ badPhotos.push(p); return; }
 

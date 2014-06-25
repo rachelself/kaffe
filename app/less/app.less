@@ -515,7 +515,7 @@ PROFILE=
   }
 
   /* --- profile --- */
-  .profile{
+  #profile{
     .main{
       position: relative;
       top: 60px;
@@ -537,7 +537,7 @@ PROFILE=
         }
       }
     }
-    .myrecipes{
+    #myrecipes{
       margin: 20px;
       position: relative;
       top: 60px;
@@ -545,6 +545,9 @@ PROFILE=
       .newrecipe{
         float: right;
 
+      }
+      table > tbody > tr > td{
+        padding: 10px;
       }
     }
   }
@@ -793,5 +796,24 @@ NEW RECIPE=
   #new-recipe-content{
     position: relative;
     top: 20px;
+  }
+}
+
+/* ======================================================================
+
+SHOW RECIPE=
+
+========================================================================= */
+
+.container__show-recipe{
+  .main{
+    position: relative;
+    top: 60px;
+    margin: 20px;
+    .photos{
+      .photo > img{
+        
+      }
+    }
   }
 }

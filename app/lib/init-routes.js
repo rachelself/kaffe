@@ -56,9 +56,8 @@ function load(app, fn){
   app.post('/recipes', dbg, recipes.create);
   app.get('/recipes/add/:id', dbg, recipes.add);
   app.post('/recipes/:id', dbg, recipes.update);
-  //app.post('/recipes', dbg, recipes.create);
-  //app.post('/recipes/:id', dbg, recipes.addContent);
-  //app.get('/recipes/:id/addInstructions', dbg, recipes.addInstructions);
+  app.get('/recipes/:id', dbg, recipes.show);
+  app.get('/recipes/edit/:id', dbg, recipes.edit);
 
 
 

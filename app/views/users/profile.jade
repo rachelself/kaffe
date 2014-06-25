@@ -46,20 +46,24 @@ block content
         a.newrecipe.button.button-rounded.button-flat-highlight(href='/recipes/new') New Recipe
         h6 My Original Recipes
 
-        table
+        table.recipes
           tbody
             if(recipes)
               each recipe in recipes
-                tr
+                tr(data-id=recipe._id.toString())
                   td
                     p #{recipe.title}
                   td
                     p #{recipe.description}
+                  td
+                    a.view.button.button-rounded.button-flat(href='/recipes/#{recipe._id}') View
+                  td
+                    a.edit.button.button-rounded.button-flat(href='/recipes/edit/#{recipe._id}') Edit
             else
               tr
                 td
                   p You haven't created any recipes
 
 
-//- block scripts
-//-   script(src='/js/es6/compiled/profile.js')
+block scripts
+  script(src='/js/es6/compiled/originalRecipes.js')

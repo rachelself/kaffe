@@ -41,7 +41,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){  
   }
 
   function addPrep(){
-    var prepStep = `<div class="prep-step"><input type="text" name="prep-step" required="true" placeholder="Boil water" autofocus><button class="remove-step button button-rounded button-flat">X</button><button class="move-step button button-rounded button-flat">Move</button></div>`;
+    var prepStep = `<div class="prep-step"><input type="text" name="prepStep" required="true" placeholder="Boil water" autofocus><button class="remove-step button button-rounded button-flat">X</button><button class="move-step button button-rounded button-flat">Move</button></div>`;
     $('.prep-steps').append(prepStep);
   }
 
