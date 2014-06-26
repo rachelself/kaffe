@@ -1,11 +1,14 @@
 if(preps)
-  h6 Prep needed for #{recipe.title}
-  each prep in preps
-    p #{prep.order + 1}.  #{prep.text}
+  .row
+    .left.u-textCenter
+      h6 Prep needed for #{recipe.title}
 
-  .right
-    h6 Recommended grind size:
-    p #{recipe.grind}
+      each prep in preps
+        p #{prep.order + 1}. #{prep.text}
+
+    .right.u-textCenter
+      h6 Recommended grind size:
+      p #{recipe.grind}
 
 else
   p This recipe has no prep steps.

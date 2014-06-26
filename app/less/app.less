@@ -806,7 +806,7 @@ BREW=
     position: relative;
     top: 70px;
     margin: 20px;
-    display: flex;
+    //display: flex;
     h5{
       display: block;
     }
@@ -814,6 +814,7 @@ BREW=
     .method {
       float: left;
       align-self: left;
+      margin: 10px;
       .thumbnail{
         width: 95%;
         // display: inline-block;
@@ -837,6 +838,11 @@ BREW=
     position: relative;
     top: 80px;
     margin: 20px;
+    .preparations{
+      margin-top: 20px;
+      align-content: flex-start;
+      align-self: baseline;
+    }
   }
 
   .coffee-amount{
@@ -844,11 +850,24 @@ BREW=
     top: 100px;
     margin: 20px;
     padding: 20px;
+
+    .center{
+      width: 10%;
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
     .u-1of3{
       vertical-align: middle;
       align-self: left;
       .calculate{
         margin: 20px;
+      }
+    }
+    #by-coffee-amnt, #by-drink-size{
+      margin-top: 20px;
+      .calculate{
+        display: block;
       }
     }
     #calculation-output{
@@ -857,6 +876,9 @@ BREW=
       width: 100%;
       padding: 20px;
       order: 4;
+      .ready{
+        margin-top: 20px;
+      }
     }
   }
   //   display: flex;
