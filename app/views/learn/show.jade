@@ -1,0 +1,20 @@
+extends ../shared/template
+
+block content
+
+  .container__learn
+    header.header
+      include ../shared/nav
+    if(!brewMethods)
+      .subnav
+        include ../shared/learn-subnav
+    .article.well
+      h2 #{brewMethod.name}
+      .method(data-id=brewMethod._id.toString())
+        //- h6 #{brewMethod.name}
+        a(href='/learn/#{brewMethod._id}')
+          img.thumbnail.u-1of4(src=brewMethod.photo)
+      p.intro #{brewMethod.overview}
+
+
+      include aeropress

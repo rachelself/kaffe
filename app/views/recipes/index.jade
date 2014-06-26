@@ -13,18 +13,42 @@ block content
       p See one you like? Add it to your library to brew it.
       #all-recipes
         each recipe in recipes
-          .recipe(data-id=recipe._id.toString())
+          .recipe.row.u-textCenter.u-3of3(data-id=recipe._id.toString())
             if(recipe.photos)
               each photo in recipe.photos
                 if(photo.isPrimary)
-                  a(href='/recipes/#{recipe._id}')
-                    img.thumbnail(src=photo.path)
-            a(href='/recipes/#{recipe._id}')
+                  a.left(href='/recipes/#{recipe._id}')
+                    h5 #{recipe.title}
+                    p #{recipe.description}
+                  img.thumbnail.right(src=photo.path)
+
+            else
+              a(href='/recipes/#{recipe._id}')
+                img.thumbnail.u-1of4(src='/img/recipe-default.jpg')
               h5 #{recipe.title}
-            p #{recipe.description}
+              p #{recipe.description}
             //a.add-to-library.button.button-rounded.button-flat-highlight(href='#') Add To Recipe Library
 
 
 
 block scripts
   script(src='/js/es6/compiled/allRecipes.js')
+
+
+//- #all-recipes
+//-   each recipe in recipes
+//-     .recipe.u-1of4(data-id=recipe._id.toString())
+//-       if(recipe.photos)
+//-         each photo in recipe.photos
+//-           if(photo.isPrimary)
+//-             a(href='/recipes/#{recipe._id}')
+//-               h5 #{recipe.title}
+//-             p #{recipe.description}
+//-             img.thumbnail(src=photo.path)
+//-
+//-       else
+//-         a(href='/recipes/#{recipe._id}')
+//-           img.thumbnail.u-1of4(src='/img/recipe-default.jpg')
+//-         h5 #{recipe.title}
+//-         p #{recipe.description}
+//-       //a.add-to-library.button.button-rounded.button-flat-highlight(href='#') Add To Recipe Library

@@ -167,9 +167,10 @@ GRIDS FOR FLEXBOX=
 
 .u-1of4{
   flex: none !important;
-  width: 20% !important;
+  width: 25% !important;
   height: auto;
-  display: inline-block;
+  float: left;
+  //display: inline-block;
   margin-left: 20px;
 
 }
@@ -269,11 +270,13 @@ header{
     top: -35px;
     right: 20px;
 
+
     a{
       display: block;
       height: 100%;
       width: 100%;
       color: white;
+
     }
   }
 }
@@ -466,6 +469,10 @@ nav.nav.collapse.navbar-collapse{
   border-color: 1px solid #d4d4d4;
 }
 
+p.heavy{
+  font-weight: @lato-heavy;
+}
+
 // .thumbnail{
 //   //background-size: cover;
 //   background-position: center;
@@ -490,14 +497,21 @@ NAV=
       border-right: 1px solid #363636;
       padding-right: 10px;
     }
+    li:last-child > a{
+      font-weight: @lato-heavy;
+    }
     li > a{
       height: 100%;
       text-align: center;
       display: block;
       font-family: @lato;
-      font-weight: @lato-lt;
+      font-weight: @lato-med;
       text-transform: uppercase;
       letter-spacing: 0.15em;
+      color: white;
+      &:hover{
+        color: #474747;
+      }
     }
   }
 }
@@ -636,16 +650,93 @@ LEARN=
 ========================================================================= */
 .container__learn{
   .subnav{
-    display: flex;
+    //display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: baseline;
     position: relative;
-    top: 70px;
+    top: 80px;
     left: 20px;
     ul > li{
       display: inline-block;
       margin-right: 15px;
+      a{
+        position: relative;
+        z-index: 1
+      }
+    }
+  }
+  .main{
+    position: relative;
+    top: 80px;
+    margin: 20px;
+    padding-bottom: 30px;
+    height: 100%;
+    .method {
+      //float: left;
+      //display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      flex-flow: flex-start;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      // align-self: left;
+      // .u-1of4{
+      //   float: left;
+      // }
+      .thumbnail{
+        //float: left;
+        flex-basis: auto;
+        align-self: flex-start;
+
+        // display: inline-block;
+
+      }
+    }
+  }
+  .article{
+    position: relative;
+    top: 80px;
+    margin: 20px;
+    padding-bottom: 30px;
+    height: 100%;
+    .method{
+
+      .u-1of4{
+        margin: 20px;
+      }
+    }
+    .intro{
+      font-weight: @lato-heavy;
+      font-size: 1.5em;
+      margin: 15px;
+    }
+    .popular-techniques, .grind, .advantages, .sources{
+      padding-top: 10px;
+      margin: 10px;
+      a{
+        color: #f56302;
+        &:hover{
+          color: #474747;
+        }
+      }
+    }
+    .grind{
+      .thumbnail{
+        margin: 10px 15px 10px 0px;
+      }
+    }
+    .sources{
+      .tiny{
+        font-size: 0.9em;
+        a{
+          color: #f56302;
+          &:hover{
+            color: #474747;
+          }
+        }
+      }
     }
   }
 }
@@ -826,7 +917,7 @@ SHARE / RECIPES=
     justify-content: flex-start;
     align-items: baseline;
     position: relative;
-    top: 70px;
+    top: 90px;
     left: 20px;
     ul > li{
       display: inline-block;
@@ -889,9 +980,31 @@ SHOW RECIPE=
     top: 60px;
     margin: 20px;
     .photos{
+      margin-top: 20px;
       .photo > img{
 
       }
+    }
+    .ratio{
+      display: flex;
+      .u-1of4{
+        align-self: baseline;
+        margin: 0;
+        padding: 10;
+        // width: 15%;
+        // vertical-align: middle;
+      }
+    }
+
+    .row > .instructions > .step > p, h6{
+      display: inline-block;
+      margin-right: 15px;
+
+
+    }
+    .row > .instructions, .preparations, .notes{
+      align-self: baseline;
+      margin-top: 20px;
     }
   }
 }
@@ -917,16 +1030,38 @@ SHOW RECIPE=
       margin-right: 15px;
     }
   }
-  .recipe{
-    display: block;
-    float: left;
-    .thumbnail{
-      // width: 30%;
-      max-width: 200px;
-      max-height: 150px;
-      float: left;
-      margin: 20px 20px 0px 0px;
+  #all-recipes{
+    //display: flex;
+    // .u-1of4{
+    //   width: 20%;
+    //   float: none;
+    // }
+    .left{
+      vertical-align: middle;
+      align-self: center;
     }
+    .recipe{
+      flex-direction: row;
+      flex-wrap: wrap;
+      flex-flow: flex-start;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      //display: block;
+      //float: left;
+      margin: 10px;
+      .thumbnail{
+        // width: 30%;
+        //max-width: 200px;
+        flex-basis: auto;
+        align-self: flex-start;
+        //max-height: 250px;
+        max-width: 250px;
+        float: left;
+        margin: 20px 20px 0px 0px;
+      }
+  }
+
     // a, p{
     //   display: block;
     // }

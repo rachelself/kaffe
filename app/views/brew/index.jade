@@ -10,6 +10,7 @@ block content
     .select-brew-method.well
 
       h5 What kind of brew method will you be using?
+      
       each brewMethod in brewMethods
         .method(data-id=brewMethod._id.toString())
           h6 #{brewMethod.name}

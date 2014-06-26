@@ -9,50 +9,12 @@ block content
       //include ../shared/learn-subnav
 
     .main.well
-      .info(data-id=recipe._id.toString())
-        h5 #{recipe.title}
-        h6 #{brewMethod.name}
-        a.add-to-library.button.button-rounded.button-flat-highlight(href='#') Add To Recipe Library
-
-        //- if(user._id.toString() === #{recipe.userId}.toString())
-        //- a.edit.button.button-rounded.button-flat-highlight Edit Recipe
-
-      .ratio.u-1of3
-        h5 Ratio
-        h6 Water:
-        p #{recipe.ratio.water} #{recipe.ratio.unit}
-        h6 Coffee:
-        p #{recipe.ratio.coffee} #{recipe.ratio.unit}
-
-      .brewTime
-        h5 Brew Time
-        p #{recipe.brewTime}
-
-      .grind
-        h5 Grind Size
-        p #{recipe.grind}
-
-      .preparations
-        h5 Prep Needed
-        each prep in recipe.prep
-          .prep
-            p #{prep.order + 1}
-            p #{prep.text}
-
-      .instructions
-        h5 Instructions
-        each instruction in recipe.instructions
-          .step
-            p #{instruction.order + 1}
-            p #{instruction.text}
-            p #{instruction.displayTime}
-
-      .notes
-        h5 Notes
-        p #{recipe.notes}
-
-      .photos
-        h5 Photos
+      .row
+        .info.u-textCenter(data-id=recipe._id.toString())
+          h3 #{recipe.title}
+          h4 #{brewMethod.name}
+          a.add-to-library.button.button-rounded.button-flat-highlight(href='#') Add To Recipe Library
+      .photos.row
         each photo in recipe.photos
           .photo.u-1of3
             a.thumbnail(href='#')
@@ -60,6 +22,45 @@ block content
             //a.remove-photo.button.button-rounded.button-flat Remove Photo
           if(photo.caption)
             p photo.caption
+        //- if(user._id.toString() === #{recipe.userId}.toString())
+        //- a.edit.button.button-rounded.button-flat-highlight Edit Recipe
+      .row.ratio
+        .u-1of4
+          h5 Ratio
+          h6 Water:
+          p #{recipe.ratio.water} #{recipe.ratio.unit}
+          h6 Coffee:
+          p #{recipe.ratio.coffee} #{recipe.ratio.unit}
+
+        .brewTime.u-1of4
+          h5 Brew Time
+          p #{recipe.brewTime}
+
+        .grind.u-1of4
+          h5 Grind Size
+          p #{recipe.grind}
+
+      .row
+        .preparations.u-1of3
+          h5 Prep Needed
+          each prep in recipe.prep
+            .prep
+              p #{prep.order + 1}. #{prep.text}
+
+        .instructions.u-1of3
+          h5 Instructions
+          each instruction in recipe.instructions
+            .step
+              p #{instruction.order + 1}. #{instruction.text}
+              h6 #{instruction.displayTime}
+
+        .notes.u-1of3
+          h5 Notes
+          p #{recipe.notes}
+
+
+
+
 
           //- else
           //-   p You haven't added a caption to this photo yet.
