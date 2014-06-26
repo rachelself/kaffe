@@ -1,0 +1,31 @@
+extends ../shared/template
+
+block content
+
+  .container__brew
+    header.header
+      include ../shared/nav
+    .interactionbar
+      include ../shared/brew-nav
+
+    .main.well
+      .row
+        h3 #{recipe.title}
+      .row
+        p Total Brew Time: #{recipe.brewTime}
+      .instructions
+        each instruction in recipe.instructions
+          .instruction.row
+            .u-1of3
+              h4 #{instruction.order + 1}. #{instruction.text}
+            .timer.u-1of3(data-timer=instruction.timer)
+              p #{instruction.displayTime}
+    .notes.well
+      h6 Notes:
+      p #{recipe.notes}
+
+
+
+
+block scripts
+  script(src='/js/es6/compiled/brewTimer.js')

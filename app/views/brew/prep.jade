@@ -3,5 +3,9 @@ if(preps)
   each prep in preps
     p #{prep.order + 1}.  #{prep.text}
 
+  .right
+    h6 Recommended grind size:
+    p #{recipe.grind}
+
 else
   p This recipe has no prep steps.

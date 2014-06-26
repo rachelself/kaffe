@@ -666,17 +666,17 @@ BREW=
     // top: 50px;
     margin-top: 50px;
     z-index: 10;
-    .timer > h2{
+    #clock > h2{
       font-weight: @lato-lt;
       font-size: 3.5em;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.005em;
       vertical-align: middle;
       line-height: 0;
       padding: 0;
       margin: 0;
     }
 
-    .timer, .start, .stop, .pause{
+    .timerBox, .start, .stop, .pause{
       height: 100%;
       vertical-align: middle;
       text-align: center;
@@ -753,6 +753,20 @@ BREW=
     top: 100px;
     margin: 20px;
     padding: 20px;
+    .u-1of3{
+      vertical-align: middle;
+      align-self: left;
+      .calculate{
+        margin: 20px;
+      }
+    }
+    #calculation-output{
+      background-color: black
+      color: white;
+      width: 100%;
+      padding: 20px;
+      order: 4;
+    }
   }
   //   display: flex;
   //   flex-wrap: nowrap;
@@ -766,6 +780,38 @@ BREW=
   //     margin-right: 15px;
   //   }
   // }
+}
+
+
+/* ======================================================================
+
+BREW / TIMER=
+
+========================================================================= */
+
+.container__brew{
+  .main{
+    position: relative;
+    top: 160px;
+    margin: 20px;
+    padding-bottom: 30px;
+  }
+  .notes{
+    position: relative;
+    top: 160px;
+    margin: 20px;
+  }
+}
+
+.on{
+  background-color: rgba(183, 162, 148, 0.42);
+  // padding: 10px;
+  //border-radius: 10px;
+  //padding: 0px 10px;
+}
+
+#clock > h2{
+  display: inline-block;
 }
 
 /* ======================================================================

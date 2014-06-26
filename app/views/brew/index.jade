@@ -34,22 +34,31 @@ block content
       .preparations
 
 
-    .coffee-amount.well.grid.grid--gutters.u-textCenter
+    .coffee-amount.well.grid.grid--gutters
       h5 How much coffee would you like to make?
 
-      #by-coffee-amount.u-1of3
+      #by-coffee-amount.u-1of3.left
         p I have this much coffee to use:
-        input(type='number', placeholder='15')
-        select(id=unit)
-          option(value='grams') grams
-          option(value='oz') oz
+        input.calcType.amnt(type='number', value='coffeeToUse', min='1', placeholder='15')
+        p What units would you like back?
+        select(id='unit')
+          option(name='unit', value='grams') grams
+          option(name='unit', value='oz') oz
+        button.calculate.button.button-rounded.button-flat-highlight Calculate
 
       .center
         h5 OR
 
-      #by-drink-size.u-1of3
+      #by-drink-size.u-1of3.right
         p I would like this finished drink size (in oz):
-        input(type='number' step='1', min='0', placeholder='8')
+        input.calcType.drinksize(type='number' value='drinkSize', step='1', min='1', placeholder='8')
+        p What units would you like back?
+        select(id='unit')
+          option(name='unit', value='grams') grams
+          option(name='unit', value='oz') oz
+        button.calculate.button.button-rounded.button-flat-highlight Calculate
+
+      #calculation-output.grid.grid--gutters
 
 
 block scripts

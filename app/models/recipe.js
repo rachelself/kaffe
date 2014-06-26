@@ -15,7 +15,7 @@ var _ = require('lodash');
 
 class Recipe{
 
-  calculateByDrinkSize(drinkSize, unit, fn){
+  calculateByDrinkSize(drinkSize, unit, recipeId, fn){
 
     var gramsInOz = 28.3495;
     var calculation = {};
@@ -24,48 +24,98 @@ class Recipe{
     var convertedW;
     var convertedC;
     var coffeeToUse;
+    // var unit;
 
 
     //-- UNITS ARE DIFFERENT --//
+    // console.log('the units are different');
     if(unit !== this.ratio.unit){
 
-      // console.log('the units are different');
+      if(unit === 'grams'){
+      //-- THEY WANT GRAMS --//
 
-      convertedW = this.ratio.water / gramsInOz;
-      convertedC = this.ratio.coffee / gramsInOz;
+        convertedW = this.ratio.water * gramsInOz;
+        convertedC = this.ratio.coffee * gramsInOz;
+        waterToUse = drinkSize * gramsInOz;
+        coffeeToUse = ((waterToUse * convertedC) / convertedW).toFixed(2);
 
-      waterToUse = drinkSize;
-      coffeeToUse = (waterToUse * convertedC) / convertedW;
 
-      calculation.coffee = coffeeToUse.toFixed(2);
-      calculation.unit = unit;
-      calculation.water = waterToUse.toFixed(2);
-      calculation.drinkSize = drinkSize;
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = drinkSize;
+        calculation.id = recipeId;
 
-      // console.log('=== calculation being sent back! ===');
-      // console.log(calculation);
+        // console.log('=== calculation being sent back! ===');
+        // console.log(calculation);
 
-      fn(calculation);
-      return;
+        fn(calculation);
+        return;
+
+
+      }else{
+      //-- THEY WANT OZ --//
+
+        convertedW = this.ratio.water / gramsInOz;
+        convertedC = this.ratio.coffee / gramsInOz;
+        waterToUse = drinkSize;
+        coffeeToUse = ((waterToUse * convertedC) / convertedW).toFixed(2);
+
+
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = drinkSize;
+        calculation.id = recipeId;
+
+        // console.log('=== calculation being sent back! ===');
+        // console.log(calculation);
+
+        fn(calculation);
+        return;
+
+      }
+
+
 
     //-- UNITS ARE THE SAME --//
     }else{
       // console.log('the units are the same');
+      if(unit === 'grams'){
+        //-- THEY WANT GRAMS --//
+        waterToUse = drinkSize * gramsInOz;
+        coffeeToUse = ((waterToUse * this.ratio.coffee) / this.ratio.water).toFixed(2);
 
-      waterToUse = drinkSize;
-      coffeeToUse = (waterToUse * this.ratio.coffee) / this.ratio.water;
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = drinkSize;
+        calculation.id = recipeId;
 
-      calculation.coffee = coffeeToUse.toFixed(2);
-      calculation.unit = unit;
-      calculation.water = waterToUse.toFixed(2);
-      calculation.drinkSize = drinkSize;
+        fn(calculation);
+        return;
 
-      fn(calculation);
-      return;
+
+      }else{
+        //-- THEY WANT OZ --//
+        waterToUse = drinkSize;
+        coffeeToUse = ((waterToUse * this.ratio.coffee) / this.ratio.water).toFixed(2);
+
+        calculation.coffee = coffeeToUse;
+        calculation.unit = unit;
+        calculation.water = waterToUse;
+        calculation.drinkSize = drinkSize;
+        calculation.id = recipeId;
+
+        fn(calculation);
+        return;
+
+
+      }
     }
   }
 
-  calculateByCoffeeAmount(coffeeToUse, unit, fn){
+  calculateByCoffeeAmount(coffeeToUse, unit, recipeId, fn){
     // console.log('=== recipe ====');
     // console.log(this.ratio);
     var gramsInOz = 28.3495;
@@ -74,7 +124,6 @@ class Recipe{
     var estimatedDrinkSize;
     var convertedW;
     var convertedC;
-    coffeeToUse = coffeeToUse.toFixed(2);
 
     //-- UNITS ARE DIFFERENT --//
     if(unit !== this.ratio.unit){
@@ -94,6 +143,7 @@ class Recipe{
         calculation.unit = unit;
         calculation.water = waterToUse;
         calculation.drinkSize = estimatedDrinkSize;
+        calculation.id = recipeId;
 
         fn(calculation);
         return;
@@ -113,6 +163,7 @@ class Recipe{
         calculation.unit = unit;
         calculation.water = waterToUse;
         calculation.drinkSize = estimatedDrinkSize;
+        calculation.id = recipeId;
 
         fn(calculation);
         return;
@@ -132,6 +183,7 @@ class Recipe{
         calculation.unit = unit;
         calculation.water = waterToUse;
         calculation.drinkSize = estimatedDrinkSize;
+        calculation.id = recipeId;
 
         fn(calculation);
         return;
@@ -147,6 +199,7 @@ class Recipe{
         calculation.unit = unit;
         calculation.water = waterToUse;
         calculation.drinkSize = estimatedDrinkSize;
+        calculation.id = recipeId;
 
         fn(calculation);
         return;

@@ -1,9 +1,18 @@
 div.grid.grid--gutters.u-textCenter
-  .timer.grid-cell
-    h2 0:00
+  .timerBox.grid-cell
+    #clock
+      h2(id='minutes') 00
+      h2 :
+      h2(id='seconds') 00
   .start.grid-cell.u-textCenter
     a(href='#'): h4 Start
   .stop.grid-cell.u-textCenter
     a(href='#'): h4 Stop
   .pause.grid-cell.u-textCenter
     a(href='#'): h4 Pause
+
+
+
+
+  //- .timer.timerBox.grid-cell
+  //-   h2#clock(data-time=0) 00:00

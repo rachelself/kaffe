@@ -5,5 +5,9 @@ block content
   .container__learn
     header.header
       include ../shared/nav
+  if(!brewMethods)
     .subnav
       include ../shared/learn-subnav
+
+    each brewMethod in brewMethods
+      .

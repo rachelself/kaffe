@@ -56,11 +56,14 @@ function load(app, fn){
   app.get('/profile/settings', dbg, users.settings);
 
   app.get('/learn', dbg, learn.index);
+  //app.get('/learn/chemex', dbg, learn.chemex);
   app.get('/brew', dbg, brew.index);
   app.get('/brew/filterLibrary', dbg, brew.filterLibrary);
   app.get('/brew/prep', dbg, brew.prep);
-  app.get('/recipes', dbg, recipes.index);
+  app.get('/brew/calculate', dbg, brew.calculate);
+  app.get('/brew/:id', dbg, brew.timer);
 
+  app.get('/recipes', dbg, recipes.index);
   app.get('/recipes/new', dbg, recipes.new);
   app.post('/recipes', dbg, recipes.create);
   app.get('/recipes/filter/:id', dbg, recipes.filter);

@@ -47,3 +47,51 @@ exports.prep = (req, res)=>{
     res.render('brew/prep', {recipe:recipe, preps:preps});
   });
 };
+
+exports.calculate = (req, res)=>{
+  //console.log('==== made it to calculate route ====');
+  var coffeeToUse;
+  var unit;
+  var drinkSize;
+  var recipeId = req.query.recipeId;
+
+  Recipe.findById(recipeId, (err, recipe)=>{
+    console.log(recipe);
+    if(req.query.coffeeToUse){
+      coffeeToUse = req.query.coffeeToUse;
+      unit = req.query.unit;
+      drinkSize = null;
+
+      recipe.calculateByCoffeeAmount(coffeeToUse, unit, recipeId, calculation=>{
+        res.render('brew/calculation', {calculation:calculation});
+      });
+
+    }else if(req.query.drinkSize){
+      coffeeToUse = null;
+      unit = req.query.unit;
+      drinkSize = req.query.drinkSize;
+
+      recipe.calculateByDrinkSize(drinkSize, unit, recipeId, calculation=>{
+        res.render('brew/calculation', {calculation:calculation});
+      });
+
+    }
+  });
+  // console.log('==== variables ====');
+  //console.log(recipeId);
+  // console.log(coffeeToUse);
+  // console.log(unit);
+  // console.log(drinkSize);
+};
+
+exports.timer = (req, res)=>{
+  console.log('==== made it to timer route ====');
+  var recipeId = req.params.id;
+  //console.log(recipeId);
+
+  Recipe.findById(recipeId, (err, recipe)=>{
+    console.log('==== found a recipe ====');
+    console.log(recipe);
+    res.render('brew/timer', {recipe:recipe});
+  });
+};
