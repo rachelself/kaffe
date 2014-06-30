@@ -35,8 +35,14 @@ class Recipe{
       //-- THEY WANT GRAMS --//
 
         convertedW = this.ratio.water * gramsInOz;
+        console.log('===== convertedW ====');
+        console.log(convertedW);
         convertedC = this.ratio.coffee * gramsInOz;
+        console.log('===== convertedC ====');
+        console.log(convertedC);
         waterToUse = drinkSize * gramsInOz;
+        console.log('===== waterToUSe ====');
+        console.log(waterToUse);
         coffeeToUse = ((waterToUse * convertedC) / convertedW).toFixed(2);
 
 
