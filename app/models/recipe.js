@@ -35,8 +35,8 @@ class Recipe{
       //-- THEY WANT GRAMS --//
 
         convertedW = this.ratio.water * gramsInOz;
-        console.log('===== convertedW ====');
-        console.log(convertedW);
+        // console.log('===== convertedW ====');
+        // console.log(convertedW);
         convertedC = this.ratio.coffee * gramsInOz;
         console.log('===== convertedC ====');
         console.log(convertedC);
@@ -345,7 +345,6 @@ class Recipe{
   }
 
   edit(userId, property, index, editedField, fn){
-
     //--- CHECK TO MAKE SURE USER IS OWNER --
 
     if(!(isOwner(userId, this.userId))){
