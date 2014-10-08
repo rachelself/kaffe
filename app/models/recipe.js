@@ -10,8 +10,6 @@ var Base = traceur.require(__dirname + '/base.js');
 var _ = require('lodash');
 var mkdirp = require('mkdirp');
 var fs = require('fs');
-var _ = require('lodash');
-
 
 class Recipe{
 
@@ -24,27 +22,17 @@ class Recipe{
     var convertedW;
     var convertedC;
     var coffeeToUse;
-    // var unit;
-
 
     //-- UNITS ARE DIFFERENT --//
-    // console.log('the units are different');
     if(unit !== this.ratio.unit){
 
       if(unit === 'grams'){
       //-- THEY WANT GRAMS --//
 
         convertedW = this.ratio.water * gramsInOz;
-        // console.log('===== convertedW ====');
-        // console.log(convertedW);
         convertedC = this.ratio.coffee * gramsInOz;
-        console.log('===== convertedC ====');
-        console.log(convertedC);
         waterToUse = drinkSize * gramsInOz;
-        console.log('===== waterToUSe ====');
-        console.log(waterToUse);
         coffeeToUse = ((waterToUse * convertedC) / convertedW).toFixed(2);
-
 
         calculation.coffee = coffeeToUse;
         calculation.unit = unit;
@@ -52,12 +40,8 @@ class Recipe{
         calculation.drinkSize = drinkSize;
         calculation.id = recipeId;
 
-        // console.log('=== calculation being sent back! ===');
-        // console.log(calculation);
-
         fn(calculation);
         return;
-
 
       }else{
       //-- THEY WANT OZ --//
@@ -74,19 +58,13 @@ class Recipe{
         calculation.drinkSize = drinkSize;
         calculation.id = recipeId;
 
-        // console.log('=== calculation being sent back! ===');
-        // console.log(calculation);
-
         fn(calculation);
         return;
-
       }
-
-
 
     //-- UNITS ARE THE SAME --//
     }else{
-      // console.log('the units are the same');
+
       if(unit === 'grams'){
         //-- THEY WANT GRAMS --//
         waterToUse = drinkSize * gramsInOz;
@@ -101,8 +79,8 @@ class Recipe{
         fn(calculation);
         return;
 
-
       }else{
+
         //-- THEY WANT OZ --//
         waterToUse = drinkSize;
         coffeeToUse = ((waterToUse * this.ratio.coffee) / this.ratio.water).toFixed(2);
@@ -115,15 +93,11 @@ class Recipe{
 
         fn(calculation);
         return;
-
-
       }
     }
   }
 
   calculateByCoffeeAmount(coffeeToUse, unit, recipeId, fn){
-    // console.log('=== recipe ====');
-    // console.log(this.ratio);
     var gramsInOz = 28.3495;
     var calculation = {};
     var waterToUse;
@@ -133,7 +107,6 @@ class Recipe{
 
     //-- UNITS ARE DIFFERENT --//
     if(unit !== this.ratio.unit){
-      // console.log('units are not equal!');
 
       //-- GIVEN IN GRAMS --//
 
@@ -156,8 +129,6 @@ class Recipe{
 
       }else{
         //-- GIVEN IN OZ --//
-
-        // console.log('units given in oz');
 
         convertedW = this.ratio.water / gramsInOz;
         convertedC = this.ratio.coffee / gramsInOz;
@@ -196,7 +167,6 @@ class Recipe{
 
       }else{
         //-- BOTH OZ --//
-        // console.log('units are in oz');
 
         waterToUse = ((coffeeToUse * this.ratio.water) / this.ratio.coffee).toFixed(2);
         estimatedDrinkSize = waterToUse;
@@ -228,13 +198,9 @@ class Recipe{
 
     var file = this.photos[index].fileName;
 
-    // console.log('==== img path to remove =====');
-    // console.log(file);
     fs.unlinkSync(`${__dirname}/../static/img/recipeImages/${this._id}/${file}`);
 
     var removed = _.remove(this.photos, function(p){ return p.order === index; });
-    // console.log('==== removed! =====');
-    // console.log(removed);
 
     function reOrder(photo, i){
         photo.order = i;
@@ -242,10 +208,6 @@ class Recipe{
     }
 
     var newOrder = this.photos.map(reOrder);
-
-    // console.log('==== newOrder! =====');
-    // console.log(newOrder);
-
     fn(this);
   }
 
@@ -297,16 +259,6 @@ class Recipe{
 
   updatePhotos(userId, property, index, editedField, fn){
 
-    // if(typeof userId === 'string'){
-    //   if(userId.length !== 24){fn(null); return;}
-    // }else if(userId instanceof Mongo.ObjectID){
-    //   if(userId.length !== 24){fn(null); return;}
-    //   userId = userId.toString();
-    // }
-    //
-    // if(this.userId !== userId){fn(null); return;}
-
-
     //--- CHECK TO MAKE SURE USER IS OWNER --
 
     if(!(isOwner(userId, this.userId))){
@@ -352,16 +304,7 @@ class Recipe{
       return;
     }
 
-    // //--- CHECK TO MAKE SURE USER IS OWNER --
-    //
-    // if(typeof userId === 'string'){
-    //   if(userId.length !== 24){fn(null); return;}
-    // }else if(userId instanceof Mongo.ObjectID){
-    //   if(userId.length !== 24){fn(null); return;}
-    //   userId = userId.toString();
-    // }
-    //
-    // if(this.userId !== userId){fn(null); return;}
+    //--- CHECK TO MAKE SURE USER IS OWNER --
 
     //-- SWITCH ON PROPERTY --
 
@@ -486,8 +429,6 @@ class Recipe{
       return instructionStep;
 
     }
-    // console.log('==== instructions with steps ====');
-    //console.log(steps);
 
     var timers = fields.timer;
     var completeInstructions = steps.map(addToInstructions);
@@ -496,22 +437,12 @@ class Recipe{
     function addToInstructions(s, index){
       s.timer = getTimer(index);
       s.displayTime = timers[index];
-      // console.log('==== timer ====');
-      // console.log(timers);
-      // console.log('==== timer at index ====');
-      // console.log(timers[index]);
-      // console.log('==== each step ====');
-      // console.log(s);
       return s;
     }
 
     function getTimer(index){
-      //console.log('==== calculating the time ====');
-      //console.log(timers[index]);
       var time = null;
       time = timers[index].split(':').map(n=>n*1);
-      //console.log('==== time ====');
-      //console.log(time);
       var seconds = null;
       var minutes = null;
       var hours = null;
@@ -527,52 +458,10 @@ class Recipe{
         seconds = time[2];
         totalTime = (hours * 60 * 60) + (minutes * 60) + seconds;
       }
-      //console.log('==== totalTime returned ====');
-      //console.log(totalTime);
       return totalTime;
-
     }
 
-    //console.log('==== Complete Instructions = instructions WITH timers ====');
-    //console.log(completeInstructions);
     this.instructions = completeInstructions;
-    console.log('==== instructions WITH timers ====');
-    console.log(this.instructions);
-
-    // fields.step.forEach((step, index)=>{
-    //   var instructionStep = {};
-    //   instructionStep.order = index;
-    //   instructionStep.text = step[index].trim();
-    //   this.instructions.push(instructionStep);
-    // });
-    //
-    // console.log('==== INSTRUCTIONS PRIOR TO ADDING TIMER');
-    // console.log(this.instructions);
-    //
-    // fields.timer.forEach((entry, index)={
-    //   var time = entry.timer.split(':').map(n=>n*1);
-    //   var seconds;
-    //   var minutes;
-    //   var hours;
-    //   var totalTime;
-    //
-    //   if(time.length === 2){
-    //     minutes = time[0];
-    //     seconds = time[1];
-    //     totalTime = (minutes * 60) + seconds;
-    //
-    //   }else if(time.length === 3){
-    //     hours = time[0];
-    //     minutes = time[1];
-    //     seconds = time[2];
-    //     totalTime = (hours * 60 * 60) + (minutes * 60) + seconds;
-    //   }
-    //
-    //   instructions[index].timer = totalTime;
-    //   instructions[index].displayTime = entry.timer;
-    // });
-    // console.log('==== INSTRUCTIONS AFTER ADDING TIMER');
-    // console.log(this.instructions);
 
     //--- PREP ---
     this.prep = [];
@@ -591,22 +480,15 @@ class Recipe{
     this.grind = fields.grind[0].trim();
 
 
-    //--- VIDEOS ---
-    //this.video = files.video[0];
-
-
     //--- PHOTOS ---
     this.photos = [];
     var badPhotos = [];
 
     files.photo.forEach((p, i)=>{
-      //console.log('=== made it inside photos for each ===');
       if(p.size === 0){ badPhotos.push(p); return; }
 
       var photo = {};
       var path = p.path;
-      // console.log('=== PATH ===');
-      // console.log(path);
       var fileName = p.originalFilename;
       photo.fileName = fileName;
       photo.path = `/img/recipeImages/${this._id}/${fileName}`;
@@ -625,13 +507,9 @@ class Recipe{
     });
 
     if(badPhotos.length){
-      //console.log('=== returning null ===');
       fn(null);
       return;
     }
-
-    // console.log('=== exited the loop, returning this ===');
-    // console.log(this);
     fn(this);
   }
 
@@ -655,7 +533,6 @@ class Recipe{
   static findByBrewMethod(id, fn){
     recipes.find({brewMethodId:id}).toArray((e,recipes)=>{
       if(recipes.length === 0){
-        // var msg = 'No recipes were '
         fn(null);
       }else{
         recipes = recipes.map(r=>_.create(Recipe.prototype, r));
@@ -665,8 +542,6 @@ class Recipe{
   }
 
   static findById(id, fn){
-    // console.log('==== made it inside find by ID =====');
-    // console.log(id);
     Base.findById(id, recipes, Recipe, fn);
   }
 
@@ -690,7 +565,6 @@ class Recipe{
       }
     });
   }
-
 }
 
 //--- CHECK TO MAKE SURE USER IS RECIPE OWNER -- //
